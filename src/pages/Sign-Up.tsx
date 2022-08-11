@@ -1,21 +1,22 @@
 import {
-	Flex,
 	Box,
+	Button,
+	Flex,
 	FormControl,
 	FormLabel,
+	Heading,
+	HStack,
 	Input,
 	InputGroup,
-	HStack,
+	InputLeftAddon,
 	InputRightElement,
-	Stack,
-	Button,
-	Heading,
-	Text,
-	useColorModeValue,
 	Link,
+	Stack,
+	Text,
+	useColorModeValue
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import {useState} from 'react';
+import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
 
 export default function SignUp() {
 	const [showPassword, setShowPassword] = useState(false);
@@ -45,24 +46,27 @@ export default function SignUp() {
 							<Box>
 								<FormControl id="firstName" isRequired>
 									<FormLabel>First Name</FormLabel>
-									<Input type="text" />
+									<Input type="text"/>
 								</FormControl>
 							</Box>
 							<Box>
 								<FormControl id="lastName">
 									<FormLabel>Last Name</FormLabel>
-									<Input type="text" />
+									<Input type="text"/>
 								</FormControl>
 							</Box>
 						</HStack>
-						<FormControl id="email" isRequired>
-							<FormLabel>Email address</FormLabel>
-							<Input type="email" />
+						<FormControl id="phone" isRequired>
+							<FormLabel>Phone</FormLabel>
+							<InputGroup>
+								<InputLeftAddon children="+975"/>
+								<Input type="number"/>
+							</InputGroup>
 						</FormControl>
 						<FormControl id="password" isRequired>
 							<FormLabel>Password</FormLabel>
 							<InputGroup>
-								<Input type={showPassword ? 'text' : 'password'} />
+								<Input type={showPassword ? 'text' : 'password'}/>
 								<InputRightElement h={'full'}>
 									<Button
 										variant={'ghost'}
