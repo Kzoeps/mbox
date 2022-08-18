@@ -5,6 +5,7 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import HomePage from './pages/Home';
 import Navigation from './components/navigation';
 import SignUp from './pages/Sign-Up';
+import './firebase.config';
 
 
 function App() {
