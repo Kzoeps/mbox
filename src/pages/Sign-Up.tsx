@@ -14,6 +14,7 @@ import {
 	Text,
 	useToast
 } from '@chakra-ui/react';
+import { Link as RouterLink} from 'react-router-dom'
 import {useState} from 'react';
 import {Form, Formik} from 'formik';
 import {createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
@@ -141,7 +142,7 @@ export default function SignUp() {
 										</Stack>
 										<Stack pt={6}>
 											<Text align={'center'}>
-												Already a user? <Link color={'blue.400'}>Login</Link>
+												Already a user? <Link  as={RouterLink} to={`/sign-in`} color={'blue.400'}>Login</Link>
 											</Text>
 										</Stack>
 									</Stack>

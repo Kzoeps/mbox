@@ -6,6 +6,7 @@ import HomePage from './pages/Home';
 import Navigation from './components/navigation';
 import SignUp from './pages/Sign-Up';
 import './firebase.config';
+import SignIn from './sign-in';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
 				<Routes>
 					<Route path={'/'} element={<HomePage/>}/>
 					<Route path={'/sign-up'} element={<SignUp/>}/>
+					<Route path={'/sign-in'} element={<SignIn/>}/>
 				</Routes>
 			</BrowserRouter>
 		</ChakraProvider>
