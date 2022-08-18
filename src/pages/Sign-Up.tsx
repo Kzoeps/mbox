@@ -14,7 +14,7 @@ import {
 	Text,
 	useToast
 } from '@chakra-ui/react';
-import { Link as RouterLink} from 'react-router-dom'
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 import {Form, Formik} from 'formik';
 import {createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
@@ -32,6 +32,7 @@ export interface SignUpForm {
 export default function SignUp() {
 	const [showPassword, setShowPassword] = useState(false);
 	const toast = useToast();
+	const navigate = useNavigate();
 	const initialValue: SignUpForm = {
 		firstName: '',
 		lastName: '',
@@ -51,6 +52,7 @@ export default function SignUp() {
 				status: 'success',
 				isClosable: true
 			});
+			navigate('/dashboard', {replace: true})
 		} catch (e: any) {
 			toast({
 				title: 'Error occurred',

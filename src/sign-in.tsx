@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Form, Formik} from 'formik';
-import {Link as RouterLink} from 'react-router-dom';
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {
 	Box,
 	Button,
@@ -32,6 +32,7 @@ export interface SignInForm {
 export const SignIn = (props: SignInProps) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const toast = useToast();
+	const navigate = useNavigate();
 	const initialValue = {
 		email: '',
 		password: ''
@@ -46,6 +47,7 @@ export const SignIn = (props: SignInProps) => {
 				status: 'success',
 				isClosable: true
 			});
+			navigate('/dashboard', {replace: true})
 		} catch (e: any) {
 			toast({
 				title: 'Error occurred',
