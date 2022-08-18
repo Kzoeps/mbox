@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import {useState} from 'react';
 import {Form, Formik} from 'formik';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
 import {auth} from '../firebase.config';
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
 import {FirebaseErrorCodesMessages} from '../utils/firebase-error-codes';
@@ -31,7 +31,6 @@ export interface SignUpForm {
 export default function SignUp() {
 	const [showPassword, setShowPassword] = useState(false);
 	const toast = useToast();
-	const [token, setToken] = useState<any>(undefined);
 	const initialValue: SignUpForm = {
 		firstName: '',
 		lastName: '',
@@ -41,9 +40,10 @@ export default function SignUp() {
 	};
 
 	const handleOtpRequest = async (values: SignUpForm) => {
-		const {email, password} = values;
+		const {firstName, lastName, email, password} = values;
 		try {
-			const response = await createUserWithEmailAndPassword(auth, email, password);
+			const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+			await updateProfile(userCredential.user, {displayName: `${firstName} ${lastName}`})
 			toast({
 				title: 'Account created',
 				description: 'We\'ve created your account for you',
