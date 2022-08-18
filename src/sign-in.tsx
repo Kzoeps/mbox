@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Form, Formik} from 'formik';
+import {Link as RouterLink} from 'react-router-dom';
 import {
 	Box,
 	Button,
@@ -12,9 +13,13 @@ import {
 	InputRightElement,
 	Link,
 	Stack,
-	Text
+	Text,
+	useToast
 } from '@chakra-ui/react';
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
+import {auth} from './firebase.config';
+import {signInWithEmailAndPassword} from 'firebase/auth';
+import {FirebaseErrorCodesMessages} from './utils/firebase-error-codes';
 
 export interface SignInProps {
 }
@@ -26,13 +31,28 @@ export interface SignInForm {
 
 export const SignIn = (props: SignInProps) => {
 	const [showPassword, setShowPassword] = useState(false);
+	const toast = useToast();
 	const initialValue = {
 		email: '',
 		password: ''
 	};
 
 	const handleLogin = async (values: SignInForm) => {
-		console.log(values);
+		const {email, password} = values;
+		try {
+			await signInWithEmailAndPassword(auth, email, password);
+			toast({
+				title: 'Logged in',
+				status: 'success',
+				isClosable: true
+			});
+		} catch (e: any) {
+			toast({
+				title: 'Error occurred',
+				description: FirebaseErrorCodesMessages[e?.code] || '',
+				status: 'error'
+			});
+		}
 	};
 	return (
 		<>
@@ -98,7 +118,8 @@ export const SignIn = (props: SignInProps) => {
 											</Stack>
 											<Stack pt={6}>
 												<Text align={'center'}>
-													Dont have an account? <Link color={'blue.400'}>Sign Up</Link>
+													Dont have an account? <Link as={RouterLink} to={`/sign-up`}
+																				color={'blue.400'}>Sign Up</Link>
 												</Text>
 											</Stack>
 										</Stack>
