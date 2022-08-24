@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, Flex, FormControl, FormLabel, Heading, Input, Stack} from '@chakra-ui/react';
-import {useParams} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 import {Form, Formik} from 'formik';
 
 
@@ -8,10 +8,10 @@ export interface RecordAdditionProps {
 }
 
 export const RecordAddition = (props: RecordAdditionProps) => {
-	const params = useParams();
+	const location = useLocation();
 	const initialValues = {
-		journalNumber: params?.journalNumber ?? '',
-		amount: params?.amount ?? '',
+		journalNumber: (location?.state as any)?.journalNumber ?? '',
+		amount: (location?.state as any)?.amount ?? '',
 		remarks: '',
 		phoneNumber: ''
 	};
@@ -43,6 +43,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 										<FormLabel>Journal Number</FormLabel>
 										<Input
 											name="journalNumber"
+											value={formik.values.journalNumber ?? ''}
 											onChange={formik.handleChange}
 											placeholder="8099920"
 											_placeholder={{color: 'gray.500'}}
@@ -52,6 +53,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 										<FormLabel>Amount</FormLabel>
 										<Input
 											name={'amount'}
+											value={formik.values.amount ?? ''}
 											onChange={formik.handleChange}
 											placeholder="1200"/>
 									</FormControl>
@@ -59,12 +61,13 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 										<FormLabel>Phone Number</FormLabel>
 										<Input
 											name={'phoneNumber'}
+											value={formik.values.phoneNumber}
 											onChange={formik.handleChange}
 											placeholder="17562465"/>
 									</FormControl>
 									<FormControl id="remarks">
 										<FormLabel>Remarks</FormLabel>
-										<Input name={'remarks'} onChange={formik.handleChange}/>
+										<Input value={formik.values.remarks} name={'remarks'} onChange={formik.handleChange}/>
 									</FormControl>
 									<Stack spacing={6}>
 										<Button

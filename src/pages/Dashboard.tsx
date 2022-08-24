@@ -6,6 +6,7 @@ import {MdOutlineViewList} from 'react-icons/md';
 import StatsCard from '../components/stats-card';
 import {NumString} from '../utils/util.types';
 import Fuse from 'fuse.js';
+import {useNavigate} from 'react-router-dom';
 
 export interface DashboardProps {
 }
@@ -14,6 +15,7 @@ export type DetectionResponse = ((NumString[])[])[]
 
 export const Dashboard = (props: DashboardProps) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
+	const navigate = useNavigate();
 	const handleAdditionClick = async () => {
 		await inputRef.current?.click();
 	};
@@ -67,7 +69,13 @@ export const Dashboard = (props: DashboardProps) => {
 			const response = await fetch('https://hacket-mbox.ml', {method: 'POST', body: formData});
 			const data = await response.json();
 			const extractedData = extractText(data);
-			findRelevantInfo(extractedData);
+			const {journalNumber, cost} = findRelevantInfo(extractedData);
+			navigate('/add-record', {
+				state: {
+					journalNumber,
+					amount: cost
+				}
+			})
 		}
 	};
 
