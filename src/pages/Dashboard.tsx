@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useRef, useState} from 'react';
+import React, {ChangeEvent, useRef} from 'react';
 import {Box, SimpleGrid} from '@chakra-ui/react';
 import {TbCameraPlus} from 'react-icons/tb';
 import {AiOutlineFileAdd} from 'react-icons/ai';
@@ -14,7 +14,6 @@ export type DetectionResponse = ((NumString[])[])[]
 
 export const Dashboard = (props: DashboardProps) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
-	const [file, setFile] = useState<File | null | undefined>(null);
 	const handleAdditionClick = async () => {
 		await inputRef.current?.click();
 	};
@@ -62,7 +61,6 @@ export const Dashboard = (props: DashboardProps) => {
 
 	const handleFileSelection = async (event: ChangeEvent<HTMLInputElement>) => {
 		const uploadedFile = event?.target?.files?.[0];
-		setFile(event?.target?.files?.[0]);
 		if (uploadedFile) {
 			const formData = new FormData();
 			formData.append('file', uploadedFile);

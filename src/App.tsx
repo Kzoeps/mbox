@@ -8,6 +8,7 @@ import SignUp from './pages/Sign-Up';
 import './firebase.config';
 import SignIn from './sign-in';
 import Dashboard from './pages/Dashboard';
+import RecordAddition from './pages/RecordAddition';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
 					<Route path={'/sign-up'} element={<SignUp/>}/>
 					<Route path={'/sign-in'} element={<SignIn/>}/>
 					<Route path={'/dashboard'} element={<Dashboard/>}/>
+					<Route path={'/add-record'} element={<RecordAddition/>}/>
 				</Routes>
 			</BrowserRouter>
 		</ChakraProvider>
