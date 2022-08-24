@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Button, Flex, FormControl, FormLabel, Heading, Input, Stack} from '@chakra-ui/react';
-import {useLocation, useParams} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import {Form, Formik} from 'formik';
 
 
