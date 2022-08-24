@@ -1,7 +1,9 @@
 import React from 'react';
-import {Button, Flex, FormControl, FormLabel, Heading, Input, Stack} from '@chakra-ui/react';
+import {Button, Flex, FormControl, FormLabel, Heading, Input, Stack, useToast} from '@chakra-ui/react';
 import {useLocation} from 'react-router-dom';
 import {Form, Formik} from 'formik';
+import {Record} from '../types/misc.types';
+import {addRecord} from '../api/misc.api';
 
 
 export interface RecordAdditionProps {
@@ -15,10 +17,22 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 		remarks: '',
 		phoneNumber: ''
 	};
+	const toast = useToast();
+
+	const handleRecordAddition = async (values: Record) => {
+		const phoneNumber = values.phoneNumber ? `+975${values.phoneNumber}` : '';
+		await addRecord('kzoepa@gmail.com', {...values, phoneNumber});
+		toast({
+			title: 'Record added',
+			description: `Record with jrnl no: ${values.journalNumber} has been successfully added`,
+			status: 'success',
+			isClosable: true
+		});
+	};
 
 	return (
 		<>
-			<Formik initialValues={initialValues} onSubmit={(vals) => console.log(vals)}>
+			<Formik initialValues={initialValues} onSubmit={handleRecordAddition}>
 				{(formik) => {
 					return (
 						<Form>
@@ -55,7 +69,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 											name={'amount'}
 											value={formik.values.amount ?? ''}
 											onChange={formik.handleChange}
-											placeholder="1200"/>
+											placeholder="Please enter amount without Nu"/>
 									</FormControl>
 									<FormControl id="phoneNumber">
 										<FormLabel>Phone Number</FormLabel>
