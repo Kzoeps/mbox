@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import './App.css';
 import {ChakraProvider} from '@chakra-ui/react';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
@@ -10,24 +10,34 @@ import SignIn from './sign-in';
 import Dashboard from './pages/Dashboard';
 import RecordAddition from './pages/RecordAddition';
 import UserContextProvider from './components/user-context';
+import RecordListing from './pages/RecordListing';
+
+function ChakraProvided(props: {children: ReactNode}) {
+	return (
+		<ChakraProvider>
+			{props.children}
+		</ChakraProvider>
+	)
+}
 
 
 function App() {
 	return (
-		<ChakraProvider>
+		// <ChakraProvider>
 			<UserContextProvider>
 				<BrowserRouter>
-					<Navigation/>
+					<ChakraProvided><Navigation/></ChakraProvided>
 					<Routes>
-						<Route path={'/'} element={<HomePage/>}/>
-						<Route path={'/sign-up'} element={<SignUp/>}/>
-						<Route path={'/sign-in'} element={<SignIn/>}/>
-						<Route path={'/dashboard'} element={<Dashboard/>}/>
-						<Route path={'/add-record'} element={<RecordAddition/>}/>
+						<Route path={'/'} element={<ChakraProvided><HomePage/></ChakraProvided>}/>
+						<Route path={'/sign-up'} element={<ChakraProvided><SignUp/></ChakraProvided>}/>
+						<Route path={'/sign-in'} element={<ChakraProvided><SignIn/></ChakraProvided>}/>
+						<Route path={'/dashboard'} element={<ChakraProvided><Dashboard/></ChakraProvided>}/>
+						<Route path={'/add-record'} element={<ChakraProvided><RecordAddition/></ChakraProvided>}/>
+						<Route path={'/records'} element={<RecordListing/>}/>
 					</Routes>
 				</BrowserRouter>
 			</UserContextProvider>
-		</ChakraProvider>
+		// </ChakraProvider>
 	);
 }
 

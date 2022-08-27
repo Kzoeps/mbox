@@ -8,3 +8,5 @@ export interface Record {
 	phoneNumber: NumString,
 	date: string | Date
 }
+
+export type TableIds = 'jrnlNo' | 'amount' | 'phoneNumber' | 'remarks' | 'date';
