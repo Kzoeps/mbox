@@ -9,6 +9,9 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import {Record, TableIds} from '../types/misc.types';
 import dayjs from 'dayjs';
+import {useContext, useEffect, useState} from 'react';
+import {UserContext} from '../components/user-context';
+import {getRecords} from '../api/misc.api';
 
 export interface RecordListingProps {
 }
@@ -127,6 +130,22 @@ export function StickyHeadTable() {
 }
 
 export const RecordListing = (props: RecordListingProps) => {
+	const [records, setRecords] = useState<Data[]>([]);
+	const {user} = useContext(UserContext);
+	useEffect(() => {
+		const getAndSaveRecords = async () => {
+			if (user?.email) {
+				const recordsSnapshot = await getRecords(user.email);
+				const datas = [];
+				recordsSnapshot.forEach((doc) => {
+					const data = {id: doc.id, ...doc.data(), date:doc?.data()?.date?.toDate()};
+					datas.push(data);
+				});
+				setRecords(datas);
+			}
+		}
+		getAndSaveRecords();
+	},[user?.email])
 	return (
 		<>
 			<StickyHeadTable/>
