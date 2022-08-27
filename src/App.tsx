@@ -9,21 +9,24 @@ import './firebase.config';
 import SignIn from './sign-in';
 import Dashboard from './pages/Dashboard';
 import RecordAddition from './pages/RecordAddition';
+import UserContextProvider from './components/user-context';
 
 
 function App() {
 	return (
 		<ChakraProvider>
-			<BrowserRouter>
-				<Navigation/>
-				<Routes>
-					<Route path={'/'} element={<HomePage/>}/>
-					<Route path={'/sign-up'} element={<SignUp/>}/>
-					<Route path={'/sign-in'} element={<SignIn/>}/>
-					<Route path={'/dashboard'} element={<Dashboard/>}/>
-					<Route path={'/add-record'} element={<RecordAddition/>}/>
-				</Routes>
-			</BrowserRouter>
+			<UserContextProvider>
+				<BrowserRouter>
+					<Navigation/>
+					<Routes>
+						<Route path={'/'} element={<HomePage/>}/>
+						<Route path={'/sign-up'} element={<SignUp/>}/>
+						<Route path={'/sign-in'} element={<SignIn/>}/>
+						<Route path={'/dashboard'} element={<Dashboard/>}/>
+						<Route path={'/add-record'} element={<RecordAddition/>}/>
+					</Routes>
+				</BrowserRouter>
+			</UserContextProvider>
 		</ChakraProvider>
 	);
 }

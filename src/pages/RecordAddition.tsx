@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Button, Flex, FormControl, FormLabel, Heading, Input, Stack, useToast} from '@chakra-ui/react';
 import {useLocation} from 'react-router-dom';
 import {Form, Formik} from 'formik';
 import {Record} from '../types/misc.types';
 import {addRecord} from '../api/misc.api';
+import {UserContext} from '../components/user-context';
 
 
 export interface RecordAdditionProps {
@@ -11,6 +12,7 @@ export interface RecordAdditionProps {
 
 export const RecordAddition = (props: RecordAdditionProps) => {
 	const location = useLocation();
+	const {user} = useContext(UserContext);
 	const initialValues = {
 		journalNumber: (location?.state as any)?.journalNumber ?? '',
 		amount: (location?.state as any)?.amount ?? '',
@@ -20,14 +22,16 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 	const toast = useToast();
 
 	const handleRecordAddition = async (values: Record) => {
-		const phoneNumber = values.phoneNumber ? `+975${values.phoneNumber}` : '';
-		await addRecord('kzoepa@gmail.com', {...values, phoneNumber});
-		toast({
-			title: 'Record added',
-			description: `Record with jrnl no: ${values.journalNumber} has been successfully added`,
-			status: 'success',
-			isClosable: true
-		});
+		if (user) {
+			const phoneNumber = values.phoneNumber ? `+975${values.phoneNumber}` : '';
+			await addRecord(user.email, {...values, phoneNumber});
+			toast({
+				title: 'Record added',
+				description: `Record with jrnl no: ${values.journalNumber} has been successfully added`,
+				status: 'success',
+				isClosable: true
+			});
+		}
 	};
 
 	return (
