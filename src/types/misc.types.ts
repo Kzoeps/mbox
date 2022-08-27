@@ -1,8 +1,10 @@
 import {NumString} from '../utils/util.types';
+import {Dayjs} from 'dayjs';
 
 export interface Record {
 	journalNumber: NumString,
 	amount: NumString,
 	remarks: string,
-	phoneNumber: NumString
+	phoneNumber: NumString,
+	date: string | Date
 }

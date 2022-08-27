@@ -5,6 +5,7 @@ import {Form, Formik} from 'formik';
 import {Record} from '../types/misc.types';
 import {addRecord} from '../api/misc.api';
 import {UserContext} from '../components/user-context';
+import dayjs from 'dayjs';
 
 
 export interface RecordAdditionProps {
@@ -13,18 +14,20 @@ export interface RecordAdditionProps {
 export const RecordAddition = (props: RecordAdditionProps) => {
 	const location = useLocation();
 	const {user} = useContext(UserContext);
-	const initialValues = {
+	const formattedTodaysDate = dayjs().format(`YYYY-MM-DD`);
+	const initialValues: Record = {
 		journalNumber: (location?.state as any)?.journalNumber ?? '',
 		amount: (location?.state as any)?.amount ?? '',
 		remarks: '',
-		phoneNumber: ''
+		phoneNumber: '',
+		date: formattedTodaysDate
 	};
 	const toast = useToast();
 
 	const handleRecordAddition = async (values: Record) => {
 		if (user) {
 			const phoneNumber = values.phoneNumber ? `+975${values.phoneNumber}` : '';
-			await addRecord(user.email, {...values, phoneNumber});
+			await addRecord(user.email, {...values, phoneNumber, date: dayjs(values.date).toDate()});
 			toast({
 				title: 'Record added',
 				description: `Record with jrnl no: ${values.journalNumber} has been successfully added`,
@@ -85,8 +88,12 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 									</FormControl>
 									<FormControl id="remarks">
 										<FormLabel>Remarks</FormLabel>
-										<Input value={formik.values.remarks} name={'remarks'} onChange={formik.handleChange}/>
+										<Input value={formik.values.remarks} name={'remarks'}
+											   onChange={formik.handleChange}/>
 									</FormControl>
+									<input type="date" max={formattedTodaysDate} value={formik.values.date as string}
+										   name={'date'} onChange={formik.handleChange}
+										   style={{border: '1px solid #E2E8F0', height: '40px', padding: '0 16px'}}/>
 									<Stack spacing={6}>
 										<Button
 											type={'submit'}
