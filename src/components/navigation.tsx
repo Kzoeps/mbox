@@ -15,6 +15,7 @@ import {
 	useBreakpointValue,
 	useDisclosure,
 } from '@chakra-ui/react';
+import {Link as RouterLink} from 'react-router-dom';
 import {
 	HamburgerIcon,
 	CloseIcon,
@@ -69,7 +70,8 @@ export default function Navigation() {
 					direction={'row'}
 					spacing={6}>
 					<Button
-						as={'a'}
+						as={RouterLink}
+						to={`/sign-in`}
 						fontSize={'sm'}
 						fontWeight={400}
 						variant={'link'}
@@ -78,6 +80,8 @@ export default function Navigation() {
 					</Button>
 					<Button
 						display={{ base: 'none', md: 'inline-flex' }}
+						as={RouterLink}
+						to={`/sign-up`}
 						fontSize={'sm'}
 						fontWeight={600}
 						color={'white'}
@@ -109,8 +113,9 @@ const DesktopNav = () => {
 					<Popover trigger={'hover'} placement={'bottom-start'}>
 						<PopoverTrigger>
 							<Link
+								as={RouterLink}
 								p={2}
-								href={navItem.href ?? '#'}
+								to={navItem.href ?? '#'}
 								fontSize={'sm'}
 								fontWeight={500}
 								color={linkColor}
@@ -147,7 +152,8 @@ const DesktopNav = () => {
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 	return (
 		<Link
-			href={href}
+			as={RouterLink}
+			to={href ?? '#'}
 			role={'group'}
 			display={'block'}
 			p={2}
@@ -198,8 +204,8 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
 		<Stack spacing={4} onClick={children && onToggle}>
 			<Flex
 				py={2}
-				as={Link}
-				href={href ?? '#'}
+				as={RouterLink}
+				to={href ?? '#'}
 				justify={'space-between'}
 				align={'center'}
 				_hover={{
@@ -231,7 +237,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
 					align={'start'}>
 					{children &&
 					children.map((child) => (
-						<Link key={child.label} py={2} href={child.href}>
+						<Link as={RouterLink}  key={child.label} py={2} to={child.href as string}>
 							{child.label}
 						</Link>
 					))}
@@ -250,41 +256,15 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
 	{
-		label: 'Inspiration',
-		children: [
-			{
-				label: 'Explore Design Work',
-				subLabel: 'Trending Design to inspire you',
-				href: '#',
-			},
-			{
-				label: 'New & Noteworthy',
-				subLabel: 'Up-and-coming Designers',
-				href: '#',
-			},
-		],
+		label: 'Dashboard',
+		href: '/dashboard'
 	},
 	{
-		label: 'Find Work',
-		children: [
-			{
-				label: 'Job Board',
-				subLabel: 'Find your dream design job',
-				href: '#',
-			},
-			{
-				label: 'Freelance Projects',
-				subLabel: 'An exclusive list for contract work',
-				href: '#',
-			},
-		],
+		label: 'View Records',
+		href: `/records`
 	},
 	{
-		label: 'Learn Design',
-		href: '#',
-	},
-	{
-		label: 'Hire Designers',
-		href: '#',
-	},
+		label: 'Add Record',
+		href: '/add-record',
+	}
 ];
