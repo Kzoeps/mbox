@@ -136,10 +136,10 @@ export const RecordListing = (props: RecordListingProps) => {
 		const getAndSaveRecords = async () => {
 			if (user?.email) {
 				const recordsSnapshot = await getRecords(user.email);
-				const datas = [];
+				const datas: Data[] = [];
 				recordsSnapshot.forEach((doc) => {
 					const data = {id: doc.id, ...doc.data(), date:doc?.data()?.date?.toDate()};
-					datas.push(data);
+					datas.push(data as Data);
 				});
 				setRecords(datas);
 			}
