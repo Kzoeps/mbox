@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useContext, useEffect, useState} from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,64 +8,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import {Record, TableIds} from '../types/misc.types';
-import dayjs from 'dayjs';
-import {useContext, useEffect, useState} from 'react';
+import {RecordData} from '../types/misc.types';
 import {UserContext} from '../components/user-context';
 import {getRecords} from '../api/misc.api';
+import {RECORDS_COLUMNS} from '../constants/misc.constants';
 
 export interface RecordListingProps {
 }
 
-
-interface Column {
-	id: TableIds;
-	label: string;
-	minWidth?: number;
-	align?: 'right';
-	format?: (value:Date) => string;
-}
-
-const columns: readonly Column[] = [
-	{id: 'jrnlNo', label: 'Journal number', minWidth: 170},
-	{id: 'amount', label: 'Amount', minWidth: 100},
-	{
-		id: 'phoneNumber',
-		label: 'Phone number',
-		minWidth: 170,
-		align: 'right',
-	},
-	{
-		id: 'remarks',
-		label: 'Remarks',
-		minWidth: 170,
-		align: 'right',
-	},
-	{
-		id: 'date',
-		label: 'Date',
-		minWidth: 170,
-		align: 'right',
-		format: (value: Date) => dayjs(value).format(`YYYY-MM-DD`)
-	}
-];
-
-interface Data {
-	id: string;
-	jrnlNo: string;
-	amount: string;
-	phoneNumber: number;
-	remarks: number;
-	date: Date;
-}
-
-function createData(record: Record): any {
-}
-
-const rows: Data[] = [
-];
-
-export function StickyHeadTable() {
+export function StickyHeadTable(props: { records: RecordData[] }) {
+	const {records} = props;
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -83,7 +36,7 @@ export function StickyHeadTable() {
 				<Table stickyHeader aria-label="sticky table">
 					<TableHead>
 						<TableRow>
-							{columns.map((column) => (
+							{RECORDS_COLUMNS.map((column) => (
 								<TableCell
 									key={column.id}
 									align={column.align}
@@ -95,12 +48,12 @@ export function StickyHeadTable() {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{rows
+						{records
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((row) => {
 								return (
 									<TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-										{columns.map((column) => {
+										{RECORDS_COLUMNS.map((column) => {
 											const value = row[column.id];
 											return (
 												<TableCell key={column.id} align={column.align}>
@@ -119,7 +72,7 @@ export function StickyHeadTable() {
 			<TablePagination
 				rowsPerPageOptions={[10, 25, 100]}
 				component="div"
-				count={rows.length}
+				count={records.length}
 				rowsPerPage={rowsPerPage}
 				page={page}
 				onPageChange={handleChangePage}
@@ -130,16 +83,16 @@ export function StickyHeadTable() {
 }
 
 export const RecordListing = (props: RecordListingProps) => {
-	const [records, setRecords] = useState<Data[]>([]);
+	const [records, setRecords] = useState<RecordData[]>([]);
 	const {user} = useContext(UserContext);
 	useEffect(() => {
 		const getAndSaveRecords = async () => {
 			if (user?.email) {
 				const recordsSnapshot = await getRecords(user.email);
-				const datas: Data[] = [];
+				const datas: RecordData[] = [];
 				recordsSnapshot.forEach((doc) => {
 					const data = {id: doc.id, ...doc.data(), date:doc?.data()?.date?.toDate()};
-					datas.push(data as Data);
+					datas.push(data as RecordData);
 				});
 				setRecords(datas);
 			}
@@ -148,7 +101,7 @@ export const RecordListing = (props: RecordListingProps) => {
 	},[user?.email])
 	return (
 		<>
-			<StickyHeadTable/>
+			<StickyHeadTable records={records}/>
 		</>
 	);
 };

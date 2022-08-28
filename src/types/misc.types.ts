@@ -1,5 +1,4 @@
 import {NumString} from '../utils/util.types';
-import {Dayjs} from 'dayjs';
 
 export interface Record {
 	journalNumber: NumString,
@@ -9,4 +8,21 @@ export interface Record {
 	date: string | Date
 }
 
-export type TableIds = 'jrnlNo' | 'amount' | 'phoneNumber' | 'remarks' | 'date';
+export type TableIds = 'journalNumber' | 'amount' | 'phoneNumber' | 'remarks' | 'date';
+
+export interface RecordsColumn {
+	id: TableIds;
+	label: string;
+	minWidth?: number;
+	align?: 'right';
+	format?: (value: Date) => string;
+}
+
+export interface RecordData {
+	id: string;
+	journalNumber: string;
+	amount: string;
+	phoneNumber: number;
+	remarks: number;
+	date: Date;
+}
