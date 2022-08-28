@@ -89,10 +89,12 @@ export const Dashboard = (props: DashboardProps) => {
 						icon={<TbCameraPlus size={'3em'}/>}
 					/>
 					<StatsCard
+						onClick={() => navigate(`/records`)}
 						stat={'View Records'}
 						icon={<MdOutlineViewList size={'3em'}/>}
 					/>
 					<StatsCard
+						onClick={() => navigate(`/add-record`)}
 						stat={'Add Record'}
 						icon={<AiOutlineFileAdd size={'3em'}/>}
 					/>
