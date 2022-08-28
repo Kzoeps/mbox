@@ -31,7 +31,8 @@ export function StickyHeadTable(props: { records: RecordData[] }) {
 	};
 
 	return (
-		<Paper sx={{width: '100%', overflow: 'hidden'}}>
+		<Paper sx={{width: '100%', overflow: 'hidden', marginTop: '150px', borderRadius: '10px',
+			boxShadow:  "7px 7px 14px #a6a6a6,-7px -7px 14px #ffffff"}}>
 			<TableContainer sx={{maxHeight: 440}}>
 				<Table stickyHeader aria-label="sticky table">
 					<TableHead>
