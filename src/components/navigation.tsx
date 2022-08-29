@@ -1,30 +1,48 @@
 import {
 	Box,
-	Flex,
-	Text,
-	IconButton,
 	Button,
-	Stack,
 	Collapse,
+	Flex,
 	Icon,
+	IconButton,
+	Image,
 	Link,
 	Popover,
-	PopoverTrigger,
 	PopoverContent,
+	PopoverTrigger,
+	Stack,
+	Text,
 	useColorModeValue,
-	useBreakpointValue,
 	useDisclosure,
+	useToast
 } from '@chakra-ui/react';
-import {Link as RouterLink} from 'react-router-dom';
-import {
-	HamburgerIcon,
-	CloseIcon,
-	ChevronDownIcon,
-	ChevronRightIcon,
-} from '@chakra-ui/icons';
+import Logo from '../assets/images/hacket_logo.png';
+import {signOut} from 'firebase/auth';
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
+import {ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon} from '@chakra-ui/icons';
+import {useContext} from 'react';
+import {UserContext} from './user-context';
+import {auth} from '../firebase.config';
 
 export default function Navigation() {
-	const { isOpen, onToggle } = useDisclosure();
+	const {isOpen, onToggle} = useDisclosure();
+	const navigate = useNavigate();
+	const {user} = useContext(UserContext);
+	const toast = useToast();
+
+	const handleSignOut = async () => {
+		try {
+			await signOut(auth);
+			toast({
+				title: 'Signed out',
+				status: 'success',
+				isClosable: true
+			});
+			navigate(`/`);
+		} catch (e) {
+			console.error(e);
+		}
+	};
 
 	return (
 		<Box>
@@ -32,65 +50,69 @@ export default function Navigation() {
 				bg={useColorModeValue('white', 'gray.800')}
 				color={useColorModeValue('gray.600', 'white')}
 				minH={'60px'}
-				py={{ base: 2 }}
-				px={{ base: 4 }}
+				py={{base: 2}}
+				px={{base: 4}}
 				borderBottom={1}
 				borderStyle={'solid'}
 				borderColor={useColorModeValue('gray.200', 'gray.900')}
 				align={'center'}>
 				<Flex
-					flex={{ base: 1, md: 'auto' }}
-					ml={{ base: -2 }}
-					display={{ base: 'flex', md: 'none' }}>
+					flex={{base: 1, md: 'auto'}}
+					ml={{base: -2}}
+					display={{base: 'flex', md: 'none'}}>
 					<IconButton
 						onClick={onToggle}
 						icon={
-							isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+							isOpen ? <CloseIcon w={3} h={3}/> : <HamburgerIcon w={5} h={5}/>
 						}
 						variant={'ghost'}
 						aria-label={'Toggle Navigation'}
 					/>
 				</Flex>
-				<Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-					<Text
-						textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-						fontFamily={'heading'}
-						color={useColorModeValue('gray.800', 'white')}>
-						Logo
-					</Text>
-
-					<Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-						<DesktopNav />
+				<Flex flex={{base: 1}} justify={{base: 'center', md: 'start'}}>
+					<Image style={{cursor: 'pointer'}} onClick={() => navigate('/')} htmlHeight={'20'} htmlWidth={'30'}
+						   src={Logo}/>
+					<Flex display={{base: 'none', md: 'flex'}} ml={10}>
+						<DesktopNav/>
 					</Flex>
 				</Flex>
 
 				<Stack
-					flex={{ base: 1, md: 0 }}
+					flex={{base: 1, md: 0}}
 					justify={'flex-end'}
 					direction={'row'}
 					spacing={6}>
-					<Button
-						as={RouterLink}
-						to={`/sign-in`}
-						fontSize={'sm'}
-						fontWeight={400}
-						variant={'link'}
+					{!user ? <><Button
+							as={RouterLink}
+							to={`/sign-in`}
+							fontSize={'sm'}
+							fontWeight={400}
+							variant={'link'}
 						>
-						Sign In
-					</Button>
-					<Button
-						display={{ base: 'none', md: 'inline-flex' }}
-						as={RouterLink}
-						to={`/sign-up`}
-						fontSize={'sm'}
-						fontWeight={600}
-						color={'white'}
-						bg={'pink.400'}
-						_hover={{
-							bg: 'pink.300',
-						}}>
-						Sign Up
-					</Button>
+							Sign In
+						</Button>
+							<Button
+								display={{base: 'none', md: 'inline-flex'}}
+								as={RouterLink}
+								to={`/sign-up`}
+								fontSize={'sm'}
+								fontWeight={600}
+								color={'white'}
+								bg={'pink.400'}
+								_hover={{
+									bg: 'pink.300'
+								}}>
+								Sign Up
+							</Button></> :
+						<Button
+							fontSize={'sm'}
+							fontWeight={400}
+							variant={'link'}
+							onClick={handleSignOut}
+						>
+							Sign Out
+						</Button>
+					}
 				</Stack>
 			</Flex>
 
