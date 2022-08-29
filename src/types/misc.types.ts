@@ -26,3 +26,10 @@ export interface RecordData {
 	remarks: number;
 	date: Date;
 }
+
+export interface NavItem {
+	label: string;
+	subLabel?: string;
+	children?: Array<NavItem>;
+	href?: string;
+}

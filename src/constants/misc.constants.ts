@@ -1,4 +1,4 @@
-import {RecordsColumn} from '../types/misc.types';
+import {NavItem, RecordsColumn} from '../types/misc.types';
 import dayjs from 'dayjs';
 
 export const RECORDS_COLUMNS: readonly RecordsColumn[] = [
@@ -24,3 +24,16 @@ export const RECORDS_COLUMNS: readonly RecordsColumn[] = [
 		format: (value: Date) => dayjs(value).format(`YYYY-MM-DD`)
 	}
 ];
+
+export const AUTHENTICATED_NAV_ITEMS: NavItem[] = [{
+	label: 'Dashboard',
+	href: '/dashboard'
+},
+	{
+		label: 'View Records',
+		href: `/records`
+	},
+	{
+		label: 'Add Record',
+		href: '/add-record'
+	}];

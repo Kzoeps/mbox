@@ -23,6 +23,8 @@ import {ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon} from '@chak
 import {useContext} from 'react';
 import {UserContext} from './user-context';
 import {auth} from '../firebase.config';
+import {AUTHENTICATED_NAV_ITEMS} from '../constants/misc.constants';
+import {NavItem} from '../types/misc.types';
 
 export default function Navigation() {
 	const {isOpen, onToggle} = useDisclosure();
@@ -73,7 +75,7 @@ export default function Navigation() {
 					<Image style={{cursor: 'pointer'}} onClick={() => navigate('/')} htmlHeight={'20'} htmlWidth={'30'}
 						   src={Logo}/>
 					<Flex display={{base: 'none', md: 'flex'}} ml={10}>
-						<DesktopNav/>
+						<DesktopNav isAuthenticated={!!user}/>
 					</Flex>
 				</Flex>
 
@@ -117,20 +119,21 @@ export default function Navigation() {
 			</Flex>
 
 			<Collapse in={isOpen} animateOpacity>
-				<MobileNav />
+				<MobileNav isAuthenticated={!!user}/>
 			</Collapse>
 		</Box>
 	);
 }
 
-const DesktopNav = () => {
+const DesktopNav = (props: {isAuthenticated: boolean}) => {
+	const {isAuthenticated} = props;
 	const linkColor = useColorModeValue('gray.600', 'gray.200');
 	const linkHoverColor = useColorModeValue('gray.800', 'white');
 	const popoverContentBgColor = useColorModeValue('white', 'gray.800');
 
 	return (
 		<Stack direction={'row'} spacing={4}>
-			{NAV_ITEMS.map((navItem) => (
+			{(isAuthenticated ? AUTHENTICATED_NAV_ITEMS : []).map((navItem) => (
 				<Box key={navItem.label}>
 					<Popover trigger={'hover'} placement={'bottom-start'}>
 						<PopoverTrigger>
@@ -206,13 +209,14 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 	);
 };
 
-const MobileNav = () => {
+const MobileNav = (props: { isAuthenticated: boolean}) => {
+	const {isAuthenticated} = props
 	return (
 		<Stack
 			bg={useColorModeValue('white', 'gray.800')}
 			p={4}
 			display={{ md: 'none' }}>
-			{NAV_ITEMS.map((navItem) => (
+			{(isAuthenticated ? AUTHENTICATED_NAV_ITEMS : []).map((navItem) => (
 				<MobileNavItem key={navItem.label} {...navItem} />
 			))}
 		</Stack>
@@ -268,25 +272,3 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
 		</Stack>
 	);
 };
-
-interface NavItem {
-	label: string;
-	subLabel?: string;
-	children?: Array<NavItem>;
-	href?: string;
-}
-
-const NAV_ITEMS: Array<NavItem> = [
-	{
-		label: 'Dashboard',
-		href: '/dashboard'
-	},
-	{
-		label: 'View Records',
-		href: `/records`
-	},
-	{
-		label: 'Add Record',
-		href: '/add-record',
-	}
-];
