@@ -1,5 +1,5 @@
 import {Record} from '../types/misc.types';
-import { setDoc, addDoc, collection, doc, getDoc, getDocs, query} from 'firebase/firestore';
+import { startAfter, limit, setDoc, addDoc, collection, doc, getDoc, getDocs, query} from 'firebase/firestore';
 import {db} from '../firebase.config';
 
 export const addRecord = async (userEmail: string, record: Record) => {
@@ -7,8 +7,8 @@ export const addRecord = async (userEmail: string, record: Record) => {
 	return response;
 };
 
-export const getRecords = async (email: string) => {
-	const queryRecords = query(collection(db,email));
+export const getRecords = async (email: string, cap: number = 10, lastDoc?: any) => {
+	const queryRecords = lastDoc ? query(collection(db,email), limit(cap), startAfter(lastDoc)) : query(collection(db,email), limit(cap));
 	return await getDocs(queryRecords);
 }
 

@@ -10,8 +10,9 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import {RecordData, StickyHeadTableProps} from '../types/misc.types';
 import {UserContext} from '../components/user-context';
-import {getRecords, getRecordsTrackInfo} from '../api/misc.api';
+import {getRecordsTrackInfo} from '../api/misc.api';
 import {RECORDS_COLUMNS} from '../constants/misc.constants';
+import {getFormattedRecords} from '../utils/misc.utils';
 
 export interface RecordListingProps {
 }
@@ -102,13 +103,8 @@ export const RecordListing = (props: RecordListingProps) => {
 		}
 		const getAndSaveRecords = async () => {
 			if (user?.email) {
-				const recordsSnapshot = await getRecords(user.email);
-				const datas: RecordData[] = [];
-				recordsSnapshot.forEach((doc) => {
-					const data = {id: doc.id, ...doc.data(), date:doc?.data()?.date?.toDate()};
-					datas.push(data as RecordData);
-				});
-				setRecords(datas);
+				const data: RecordData[] = await getFormattedRecords(user.email);
+				setRecords(data);
 			}
 		}
 		getTotalCount().then(() => {
