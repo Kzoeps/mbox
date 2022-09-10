@@ -126,8 +126,13 @@ export const RecordListing = (props: RecordListingProps) => {
 			setLastRecord(lastVisibleRecord);
 		}
 	};
-	const handleRowsChange = (rowsPerPage: number) => {
+	const handleRowsChange = async (rowsPerPage: number) => {
 		setRowsPerPage(rowsPerPage);
+		if (user?.email) {
+			const { data, lastVisibleRecord } = await getFormattedRecords(user.email, rowsPerPage);
+			setRecords(data);
+			setLastRecord(lastVisibleRecord)
+		}
 	};
 	return (
 		<>
