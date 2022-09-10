@@ -37,5 +37,6 @@ export interface NavItem {
 export interface StickyHeadTableProps {
 	handleChangePage: (page: number) => void;
 	handleRowsChange: (rowsPerPage: number) => void;
-	records: RecordData[]
+	records: RecordData[];
+	totalRecords: number;
 }

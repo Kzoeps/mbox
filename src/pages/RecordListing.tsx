@@ -10,14 +10,14 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import {RecordData, StickyHeadTableProps} from '../types/misc.types';
 import {UserContext} from '../components/user-context';
-import {getRecords} from '../api/misc.api';
+import {getRecords, getRecordsTrackInfo} from '../api/misc.api';
 import {RECORDS_COLUMNS} from '../constants/misc.constants';
 
 export interface RecordListingProps {
 }
 
 export function StickyHeadTable(props: StickyHeadTableProps) {
-	const {records, handleChangePage: handlePageChange, handleRowsChange} = props;
+	const {totalRecords, records, handleChangePage: handlePageChange, handleRowsChange} = props;
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -76,7 +76,7 @@ export function StickyHeadTable(props: StickyHeadTableProps) {
 			<TablePagination
 				rowsPerPageOptions={[10, 25, 100]}
 				component="div"
-				count={records.length}
+				count={totalRecords}
 				rowsPerPage={rowsPerPage}
 				page={page}
 				onPageChange={handleChangePage}
@@ -88,8 +88,18 @@ export function StickyHeadTable(props: StickyHeadTableProps) {
 
 export const RecordListing = (props: RecordListingProps) => {
 	const [records, setRecords] = useState<RecordData[]>([]);
+	const [totalCount, setTotalCount] = useState(0);
 	const {user} = useContext(UserContext);
 	useEffect(() => {
+		const getTotalCount = async () => {
+			if (user?.email) {
+				const recordsSnap = await getRecordsTrackInfo(user?.email)
+				const recordsCount = recordsSnap.data()?.recordsCount ?? 0;
+				setTotalCount(recordsSnap.data()?.recordsCount ?? 0)
+				return recordsCount;
+			}
+			return 0;
+		}
 		const getAndSaveRecords = async () => {
 			if (user?.email) {
 				const recordsSnapshot = await getRecords(user.email);
@@ -101,13 +111,15 @@ export const RecordListing = (props: RecordListingProps) => {
 				setRecords(datas);
 			}
 		}
-		getAndSaveRecords();
+		getTotalCount().then(() => {
+			void getAndSaveRecords();
+		})
 	},[user?.email])
 	const handlePageChange = (page: number) => {}
 	const handleRowsChange = (rowsPerPage: number) => {}
 	return (
 		<>
-			<StickyHeadTable handleChangePage={handlePageChange} handleRowsChange={handleRowsChange} records={records}/>
+			<StickyHeadTable totalRecords={totalCount} handleChangePage={handlePageChange} handleRowsChange={handleRowsChange} records={records}/>
 		</>
 	);
 };
