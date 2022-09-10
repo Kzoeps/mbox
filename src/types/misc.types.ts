@@ -40,3 +40,8 @@ export interface StickyHeadTableProps {
 	records: RecordData[];
 	totalRecords: number;
 }
+
+export interface FormattedRecordsResponse {
+	lastVisibleRecord: any;
+	data: RecordData[];
+}

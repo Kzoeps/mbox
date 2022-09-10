@@ -17,6 +17,7 @@ const arrayifyRecords = (recordsSnapshot: QuerySnapshot<any>): any[] => {
 };
 
 export const getFormattedRecords = async (email: string, limit?: number, lastRecord?: any) => {
-	const recordsSnapshot = await getRecords(email);
-	return (datifyRecords(arrayifyRecords(recordsSnapshot as unknown as any)));
+	const recordsSnapshot = await getRecords(email, limit, lastRecord);
+	const lastVisibleRecord = recordsSnapshot.docs[recordsSnapshot.docs.length - 1];
+	return ({lastVisibleRecord, data: datifyRecords(arrayifyRecords(recordsSnapshot as unknown as any))});
 };

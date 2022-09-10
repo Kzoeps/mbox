@@ -8,7 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import {RecordData, StickyHeadTableProps} from '../types/misc.types';
+import {FormattedRecordsResponse, RecordData, StickyHeadTableProps} from '../types/misc.types';
 import {UserContext} from '../components/user-context';
 import {getRecordsTrackInfo} from '../api/misc.api';
 import {RECORDS_COLUMNS} from '../constants/misc.constants';
@@ -90,32 +90,49 @@ export function StickyHeadTable(props: StickyHeadTableProps) {
 export const RecordListing = (props: RecordListingProps) => {
 	const [records, setRecords] = useState<RecordData[]>([]);
 	const [totalCount, setTotalCount] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(10);
+	// setting last record since firebase actually needs the exact same document for querying
+	const [lastRecord, setLastRecord] = useState<any>(undefined);
 	const {user} = useContext(UserContext);
 	useEffect(() => {
-		const getTotalCount = async () => {
+		const getTotalCount = async (): Promise<number> => {
 			if (user?.email) {
-				const recordsSnap = await getRecordsTrackInfo(user?.email)
+				const recordsSnap = await getRecordsTrackInfo(user?.email);
 				const recordsCount = recordsSnap.data()?.recordsCount ?? 0;
-				setTotalCount(recordsSnap.data()?.recordsCount ?? 0)
+				setTotalCount(recordsSnap.data()?.recordsCount ?? 0);
 				return recordsCount;
 			}
 			return 0;
 		}
-		const getAndSaveRecords = async () => {
+		const getAndSaveRecords = async (): Promise<void> => {
 			if (user?.email) {
-				const data: RecordData[] = await getFormattedRecords(user.email);
+				const {lastVisibleRecord, data}: FormattedRecordsResponse = await getFormattedRecords(user.email);
+				setLastRecord(lastVisibleRecord);
 				setRecords(data);
 			}
 		}
 		getTotalCount().then(() => {
 			void getAndSaveRecords();
-		})
-	},[user?.email])
-	const handlePageChange = (page: number) => {}
-	const handleRowsChange = (rowsPerPage: number) => {}
+		});
+	}, [user?.email])
+
+	const handlePageChange = async (page: number): Promise<void> => {
+		if (user?.email) {
+			const {
+				data,
+				lastVisibleRecord
+			}: FormattedRecordsResponse = await getFormattedRecords(user.email, rowsPerPage, lastRecord);
+			setRecords((records) => [...records, ...data]);
+			setLastRecord(lastVisibleRecord);
+		}
+	};
+	const handleRowsChange = (rowsPerPage: number) => {
+		setRowsPerPage(rowsPerPage);
+	};
 	return (
 		<>
-			<StickyHeadTable totalRecords={totalCount} handleChangePage={handlePageChange} handleRowsChange={handleRowsChange} records={records}/>
+			<StickyHeadTable totalRecords={totalCount} handleChangePage={handlePageChange}
+							 handleRowsChange={handleRowsChange} records={records}/>
 		</>
 	);
 };
