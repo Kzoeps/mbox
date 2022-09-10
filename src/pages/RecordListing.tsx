@@ -8,7 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import {RecordData} from '../types/misc.types';
+import {RecordData, StickyHeadTableProps} from '../types/misc.types';
 import {UserContext} from '../components/user-context';
 import {getRecords} from '../api/misc.api';
 import {RECORDS_COLUMNS} from '../constants/misc.constants';
@@ -16,18 +16,21 @@ import {RECORDS_COLUMNS} from '../constants/misc.constants';
 export interface RecordListingProps {
 }
 
-export function StickyHeadTable(props: { records: RecordData[] }) {
-	const {records} = props;
+export function StickyHeadTable(props: StickyHeadTableProps) {
+	const {records, handleChangePage: handlePageChange, handleRowsChange} = props;
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
 	const handleChangePage = (event: unknown, newPage: number) => {
 		setPage(newPage);
+		handlePageChange(newPage);
 	};
 
 	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setRowsPerPage(+event.target.value);
+		const rowsAmount = +event.target.value
+		setRowsPerPage(rowsAmount);
 		setPage(0);
+		handleRowsChange(rowsAmount);
 	};
 
 	return (
@@ -100,9 +103,11 @@ export const RecordListing = (props: RecordListingProps) => {
 		}
 		getAndSaveRecords();
 	},[user?.email])
+	const handlePageChange = (page: number) => {}
+	const handleRowsChange = (rowsPerPage: number) => {}
 	return (
 		<>
-			<StickyHeadTable records={records}/>
+			<StickyHeadTable handleChangePage={handlePageChange} handleRowsChange={handleRowsChange} records={records}/>
 		</>
 	);
 };

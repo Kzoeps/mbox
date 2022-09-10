@@ -1,9 +1,9 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Flex, FormControl, FormLabel, Heading, Input, Stack, useToast} from '@chakra-ui/react';
 import {useLocation} from 'react-router-dom';
 import {Form, Formik} from 'formik';
 import {Record} from '../types/misc.types';
-import {addRecord} from '../api/misc.api';
+import {addRecord, getRecordsTrackInfo, increaseRecordNumber} from '../api/misc.api';
 import {UserContext} from '../components/user-context';
 import dayjs from 'dayjs';
 
@@ -14,6 +14,7 @@ export interface RecordAdditionProps {
 export const RecordAddition = (props: RecordAdditionProps) => {
 	const location = useLocation();
 	const {user} = useContext(UserContext);
+	const [totalCount, setTotalCount] = useState(0);
 	const formattedTodaysDate = dayjs().format(`YYYY-MM-DD`);
 	const initialValues: Record = {
 		journalNumber: (location?.state as any)?.journalNumber ?? '',
@@ -28,6 +29,9 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 		if (user) {
 			const phoneNumber = values.phoneNumber ? `+975${values.phoneNumber}` : '';
 			await addRecord(user.email, {...values, phoneNumber, date: dayjs(values.date).toDate()});
+			await increaseRecordNumber(user.email, totalCount+1);
+			setTotalCount(totalCount+1);
+
 			toast({
 				title: 'Record added',
 				description: `Record with jrnl no: ${values.journalNumber} has been successfully added`,
@@ -36,6 +40,15 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 			});
 		}
 	};
+
+	useEffect(() => {
+		const getRecordsInfo = async () => {
+			const recordsInfoSnap = await getRecordsTrackInfo(user.email);
+			const recordsSnap = recordsInfoSnap.data();
+			setTotalCount(recordsSnap?.recordsCount ?? 0);
+		}
+		void getRecordsInfo()
+	}, [user.email])
 
 	return (
 		<>

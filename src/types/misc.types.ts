@@ -33,3 +33,9 @@ export interface NavItem {
 	children?: Array<NavItem>;
 	href?: string;
 }
+
+export interface StickyHeadTableProps {
+	handleChangePage: (page: number) => void;
+	handleRowsChange: (rowsPerPage: number) => void;
+	records: RecordData[]
+}
