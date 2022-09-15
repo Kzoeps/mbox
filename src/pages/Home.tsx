@@ -1,7 +1,9 @@
 import {Button, Container, Flex, Heading, Stack, Text} from '@chakra-ui/react';
 import HomeIllustration from '../components/home-illustration';
+import {useNavigate} from 'react-router-dom';
 
 export default function HomePage() {
+	const navigate = useNavigate();
 	return (
 		<Container maxW={'5xl'}>
 			<Stack
@@ -25,6 +27,7 @@ export default function HomePage() {
 					<Button
 						rounded={'full'}
 						px={6}
+						onClick={() => navigate(`/sign-up`)}
 						colorScheme={'orange'}
 						bg={'orange.400'}
 						_hover={{bg: 'orange.500'}}>

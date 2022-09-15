@@ -21,6 +21,7 @@ import {createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
 import {auth} from '../firebase.config';
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
 import {FirebaseErrorCodesMessages} from '../utils/firebase-error-codes';
+import useLoaderHook from '../hooks/useLoaderHook';
 
 export interface SignUpForm {
 	firstName: string;
@@ -33,6 +34,7 @@ export default function SignUp() {
 	const [showPassword, setShowPassword] = useState(false);
 	const toast = useToast();
 	const navigate = useNavigate();
+	const {isLoading, setIsLoading} = useLoaderHook();
 	const initialValue: SignUpForm = {
 		firstName: '',
 		lastName: '',
@@ -44,8 +46,10 @@ export default function SignUp() {
 	const handleOtpRequest = async (values: SignUpForm) => {
 		const {firstName, lastName, email, password} = values;
 		try {
+			setIsLoading(true);
 			const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 			await updateProfile(userCredential.user, {displayName: `${firstName} ${lastName}`})
+			setIsLoading(false);
 			toast({
 				title: 'Account created',
 				description: 'We\'ve created your account for you',
@@ -130,7 +134,8 @@ export default function SignUp() {
 										</FormControl>
 										<Stack spacing={10} pt={2}>
 											<Button
-												loadingText="Submitting"
+												loadingText="Creating Account"
+												isLoading={isLoading}
 												size="lg"
 												type="submit"
 												bg={'blue.400'}
