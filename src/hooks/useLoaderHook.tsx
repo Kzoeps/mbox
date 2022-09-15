@@ -1,7 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
-
-export interface UseLoaderHookProps {
-}
+import {Dispatch, SetStateAction, useState} from 'react';
 
 export type LoaderWrapper = (...args: any[]) => Promise<any> | any;
 
