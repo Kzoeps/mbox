@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useRef} from 'react';
-import {Box, SimpleGrid} from '@chakra-ui/react';
+import {Box, SimpleGrid, Spinner} from '@chakra-ui/react';
 import {TbCameraPlus} from 'react-icons/tb';
 import {AiOutlineFileAdd} from 'react-icons/ai';
 import {MdOutlineViewList} from 'react-icons/md';
@@ -7,6 +7,7 @@ import StatsCard from '../components/stats-card';
 import {NumString} from '../utils/util.types';
 import Fuse from 'fuse.js';
 import {useNavigate} from 'react-router-dom';
+import useLoaderHook from '../hooks/useLoaderHook';
 
 export interface DashboardProps {
 }
@@ -16,6 +17,7 @@ export type DetectionResponse = ((NumString[])[])[]
 export const Dashboard = (props: DashboardProps) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const navigate = useNavigate();
+	const {isLoading, setIsLoading, wrapperBhai} = useLoaderHook();
 	const handleAdditionClick = async () => {
 		await inputRef.current?.click();
 	};
@@ -64,18 +66,20 @@ export const Dashboard = (props: DashboardProps) => {
 	const handleFileSelection = async (event: ChangeEvent<HTMLInputElement>) => {
 		const uploadedFile = event?.target?.files?.[0];
 		if (uploadedFile) {
+			setIsLoading(true);
 			const formData = new FormData();
 			formData.append('file', uploadedFile);
 			const response = await fetch('https://hacket-mbox.ml', {method: 'POST', body: formData});
 			const data = await response.json();
 			const extractedData = extractText(data);
 			const {journalNumber, cost} = findRelevantInfo(extractedData);
+			setIsLoading(false);
 			navigate('/add-record', {
 				state: {
 					journalNumber,
 					amount: cost
 				}
-			})
+			});
 		}
 	};
 
@@ -100,6 +104,16 @@ export const Dashboard = (props: DashboardProps) => {
 					/>
 					<input onChange={handleFileSelection} ref={inputRef} style={{display: 'none'}} type="file"
 						   accept="image/*" capture={true}/>
+					<div className={'spinner_overlay'}>
+						<Spinner
+							className={'spinner'}
+							thickness="7px"
+							speed="0.65s"
+							emptyColor="gray.200"
+							color="orange.500"
+							size="xl"
+						/>
+					</div>
 				</SimpleGrid>
 			</Box>
 		</>
