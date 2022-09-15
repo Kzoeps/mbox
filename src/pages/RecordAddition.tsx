@@ -6,6 +6,7 @@ import {Record} from '../types/misc.types';
 import {addRecord, getRecordsTrackInfo, increaseRecordNumber} from '../api/misc.api';
 import {UserContext} from '../components/user-context';
 import dayjs from 'dayjs';
+import useLoaderHook from '../hooks/useLoaderHook';
 
 
 export interface RecordAdditionProps {
@@ -14,6 +15,7 @@ export interface RecordAdditionProps {
 export const RecordAddition = (props: RecordAdditionProps) => {
 	const location = useLocation();
 	const {user} = useContext(UserContext);
+	const {isLoading, setIsLoading} = useLoaderHook();
 	const [totalCount, setTotalCount] = useState(0);
 	const formattedTodaysDate = dayjs().format(`YYYY-MM-DD`);
 	const initialValues: Record = {
@@ -27,10 +29,12 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 
 	const handleRecordAddition = async (values: Record) => {
 		if (user) {
+			setIsLoading(true);
 			const phoneNumber = values.phoneNumber ? `+975${values.phoneNumber}` : '';
 			await addRecord(user.email, {...values, phoneNumber, date: dayjs(values.date).toDate()});
 			await increaseRecordNumber(user.email, totalCount+1);
 			setTotalCount(totalCount+1);
+			setIsLoading(false);
 
 			toast({
 				title: 'Record added',
@@ -76,6 +80,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 									<FormControl id="jrnl" isRequired>
 										<FormLabel>Journal Number</FormLabel>
 										<Input
+											autoComplete={"off"}
 											name="journalNumber"
 											value={formik.values.journalNumber ?? ''}
 											onChange={formik.handleChange}
@@ -86,6 +91,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 									<FormControl id="amount" isRequired>
 										<FormLabel>Amount</FormLabel>
 										<Input
+											autoComplete={"off"}
 											name={'amount'}
 											value={formik.values.amount ?? ''}
 											onChange={formik.handleChange}
@@ -94,6 +100,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 									<FormControl id="phoneNumber">
 										<FormLabel>Phone Number</FormLabel>
 										<Input
+											autoComplete={"off"}
 											name={'phoneNumber'}
 											value={formik.values.phoneNumber}
 											onChange={formik.handleChange}
@@ -101,7 +108,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 									</FormControl>
 									<FormControl id="remarks">
 										<FormLabel>Remarks</FormLabel>
-										<Input value={formik.values.remarks} name={'remarks'}
+										<Input autoComplete={"off"} value={formik.values.remarks} name={'remarks'}
 											   onChange={formik.handleChange}/>
 									</FormControl>
 									<input type="date" max={formattedTodaysDate} value={formik.values.date as string}
@@ -109,6 +116,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 										   style={{border: '1px solid #E2E8F0', height: '40px', padding: '0 16px'}}/>
 									<Stack spacing={6}>
 										<Button
+											isLoading={isLoading}
 											type={'submit'}
 											bg={'blue.400'}
 											color={'white'}

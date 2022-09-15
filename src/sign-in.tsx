@@ -20,6 +20,7 @@ import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
 import {auth} from './firebase.config';
 import {signInWithEmailAndPassword} from 'firebase/auth';
 import {FirebaseErrorCodesMessages} from './utils/firebase-error-codes';
+import useLoaderHook from './hooks/useLoaderHook';
 
 export interface SignInProps {
 }
@@ -32,6 +33,7 @@ export interface SignInForm {
 export const SignIn = (props: SignInProps) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const toast = useToast();
+	const {isLoading, wrapperBhai} = useLoaderHook();
 	const navigate = useNavigate();
 	const initialValue = {
 		email: '',
@@ -41,7 +43,8 @@ export const SignIn = (props: SignInProps) => {
 	const handleLogin = async (values: SignInForm) => {
 		const {email, password} = values;
 		try {
-			await signInWithEmailAndPassword(auth, email, password);
+			const wrappedSignIn = wrapperBhai(signInWithEmailAndPassword);
+			await wrappedSignIn(auth, email, password);
 			toast({
 				title: 'Logged in',
 				status: 'success',
@@ -49,6 +52,7 @@ export const SignIn = (props: SignInProps) => {
 			});
 			navigate('/dashboard', {replace: true})
 		} catch (e: any) {
+			console.error(e);
 			toast({
 				title: 'Error occurred',
 				description: FirebaseErrorCodesMessages[e?.code] || '',
@@ -107,6 +111,7 @@ export const SignIn = (props: SignInProps) => {
 											<Stack spacing={10} pt={2}>
 												<Button
 													loadingText="Submitting"
+													isLoading={isLoading}
 													size="lg"
 													type="submit"
 													bg={'blue.400'}

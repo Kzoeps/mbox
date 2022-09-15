@@ -11,7 +11,7 @@ export interface UseLoaderHook {
 export const useLoaderHook = (): UseLoaderHook => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	const wrapperBhai = async (functionCall: LoaderWrapper) => {
+	const wrapperBhai = (functionCall: LoaderWrapper) => {
 		const nestedFunc = async (...args: any) => {
 			setIsLoading(true);
 			await functionCall(...args);
