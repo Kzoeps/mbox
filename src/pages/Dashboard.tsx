@@ -17,7 +17,7 @@ export type DetectionResponse = ((NumString[])[])[]
 export const Dashboard = (props: DashboardProps) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const navigate = useNavigate();
-	const {isLoading, setIsLoading, wrapperBhai} = useLoaderHook();
+	const {isLoading, setIsLoading} = useLoaderHook();
 	const handleAdditionClick = async () => {
 		await inputRef.current?.click();
 	};
@@ -104,7 +104,7 @@ export const Dashboard = (props: DashboardProps) => {
 					/>
 					<input onChange={handleFileSelection} ref={inputRef} style={{display: 'none'}} type="file"
 						   accept="image/*" capture={true}/>
-					<div className={'spinner_overlay'}>
+					{isLoading && <div className={'spinner_overlay'}>
 						<Spinner
 							className={'spinner'}
 							thickness="7px"
@@ -113,7 +113,7 @@ export const Dashboard = (props: DashboardProps) => {
 							color="orange.500"
 							size="xl"
 						/>
-					</div>
+					</div>}
 				</SimpleGrid>
 			</Box>
 		</>
