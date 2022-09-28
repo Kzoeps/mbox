@@ -7,6 +7,7 @@ import {addRecord, getRecordsTrackInfo, increaseRecordNumber} from '../api/misc.
 import {UserContext} from '../components/user-context';
 import dayjs from 'dayjs';
 import useLoaderHook from '../hooks/useLoaderHook';
+import { RecordEntrySchema } from '../utils/firebase-error-codes';
 
 
 export interface RecordAdditionProps {
@@ -56,7 +57,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 
 	return (
 		<>
-			<Formik initialValues={initialValues} onSubmit={handleRecordAddition}>
+			<Formik initialValues={initialValues} validationSchema={RecordEntrySchema} onSubmit={handleRecordAddition}>
 				{(formik) => {
 					return (
 						<Form>
