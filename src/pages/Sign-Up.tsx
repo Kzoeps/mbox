@@ -63,11 +63,9 @@ export default function SignUp() {
 				description: FirebaseErrorCodesMessages[e?.code] || '',
 				status: 'error'
 			});
+		} finally {
+			setIsLoading(false)
 		}
-		/*		console.log('requested otp');
-				const confirmation = await signInWithPhoneNumber(auth, `+975${phoneNumber}`, token);
-				console.log(confirmation);
-				console.log('done with sending');*/
 	};
 
 	return (

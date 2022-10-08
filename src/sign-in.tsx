@@ -33,7 +33,7 @@ export interface SignInForm {
 export const SignIn = (props: SignInProps) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const toast = useToast();
-	const {isLoading, wrapperBhai} = useLoaderHook();
+	const {isLoading, wrapperBhai, setIsLoading} = useLoaderHook();
 	const navigate = useNavigate();
 	const initialValue = {
 		email: '',
@@ -58,6 +58,8 @@ export const SignIn = (props: SignInProps) => {
 				description: FirebaseErrorCodesMessages[e?.code] || '',
 				status: 'error'
 			});
+		} finally {
+			setIsLoading(false);
 		}
 	};
 	return (

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Flex, FormControl, FormLabel, Heading, Input, Stack, useToast} from '@chakra-ui/react';
+import {Button, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, useToast} from '@chakra-ui/react';
 import {useLocation} from 'react-router-dom';
 import {Form, Formik} from 'formik';
 import {Record} from '../types/misc.types';
@@ -7,7 +7,7 @@ import {addRecord, getRecordsTrackInfo, increaseRecordNumber} from '../api/misc.
 import {UserContext} from '../components/user-context';
 import dayjs from 'dayjs';
 import useLoaderHook from '../hooks/useLoaderHook';
-import { RecordEntrySchema } from '../utils/firebase-error-codes';
+import {RecordEntrySchema} from '../utils/validation-schemas';
 
 
 export interface RecordAdditionProps {
@@ -48,12 +48,14 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 
 	useEffect(() => {
 		const getRecordsInfo = async () => {
-			const recordsInfoSnap = await getRecordsTrackInfo(user.email);
-			const recordsSnap = recordsInfoSnap.data();
-			setTotalCount(recordsSnap?.recordsCount ?? 0);
-		}
-		void getRecordsInfo()
-	}, [user.email])
+			if (user?.email) {
+				const recordsInfoSnap = await getRecordsTrackInfo(user.email);
+				const recordsSnap = recordsInfoSnap.data();
+				setTotalCount(recordsSnap?.recordsCount ?? 0);
+			}
+		};
+		void getRecordsInfo();
+	}, [user?.email])
 
 	return (
 		<>
@@ -78,7 +80,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 									<Heading lineHeight={1.1} fontSize={{base: '2xl', md: '3xl'}}>
 										Add new record
 									</Heading>
-									<FormControl id="jrnl" isRequired>
+									<FormControl id="jrnl" isRequired isInvalid={!!formik.errors.journalNumber && !!formik.touched.journalNumber}>
 										<FormLabel>Journal Number</FormLabel>
 										<Input
 											autoComplete={"off"}
@@ -88,6 +90,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 											placeholder="8099920"
 											_placeholder={{color: 'gray.500'}}
 										/>
+										{formik.errors.journalNumber && formik.touched.journalNumber ? <FormErrorMessage>{formik.errors.journalNumber}</FormErrorMessage> : ''}
 									</FormControl>
 									<FormControl id="amount" isRequired>
 										<FormLabel>Amount</FormLabel>
@@ -98,7 +101,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 											onChange={formik.handleChange}
 											placeholder="Please enter amount without Nu"/>
 									</FormControl>
-									<FormControl id="phoneNumber">
+									<FormControl id="phoneNumber" isInvalid={!!formik.errors.phoneNumber && !!formik.touched.phoneNumber}>
 										<FormLabel>Phone Number</FormLabel>
 										<Input
 											autoComplete={"off"}
@@ -106,15 +109,22 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 											value={formik.values.phoneNumber}
 											onChange={formik.handleChange}
 											placeholder="17562465"/>
+										{formik.errors.phoneNumber && formik.touched.phoneNumber ? <FormErrorMessage>{formik.errors.phoneNumber}</FormErrorMessage> : ''}
 									</FormControl>
 									<FormControl id="remarks">
 										<FormLabel>Remarks</FormLabel>
-										<Input autoComplete={"off"} value={formik.values.remarks} name={'remarks'}
+										<Input autoComplete={'off'} value={formik.values.remarks} name={'remarks'}
 											   onChange={formik.handleChange}/>
 									</FormControl>
-									<input type="date" max={formattedTodaysDate} value={formik.values.date as string}
+									<FormLabel>Date</FormLabel>
+									<input type="date" max={formattedTodaysDate}
+										   value={formik.values.date as string}
 										   name={'date'} onChange={formik.handleChange}
-										   style={{border: '1px solid #E2E8F0', height: '40px', padding: '0 16px'}}/>
+										   style={{
+											   border: '1px solid #E2E8F0',
+											   height: '40px',
+											   padding: '0 16px'
+										   }}/>
 									<Stack spacing={6}>
 										<Button
 											isLoading={isLoading}
