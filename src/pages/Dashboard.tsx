@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useRef} from 'react';
-import {Box, SimpleGrid, Spinner} from '@chakra-ui/react';
+import {Box, SimpleGrid, Spinner, useToast} from '@chakra-ui/react';
 import {TbCameraPlus} from 'react-icons/tb';
 import {AiOutlineFileAdd} from 'react-icons/ai';
 import {MdOutlineViewList} from 'react-icons/md';
@@ -21,6 +21,7 @@ export const Dashboard = (props: DashboardProps) => {
 	const handleAdditionClick = async () => {
 		await inputRef.current?.click();
 	};
+	const toast = useToast();
 
 	const extractText = (data: DetectionResponse): string[] => {
 		return data.map((element) => element?.[1]?.[0]) as string[];
@@ -66,20 +67,25 @@ export const Dashboard = (props: DashboardProps) => {
 	const handleFileSelection = async (event: ChangeEvent<HTMLInputElement>) => {
 		const uploadedFile = event?.target?.files?.[0];
 		if (uploadedFile) {
-			setIsLoading(true);
-			const formData = new FormData();
-			formData.append('file', uploadedFile);
-			const response = await fetch('https://hacket-mbox.ml', {method: 'POST', body: formData});
-			const data = await response.json();
-			const extractedData = extractText(data);
-			const {journalNumber, cost} = findRelevantInfo(extractedData);
-			setIsLoading(false);
-			navigate('/add-record', {
-				state: {
-					journalNumber,
-					amount: cost
-				}
-			});
+			try {
+				setIsLoading(true);
+				const formData = new FormData();
+				formData.append('file', uploadedFile);
+				const response = await fetch('https://hacket-mbox.ml', {method: 'POST', body: formData});
+				const data = await response.json();
+				const extractedData = extractText(data);
+				const {journalNumber, cost} = findRelevantInfo(extractedData);
+				navigate('/add-record', {
+					state: {
+						journalNumber,
+						amount: cost
+					}
+				});
+			} catch (e: any) {
+				toast({title: e?.message || e, status: 'error', isClosable: true});
+			} finally {
+				setIsLoading(false);
+			}
 		}
 	};
 
