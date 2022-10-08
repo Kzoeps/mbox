@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "MBOX",
+  "name": "MBOX: manage your mbob transactions",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,14 +8,14 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "hacket_logo.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "107x81"
     },
     {
-      "src": "logo512.png",
+      "src": "hacket_logo500.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "500x500"
     }
   ],
   "start_url": ".",
