@@ -39,6 +39,7 @@ export interface StickyHeadTableProps {
 	handleRowsChange: (rowsPerPage: number) => void;
 	records: RecordData[];
 	totalRecords: number;
+	isLoadingData: boolean
 }
 
 export interface FormattedRecordsResponse {

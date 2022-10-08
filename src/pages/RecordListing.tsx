@@ -13,12 +13,14 @@ import {UserContext} from '../components/user-context';
 import {getRecordsTrackInfo} from '../api/misc.api';
 import {RECORDS_COLUMNS} from '../constants/misc.constants';
 import {getFormattedRecords} from '../utils/misc.utils';
+import useLoaderHook from '../hooks/useLoaderHook';
+import {Box, CircularProgress} from '@mui/material';
 
 export interface RecordListingProps {
 }
 
 export function StickyHeadTable(props: StickyHeadTableProps) {
-	const {totalRecords, records, handleChangePage: handlePageChange, handleRowsChange} = props;
+	const {totalRecords, records, handleChangePage: handlePageChange, handleRowsChange, isLoadingData} = props;
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -74,6 +76,9 @@ export function StickyHeadTable(props: StickyHeadTableProps) {
 					</TableBody>
 				</Table>
 			</TableContainer>
+			{isLoadingData && <Box width={'100%'} sx={{display: 'flex'}}>
+				<CircularProgress/>
+			</Box>}
 			<TablePagination
 				rowsPerPageOptions={[10, 25, 100]}
 				component="div"
@@ -92,6 +97,7 @@ export const RecordListing = (props: RecordListingProps) => {
 	const [totalCount, setTotalCount] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	// setting last record since firebase actually needs the exact same document for querying
+	const {isLoading, setIsLoading} = useLoaderHook();
 	const [lastRecord, setLastRecord] = useState<any>(undefined);
 	const {user} = useContext(UserContext);
 	useEffect(() => {
@@ -110,11 +116,12 @@ export const RecordListing = (props: RecordListingProps) => {
 				setLastRecord(lastVisibleRecord);
 				setRecords(data);
 			}
-		}
+		};
+		setIsLoading(true);
 		getTotalCount().then(() => {
 			void getAndSaveRecords();
-		});
-	}, [user?.email])
+		}).finally(() => setIsLoading(false));
+	}, [user?.email, setIsLoading])
 
 	const handlePageChange = async (page: number): Promise<void> => {
 		if (user?.email) {
@@ -136,7 +143,7 @@ export const RecordListing = (props: RecordListingProps) => {
 	};
 	return (
 		<>
-			<StickyHeadTable totalRecords={totalCount} handleChangePage={handlePageChange}
+			<StickyHeadTable isLoadingData={isLoading} totalRecords={totalCount} handleChangePage={handlePageChange}
 							 handleRowsChange={handleRowsChange} records={records}/>
 		</>
 	);
