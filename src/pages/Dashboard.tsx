@@ -56,7 +56,7 @@ export const Dashboard = (props: DashboardProps) => {
 	const findRelevantInfo = (data: string[]): { journalNumber: NumString, cost: string } => {
 		const searcher = new Fuse(data);
 		const result = searcher.search('Jrnl');
-		const queriedResult = result[0].refIndex;
+		const queriedResult = result[0]?.refIndex || 0;
 		const journalNumber = findJournalNumber(data, queriedResult);
 		let cost = searcher.search('Nu.')?.[0]?.item;
 		if (cost) {
@@ -70,7 +70,8 @@ export const Dashboard = (props: DashboardProps) => {
 		const uploadedFile = event?.target?.files?.[0];
 		if (uploadedFile) {
 			try {
-				const compressedFile = await imageCompression(uploadedFile, IMAGE_COMPRESSION_OPTIONS);
+				let compressedFile = await imageCompression(uploadedFile, IMAGE_COMPRESSION_OPTIONS) as unknown as Blob;
+				compressedFile = new File([compressedFile], uploadedFile.name, {'type': compressedFile.type})
 				setIsLoading(true);
 				const formData = new FormData();
 				formData.append('file', compressedFile);
