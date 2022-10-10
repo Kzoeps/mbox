@@ -8,6 +8,8 @@ import {NumString} from '../utils/util.types';
 import Fuse from 'fuse.js';
 import {useNavigate} from 'react-router-dom';
 import useLoaderHook from '../hooks/useLoaderHook';
+import imageCompression from 'browser-image-compression';
+import {IMAGE_COMPRESSION_OPTIONS} from '../constants/misc.constants';
 
 export interface DashboardProps {
 }
@@ -68,9 +70,10 @@ export const Dashboard = (props: DashboardProps) => {
 		const uploadedFile = event?.target?.files?.[0];
 		if (uploadedFile) {
 			try {
+				const compressedFile = await imageCompression(uploadedFile, IMAGE_COMPRESSION_OPTIONS);
 				setIsLoading(true);
 				const formData = new FormData();
-				formData.append('file', uploadedFile);
+				formData.append('file', compressedFile);
 				const response = await fetch('https://hacket-mbox.ml', {method: 'POST', body: formData});
 				const data = await response.json();
 				const extractedData = extractText(data);
