@@ -11,7 +11,7 @@ export interface UnauthenticatedRoutesProps {
 export const UnauthenticatedRoutes: FC<UnauthenticatedRoutesProps> = ({children, redirectPath = '/'}): React.ReactElement => {
 	const {user} = useContext(UserContext);
 	if (user) {
-		return <Navigate to={redirectPath}/>
+		return <Navigate replace={true} to={redirectPath}/>
 	}
    	return children ? children : <Outlet/>
 }
