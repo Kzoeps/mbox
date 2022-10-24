@@ -43,3 +43,15 @@ export const IMAGE_COMPRESSION_OPTIONS = {
 	maxWidthOrHeight: 1200,
 	useWebWorker: false
 }
+
+export const LOCATION_INDEX_MAP: Record<string, number> = {
+	'/dashboard': 0,
+	'/add-record': 1,
+	'/records': 2
+}
+
+export const INDEX_LOCATION: Record<number, string> = {
+	0: '/dashboard',
+	1: '/add-record',
+	2: '/records'
+}
