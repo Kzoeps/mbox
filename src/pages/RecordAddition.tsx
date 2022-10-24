@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, useToast} from '@chakra-ui/react';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {Form, Formik} from 'formik';
 import {Record} from '../types/misc.types';
 import {addRecord, getRecordsTrackInfo, increaseRecordNumber} from '../api/misc.api';
@@ -16,6 +16,7 @@ export interface RecordAdditionProps {
 export const RecordAddition = (props: RecordAdditionProps) => {
 	const location = useLocation();
 	const {user} = useContext(UserContext);
+	const navigate = useNavigate();
 	const {isLoading, setIsLoading} = useLoaderHook();
 	const [totalCount, setTotalCount] = useState(0);
 	const formattedTodaysDate = dayjs().format(`YYYY-MM-DD`);
@@ -43,6 +44,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 				status: 'success',
 				isClosable: true
 			});
+			navigate(`/dashboard`)
 		}
 	};
 
