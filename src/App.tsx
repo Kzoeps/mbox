@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {ReactNode, useContext} from 'react';
 import './App.css';
 import {ChakraProvider} from '@chakra-ui/react';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
@@ -9,8 +9,9 @@ import './firebase.config';
 import SignIn from './sign-in';
 import Dashboard from './pages/Dashboard';
 import RecordAddition from './pages/RecordAddition';
-import UserContextProvider from './components/user-context';
+import UserContextProvider, {UserContext} from './components/user-context';
 import RecordListing from './pages/RecordListing';
+import UnauthenticatedRoutes from './components/unauthenticated-routes';
 
 function ChakraProvided(props: {children: ReactNode}) {
 	return (
@@ -28,8 +29,16 @@ function App() {
 				<BrowserRouter>
 					<ChakraProvided><Navigation/></ChakraProvided>
 					<Routes>
-						<Route path={'/'} element={<ChakraProvided><HomePage/></ChakraProvided>}/>
-						<Route path={'/sign-up'} element={<ChakraProvided><SignUp/></ChakraProvided>}/>
+						<Route path={'/'} element={
+							<ChakraProvided><HomePage/></ChakraProvided>}
+						/>
+						<Route path={'/sign-up'} element={
+							<UnauthenticatedRoutes redirectPath={`/dashboard`}>
+								<ChakraProvided><SignUp/></ChakraProvided>
+							</UnauthenticatedRoutes>
+						}
+
+						/>
 						<Route path={'/sign-in'} element={<ChakraProvided><SignIn/></ChakraProvided>}/>
 						<Route path={'/dashboard'} element={<ChakraProvided><Dashboard/></ChakraProvided>}/>
 						<Route path={'/add-record'} element={<ChakraProvided><RecordAddition/></ChakraProvided>}/>
