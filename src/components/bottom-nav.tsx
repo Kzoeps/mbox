@@ -1,14 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Tab, TabList, Tabs} from '@chakra-ui/react';
 import useCurrentPath from '../hooks/useCurrentPath';
 import {useNavigate} from 'react-router-dom';
 import {INDEX_LOCATION, LOCATION_INDEX_MAP} from '../constants/misc.constants';
 import styles from './bottom-nav.module.css';
+import {UserContext} from './user-context';
 
 export interface BottomNavProps {
 }
 
 export const BottomNav = (props: BottomNavProps) => {
+	const {user} = useContext(UserContext)
 	const location = useCurrentPath();
 	const navigate = useNavigate()
 	const [tabIndex, setTabIndex] = useState<number>(0);
@@ -17,6 +19,9 @@ export const BottomNav = (props: BottomNavProps) => {
 			setTabIndex(LOCATION_INDEX_MAP[location]);
 		}
 	}, [location]);
+	if (!user) {
+		return  <></>
+	}
 	return (
 		<>
 			<div className={styles.bottomNav}>
