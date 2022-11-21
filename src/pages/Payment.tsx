@@ -68,7 +68,7 @@ export const Payment = (props: PaymentProps) => {
 										Submit Payment Details
 									</Heading>
 									<FormControl id="name" isRequired
-												 isInvalid={!!formik.errors.journalNumber && !!formik.touched.journalNumber}>
+												 isInvalid={!!formik.errors.name && !!formik.touched.name}>
 										<FormLabel>Name</FormLabel>
 										<InputGroup><InputLeftElement><MdOutlinePermIdentity/></InputLeftElement>
 											<Input
@@ -78,7 +78,7 @@ export const Payment = (props: PaymentProps) => {
 												onChange={formik.handleChange}
 												_placeholder={{color: 'gray.500'}}
 											/></InputGroup>
-										{formik.errors.journalNumber && formik.touched.journalNumber ?
+										{formik.errors.name && formik.touched.name ?
 											<FormErrorMessage>{formik.errors.name}</FormErrorMessage> : ''}
 									</FormControl>
 									<FormControl id="jrnl" isRequired
