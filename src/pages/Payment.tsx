@@ -95,7 +95,7 @@ export const Payment = (props: PaymentProps) => {
 										{formik.errors.journalNumber && formik.touched.journalNumber ?
 											<FormErrorMessage>{formik.errors.journalNumber}</FormErrorMessage> : ''}
 									</FormControl>
-									<FormControl id="amount" isRequired>
+									<FormControl id="amount" isRequired isInvalid={!!formik.errors.amount && !!formik.touched.amount}>
 										<FormLabel>Amount</FormLabel>
 										<InputGroup><InputLeftElement
 										><FaMoneyBillAlt/></InputLeftElement>
@@ -105,6 +105,8 @@ export const Payment = (props: PaymentProps) => {
 												value={formik.values.amount ?? ''}
 												onChange={formik.handleChange}
 												placeholder="Please enter amount without Nu"/></InputGroup>
+										{formik.errors.amount && formik.touched.amount?
+											<FormErrorMessage>{formik.errors.amount}</FormErrorMessage> : ''}
 									</FormControl>
 									<FormControl id="phoneNumber"
 												 isRequired
