@@ -1,5 +1,17 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, useToast} from '@chakra-ui/react';
+import {
+	Button,
+	Flex,
+	FormControl,
+	FormErrorMessage,
+	FormLabel,
+	Heading,
+	Input,
+	InputGroup,
+	InputLeftElement,
+	Stack,
+	useToast
+} from '@chakra-ui/react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {Form, Formik} from 'formik';
 import {Record} from '../types/misc.types';
@@ -8,6 +20,10 @@ import {UserContext} from '../components/user-context';
 import dayjs from 'dayjs';
 import useLoaderHook from '../hooks/useLoaderHook';
 import {RecordEntrySchema} from '../utils/validation-schemas';
+import {PhoneIcon} from '@chakra-ui/icons';
+import {ImListNumbered} from 'react-icons/im';
+import {FaMoneyBillAlt} from 'react-icons/fa'
+import {BiCommentAdd} from 'react-icons/bi';
 
 
 export interface RecordAdditionProps {
@@ -82,41 +98,54 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 									<Heading lineHeight={1.1} fontSize={{base: '2xl', md: '3xl'}}>
 										Add new record
 									</Heading>
-									<FormControl id="jrnl" isRequired isInvalid={!!formik.errors.journalNumber && !!formik.touched.journalNumber}>
+									<FormControl id="jrnl" isRequired
+												 isInvalid={!!formik.errors.journalNumber && !!formik.touched.journalNumber}>
 										<FormLabel>Journal Number</FormLabel>
-										<Input
-											autoComplete={"off"}
-											name="journalNumber"
-											value={formik.values.journalNumber ?? ''}
-											onChange={formik.handleChange}
-											placeholder="8099920"
-											_placeholder={{color: 'gray.500'}}
-										/>
-										{formik.errors.journalNumber && formik.touched.journalNumber ? <FormErrorMessage>{formik.errors.journalNumber}</FormErrorMessage> : ''}
+										<InputGroup><InputLeftElement><ImListNumbered/></InputLeftElement>
+											<Input
+												autoComplete={'off'}
+												name="journalNumber"
+												value={formik.values.journalNumber ?? ''}
+												onChange={formik.handleChange}
+												placeholder="8099920"
+												_placeholder={{color: 'gray.500'}}
+											/></InputGroup>
+										{formik.errors.journalNumber && formik.touched.journalNumber ?
+											<FormErrorMessage>{formik.errors.journalNumber}</FormErrorMessage> : ''}
 									</FormControl>
 									<FormControl id="amount" isRequired>
 										<FormLabel>Amount</FormLabel>
-										<Input
-											autoComplete={"off"}
-											name={'amount'}
-											value={formik.values.amount ?? ''}
-											onChange={formik.handleChange}
-											placeholder="Please enter amount without Nu"/>
+										<InputGroup><InputLeftElement
+										><FaMoneyBillAlt/></InputLeftElement>
+											<Input
+												autoComplete={'off'}
+												name={'amount'}
+												value={formik.values.amount ?? ''}
+												onChange={formik.handleChange}
+												placeholder="Please enter amount without Nu"/></InputGroup>
 									</FormControl>
-									<FormControl id="phoneNumber" isInvalid={!!formik.errors.phoneNumber && !!formik.touched.phoneNumber}>
+									<FormControl id="phoneNumber"
+												 isInvalid={!!formik.errors.phoneNumber && !!formik.touched.phoneNumber}>
 										<FormLabel>Phone Number</FormLabel>
-										<Input
-											autoComplete={"off"}
-											name={'phoneNumber'}
-											value={formik.values.phoneNumber}
-											onChange={formik.handleChange}
-											placeholder="17562465"/>
-										{formik.errors.phoneNumber && formik.touched.phoneNumber ? <FormErrorMessage>{formik.errors.phoneNumber}</FormErrorMessage> : ''}
+										<InputGroup>
+											<InputLeftElement>
+												<PhoneIcon/>
+											</InputLeftElement>
+											<Input
+												autoComplete={'off'}
+												name={'phoneNumber'}
+												value={formik.values.phoneNumber}
+												onChange={formik.handleChange}/>
+										</InputGroup>
+										{formik.errors.phoneNumber && formik.touched.phoneNumber ?
+											<FormErrorMessage>{formik.errors.phoneNumber}</FormErrorMessage> : ''}
 									</FormControl>
 									<FormControl id="remarks">
 										<FormLabel>Remarks</FormLabel>
-										<Input autoComplete={'off'} value={formik.values.remarks} name={'remarks'}
-											   onChange={formik.handleChange}/>
+										<InputGroup>
+											<InputLeftElement><BiCommentAdd/></InputLeftElement>
+											<Input autoComplete={'off'} value={formik.values.remarks} name={'remarks'}
+												  onChange={formik.handleChange}/></InputGroup>
 									</FormControl>
 									<FormLabel>Date</FormLabel>
 									<input type="date" max={formattedTodaysDate}
