@@ -1,5 +1,5 @@
-import React from "react";
-import {RecordEntrySchema} from '../utils/validation-schemas';
+import React, {useContext} from 'react';
+import {PaymentEntrySchema} from '../utils/validation-schemas';
 import {Form, Formik} from 'formik';
 import {
 	Button,
@@ -19,6 +19,10 @@ import {PhoneIcon} from '@chakra-ui/icons';
 import {BiCommentAdd} from 'react-icons/bi';
 import {MdOutlinePermIdentity} from 'react-icons/md';
 import dayjs from 'dayjs';
+import {Record as PaymentRecord} from '../types/misc.types';
+import {UserContext} from '../components/user-context';
+import useLoaderHook from '../hooks/useLoaderHook';
+import {addPayment} from '../api/misc.api';
 
 export interface PaymentProps {
 }
@@ -34,9 +38,15 @@ const INITIAL_VALUES = {
 
 export const Payment = (props: PaymentProps) => {
 	const formattedTodaysDate = dayjs().format(`YYYY-MM-DD`);
+	const {user} = useContext(UserContext);
+	const {isLoading, wrapperBhai} = useLoaderHook();
+	const handleSubmit = async (values: PaymentRecord & { name: string }) => {
+		const wrapped = wrapperBhai(addPayment, true, 'Successfully added your payment');
+		await wrapped(user?.email, values);
+	};
 	return (
-        <>
-			<Formik initialValues={INITIAL_VALUES} validationSchema={RecordEntrySchema} onSubmit={(values) => {console.log(values)}}>
+		<>
+			<Formik initialValues={INITIAL_VALUES} validationSchema={PaymentEntrySchema} onSubmit={handleSubmit}>
 				{(formik) => {
 					return (
 						<Form>
@@ -69,7 +79,7 @@ export const Payment = (props: PaymentProps) => {
 												_placeholder={{color: 'gray.500'}}
 											/></InputGroup>
 										{formik.errors.journalNumber && formik.touched.journalNumber ?
-											<FormErrorMessage>{formik.errors.journalNumber}</FormErrorMessage> : ''}
+											<FormErrorMessage>{formik.errors.name}</FormErrorMessage> : ''}
 									</FormControl>
 									<FormControl id="jrnl" isRequired
 												 isInvalid={!!formik.errors.journalNumber && !!formik.touched.journalNumber}>
@@ -97,6 +107,7 @@ export const Payment = (props: PaymentProps) => {
 												placeholder="Please enter amount without Nu"/></InputGroup>
 									</FormControl>
 									<FormControl id="phoneNumber"
+												 isRequired
 												 isInvalid={!!formik.errors.phoneNumber && !!formik.touched.phoneNumber}>
 										<FormLabel>Phone Number</FormLabel>
 										<InputGroup>
@@ -130,7 +141,7 @@ export const Payment = (props: PaymentProps) => {
 										   }}/>
 									<Stack spacing={6}>
 										<Button
-											isLoading={false}
+											isLoading={isLoading}
 											type={'submit'}
 											bg={'blue.400'}
 											color={'white'}
