@@ -36,7 +36,7 @@ export const AUTHENTICATED_NAV_ITEMS: NavItem[] = [{
 	{
 		label: 'Add Record',
 		href: '/add-record'
-	}];
+	}, {label: 'Pay', href: '/pay'}];
 
 export const IMAGE_COMPRESSION_OPTIONS = {
 	maxSizeMB: 0.1,

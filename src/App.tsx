@@ -13,6 +13,7 @@ import UserContextProvider from './components/user-context';
 import RecordListing from './pages/RecordListing';
 import UnauthenticatedRoutes from './components/unauthenticated-routes';
 import BottomNav from './components/bottom-nav';
+import Payment from './pages/Payment';
 
 function ChakraProvided(props: {children: ReactNode}) {
 	return (
@@ -36,6 +37,7 @@ function App() {
 						</Route>
 						<Route path={'/dashboard'} element={<ChakraProvided><Dashboard/></ChakraProvided>}/>
 						<Route path={'/add-record'} element={<ChakraProvided><RecordAddition/></ChakraProvided>}/>
+						<Route path={'/pay'} element={<ChakraProvided><Payment/></ChakraProvided>}/>
 						<Route path={'/records'} element={<RecordListing/>}/>
 					</Routes>
 					<ChakraProvided>
