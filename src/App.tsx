@@ -14,6 +14,7 @@ import RecordListing from './pages/RecordListing';
 import UnauthenticatedRoutes from './components/unauthenticated-routes';
 import BottomNav from './components/bottom-nav';
 import Payment from './pages/Payment';
+import Success from './pages/Success';
 
 function ChakraProvided(props: {children: ReactNode}) {
 	return (
@@ -38,6 +39,7 @@ function App() {
 						<Route path={'/dashboard'} element={<ChakraProvided><Dashboard/></ChakraProvided>}/>
 						<Route path={'/add-record'} element={<ChakraProvided><RecordAddition/></ChakraProvided>}/>
 						<Route path={'/pay'} element={<ChakraProvided><Payment/></ChakraProvided>}/>
+						<Route path={'/success'} element={<ChakraProvided><Success/></ChakraProvided>}/>
 						<Route path={'/records'} element={<RecordListing/>}/>
 					</Routes>
 					<ChakraProvided>

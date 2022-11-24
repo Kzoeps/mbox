@@ -23,6 +23,7 @@ import {Record as PaymentRecord} from '../types/misc.types';
 import {UserContext} from '../components/user-context';
 import useLoaderHook from '../hooks/useLoaderHook';
 import {addPayment} from '../api/misc.api';
+import {useNavigate} from 'react-router-dom';
 
 export interface PaymentProps {
 }
@@ -40,9 +41,11 @@ export const Payment = (props: PaymentProps) => {
 	const formattedTodaysDate = dayjs().format(`YYYY-MM-DD`);
 	const {user} = useContext(UserContext);
 	const {isLoading, wrapperBhai} = useLoaderHook();
+	const navigate = useNavigate()
 	const handleSubmit = async (values: PaymentRecord & { name: string }) => {
 		const wrapped = wrapperBhai(addPayment, true, 'Successfully added your payment');
 		await wrapped(user?.email, values);
+		navigate(`/dashboard`);
 	};
 	return (
 		<>
