@@ -22,6 +22,9 @@ import {auth} from '../firebase.config';
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
 import {FirebaseErrorCodesMessages} from '../utils/firebase-error-codes';
 import useLoaderHook from '../hooks/useLoaderHook';
+import dayjs from 'dayjs';
+import {TrialProfile} from '../types/misc.types';
+import {updateUserProfile} from '../api/misc.api';
 
 export interface SignUpForm {
 	firstName: string;
@@ -43,12 +46,22 @@ export default function SignUp() {
 
 	};
 
+	const getTrialDates = (): TrialProfile => {
+		const start_date = dayjs()
+		const expiry_date = dayjs().add(3, 'day')
+		return {
+			start_date: start_date.toDate(),
+			expiry_date: expiry_date.toDate()
+		}
+	}
+
 	const handleOtpRequest = async (values: SignUpForm) => {
 		const {firstName, lastName, email, password} = values;
 		try {
 			setIsLoading(true);
 			const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 			await updateProfile(userCredential.user, {displayName: `${firstName} ${lastName}`})
+			await updateUserProfile(email, getTrialDates());
 			setIsLoading(false);
 			toast({
 				title: 'Account created',

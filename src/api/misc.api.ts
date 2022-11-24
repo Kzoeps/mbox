@@ -1,4 +1,4 @@
-import {Record} from '../types/misc.types';
+import {Record, TrialProfile} from '../types/misc.types';
 import { startAfter, limit, setDoc, addDoc, collection, doc, getDoc, getDocs, query, orderBy} from 'firebase/firestore';
 import {db} from '../firebase.config';
 import dayjs from 'dayjs';
@@ -27,4 +27,9 @@ export const getRecordsTrackInfo = async (email: string) => {
 export const increaseRecordNumber = async (email: string ,recordsCount: number) => {
 	const recordsRef = doc(db, "records_info", email);
 	setDoc(recordsRef, { recordsCount }, {merge:true});
+}
+
+export const updateUserProfile = async (email: string, profileData: TrialProfile) => {
+	const recordsRef = doc(db, 'user_profiles', email);
+	await setDoc(recordsRef, profileData, {merge: true})
 }

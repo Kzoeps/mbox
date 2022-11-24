@@ -46,3 +46,8 @@ export interface FormattedRecordsResponse {
 	lastVisibleRecord: any;
 	data: RecordData[];
 }
+
+export interface TrialProfile {
+	start_date: Date,
+	expiry_date: Date
+}
