@@ -5,6 +5,7 @@ import {
 	Button,
 	Flex,
 	FormControl,
+	FormErrorMessage,
 	FormLabel,
 	Heading,
 	HStack,
@@ -22,6 +23,7 @@ import {updateUserProfile} from '../api/misc.api';
 import {getTrialDates} from '../utils/misc.utils';
 import {PhoneSignUpForm} from '../types/misc.types';
 import {PHONE_SIGN_UP} from '../constants/misc.constants';
+import {InitSignUpSchema} from '../utils/validation-schemas';
 
 export interface PhoneLoginProps {
 }
@@ -77,7 +79,7 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 	};
 	return (
 		<>
-			<Formik initialValues={initialValue} onSubmit={async (values) => {
+			<Formik initialValues={initialValue} validationSchema={InitSignUpSchema} onSubmit={async (values) => {
 				await handleOtpRequest(values);
 			}}>
 				{(formik) => {
@@ -119,9 +121,12 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 													</FormControl>
 												</Box>
 											</HStack>
-											<FormControl id="email" isRequired>
+											<FormControl id="email" isRequired
+														 isInvalid={!!formik.errors.phoneNumber && formik.touched.phoneNumber}>
 												<FormLabel>Phone Number</FormLabel>
 												<Input onChange={formik.handleChange} name="phoneNumber"/>
+												{!!formik.errors.phoneNumber && formik.touched.phoneNumber &&
+												<FormErrorMessage>{formik.errors.phoneNumber}</FormErrorMessage>}
 											</FormControl>
 											{showCode && <FormControl id="password" isRequired>
 												<FormLabel>Verification Code</FormLabel>
@@ -129,6 +134,8 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 													<Input onChange={formik.handleChange} name="verificationCode"
 													/>
 												</InputGroup>
+												{!!formik.errors.verificationCode && formik.touched.verificationCode &&
+												<FormErrorMessage>{formik.errors.verificationCode}</FormErrorMessage>}
 											</FormControl>}
 											<div id="recaptcha-container"/>
 											<Stack spacing={10} pt={2}>

@@ -29,7 +29,7 @@ export const increaseRecordNumber = async (email: string ,recordsCount: number) 
 	setDoc(recordsRef, { recordsCount }, {merge:true});
 }
 
-export const updateUserProfile = async (email: string, profileData: TrialProfile) => {
-	const recordsRef = doc(db, 'user_profiles', email);
+export const updateUserProfile = async (uid: string, profileData: TrialProfile) => {
+	const recordsRef = doc(db, 'user_profiles', uid);
 	await setDoc(recordsRef, profileData, {merge: true})
 }

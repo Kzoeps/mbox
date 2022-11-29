@@ -16,3 +16,19 @@ export const PaymentEntrySchema = object().shape({
 	phoneNumber: string().required('Phone number is required').matches(/^[1|7][7]\d{6}$/, 'Number must be in format 17/77 and 8 digits long'),
 	date: date().required('Date is required')
 })
+export const LoginSchemaBase = {
+	phoneNumber: string().required('Phone number is required').matches(/^(\+?975)?[1|7][7]\d{6}(\s+)?$/, 'Number must be in format 17/77 or +975 and 8 digits long'),
+	verificationCode: string().required('Verification code is required').min(6, {min: '6 digits required'}).max(6, {max: '6 digits required'})
+}
+
+export const SignUpSchema = object().shape({
+	firstName: string().required('First name is required'),
+	lastName: string().required('Last name is required'),
+	...LoginSchemaBase,
+})
+
+export const InitSignUpSchema = object().shape({
+	firstName: string().required('First name is required'),
+	lastName: string().required('Last name is required'),
+	phoneNumber: LoginSchemaBase['phoneNumber']
+})
