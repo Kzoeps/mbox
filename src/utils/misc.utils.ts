@@ -1,5 +1,7 @@
 import {QuerySnapshot} from '@firebase/firestore-types';
 import {getRecords} from '../api/misc.api';
+import {TrialProfile} from '../types/misc.types';
+import dayjs from 'dayjs';
 
 const datifyRecords = (records: any[]) => {
 	return records.map((record) => ({
@@ -21,3 +23,12 @@ export const getFormattedRecords = async (email: string, limit?: number, lastRec
 	const lastVisibleRecord = recordsSnapshot.docs[recordsSnapshot.docs.length - 1];
 	return ({lastVisibleRecord, data: datifyRecords(arrayifyRecords(recordsSnapshot as unknown as any))});
 };
+
+export const getTrialDates = (): TrialProfile => {
+	const start_date = dayjs()
+	const expiry_date = dayjs().add(3, 'day')
+	return {
+		start_date: start_date.toDate(),
+		expiry_date: expiry_date.toDate()
+	}
+}

@@ -1,4 +1,4 @@
-import {NavItem, RecordsColumn} from '../types/misc.types';
+import {NavItem, PhoneSignUpForm, RecordsColumn} from '../types/misc.types';
 import dayjs from 'dayjs';
 
 export const RECORDS_COLUMNS: readonly RecordsColumn[] = [
@@ -54,4 +54,15 @@ export const INDEX_LOCATION: Record<number, string> = {
 	0: '/dashboard',
 	1: '/add-record',
 	2: '/records'
+}
+
+export const BASE_PHONE_LOGIN: Pick<PhoneSignUpForm, 'phoneNumber' | 'verificationCode'>= {
+	phoneNumber: '',
+	verificationCode: '',
+}
+
+export const PHONE_SIGN_UP: PhoneSignUpForm = {
+	firstName: '',
+	lastName: '',
+	...BASE_PHONE_LOGIN
 }

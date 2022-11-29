@@ -1,5 +1,5 @@
 import {Record, TrialProfile} from '../types/misc.types';
-import { startAfter, limit, setDoc, addDoc, collection, doc, getDoc, getDocs, query, orderBy} from 'firebase/firestore';
+import {addDoc, collection, doc, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter} from 'firebase/firestore';
 import {db} from '../firebase.config';
 import dayjs from 'dayjs';
 

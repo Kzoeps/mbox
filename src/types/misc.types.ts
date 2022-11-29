@@ -51,3 +51,14 @@ export interface TrialProfile {
 	start_date: Date,
 	expiry_date: Date
 }
+
+export interface SignUpBase {
+	firstName: string,
+	lastName: string
+}
+
+export interface PhoneSignUpForm extends SignUpBase{
+	//has to be in the format of +97517123456
+	phoneNumber: string,
+	verificationCode: string
+}
