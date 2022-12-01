@@ -8,10 +8,10 @@ export const addRecord = async (userEmail: string, record: Record) => {
 	return response;
 };
 
-export const addPayment = async (userEmail: string, record: Record & {name: string}) => {
+export const addPayment = async (userId: string, record: Record & {name: string}) => {
 	const time_stamp= dayjs().toISOString()
 	const time_stamp_date = dayjs().toDate()
-	return await setDoc(doc(db, "payments", `${userEmail}_${time_stamp}`), {...record, email: userEmail, time_stamp_date})
+	return await setDoc(doc(db, "payments", `${userId}_${time_stamp}`), {...record, uid: userId, time_stamp_date})
 }
 
 export const getRecords = async (email: string, cap: number = 10, lastDoc?: any) => {
