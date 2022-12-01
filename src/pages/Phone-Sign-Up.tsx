@@ -20,7 +20,7 @@ import {updateUserProfile} from '../api/misc.api';
 import {getTrialDates} from '../utils/misc.utils';
 import {PhoneSignUpForm} from '../types/misc.types';
 import {PHONE_SIGN_UP} from '../constants/misc.constants';
-import {InitSignUpSchema} from '../utils/validation-schemas';
+import {InitSignUpSchema, SignUpSchema} from '../utils/validation-schemas';
 import PhoneAuthForm from '../components/phone-auth-form';
 import usePhoneAuth from '../hooks/usePhoneAuth';
 
@@ -67,7 +67,7 @@ export const PhoneSignUp = (props: PhoneSignUpProps) => {
 	};
 	return (
 		<>
-			<Formik initialValues={initialValue} validationSchema={InitSignUpSchema} onSubmit={async (values) => {
+			<Formik initialValues={initialValue} validationSchema={showCode ? InitSignUpSchema : SignUpSchema } onSubmit={async (values) => {
 				await handleOtpRequest(values);
 			}}>
 				{(formik) => {
