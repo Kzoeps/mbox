@@ -24,11 +24,10 @@ import {InitSignUpSchema} from '../utils/validation-schemas';
 import PhoneAuthForm from '../components/phone-auth-form';
 import usePhoneAuth from '../hooks/usePhoneAuth';
 
-export interface PhoneLoginProps {
-	isLogin: boolean;
+export interface PhoneSignUpProps{
 }
 
-export const PhoneLogin = (props: PhoneLoginProps) => {
+export const PhoneSignUp = (props: PhoneSignUpProps) => {
 	const initialValue: PhoneSignUpForm = PHONE_SIGN_UP;
 	const navigate = useNavigate();
 	const toast = useToast();
@@ -145,4 +144,4 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 	);
 };
 
-export default PhoneLogin;
+export default PhoneSignUp;
