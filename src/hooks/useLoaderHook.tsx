@@ -14,10 +14,13 @@ export const useLoaderHook = (): UseLoaderHook => {
 	const toast = useToast();
 
 	const wrapperBhai = (functionCall: LoaderWrapper, showToast = false, successMessage = 'Success') => {
+		let result: any = undefined;
 		const nestedFunc = async (...args: any) => {
 			setIsLoading(true);
 			try {
-				const result = await functionCall(...args);
+				result = await functionCall(...args);
+				// reassign as true if the result is undefined as otherwise itll be treated as error
+				result ??= true;
 				if (showToast) {
 					toast({
 						title: successMessage,
@@ -25,17 +28,16 @@ export const useLoaderHook = (): UseLoaderHook => {
 						status: 'success'
 					});
 				}
-				return result
 			} catch (e: any) {
 				toast({
 					title: e?.message || e || 'An error occurred',
 					isClosable: true,
 					status: 'error'
 				});
-				return false
 			} finally {
 				setIsLoading(false);
 			}
+			return result
 		};
 		return nestedFunc;
 	}
