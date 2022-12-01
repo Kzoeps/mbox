@@ -19,8 +19,8 @@ export const getRecords = async (email: string, cap: number = 10, lastDoc?: any)
 	return await getDocs(queryRecords);
 }
 
-export const getRecordsTrackInfo = async (email: string) => {
-	const docRef = doc(db, "records_info", email);
+export const getRecordsTrackInfo = async (uid: string) => {
+	const docRef = doc(db, "records_info", uid);
 	return await getDoc(docRef)
 }
 

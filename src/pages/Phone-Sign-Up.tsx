@@ -67,7 +67,7 @@ export const PhoneSignUp = (props: PhoneSignUpProps) => {
 	};
 	return (
 		<>
-			<Formik initialValues={initialValue} validationSchema={showCode ? InitSignUpSchema : SignUpSchema } onSubmit={async (values) => {
+			<Formik initialValues={initialValue} validationSchema={showCode ? SignUpSchema : InitSignUpSchema} onSubmit={async (values) => {
 				await handleOtpRequest(values);
 			}}>
 				{(formik) => {

@@ -49,8 +49,8 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 		if (user) {
 			setIsLoading(true);
 			const phoneNumber = values.phoneNumber ? `+975${values.phoneNumber}` : '';
-			await addRecord(user.email, {...values, phoneNumber, date: dayjs(values.date).toDate()});
-			await increaseRecordNumber(user.email, totalCount+1);
+			await addRecord(user.uid, {...values, phoneNumber, date: dayjs(values.date).toDate()});
+			await increaseRecordNumber(user.uid, totalCount+1);
 			setTotalCount(totalCount+1);
 			setIsLoading(false);
 
@@ -66,14 +66,14 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 
 	useEffect(() => {
 		const getRecordsInfo = async () => {
-			if (user?.email) {
-				const recordsInfoSnap = await getRecordsTrackInfo(user.email);
+			if (user?.uid) {
+				const recordsInfoSnap = await getRecordsTrackInfo(user.uid);
 				const recordsSnap = recordsInfoSnap.data();
 				setTotalCount(recordsSnap?.recordsCount ?? 0);
 			}
 		};
 		void getRecordsInfo();
-	}, [user?.email])
+	}, [user?.uid])
 
 	return (
 		<>
