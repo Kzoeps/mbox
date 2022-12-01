@@ -36,7 +36,7 @@ function App() {
 						<Route element={<UnauthenticatedRoutes redirectPath={`/dashboard`}/>}>
 							<Route path={'/sign-in'} element={<ChakraProvided><SignIn/></ChakraProvided>}/>
 							<Route path={'/email-up'} element={<ChakraProvided><SignUp/></ChakraProvided>}/>
-							<Route path={'/sign-up'} element={<ChakraProvided><PhoneLogin/></ChakraProvided>}/>
+							<Route path={'/sign-up'} element={<ChakraProvided><PhoneLogin isLogin={false}/></ChakraProvided>}/>
 						</Route>
 						<Route path={'/dashboard'} element={<ChakraProvided><Dashboard/></ChakraProvided>}/>
 						<Route path={'/add-record'} element={<ChakraProvided><RecordAddition/></ChakraProvided>}/>

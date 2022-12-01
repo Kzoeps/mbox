@@ -5,12 +5,10 @@ import {
 	Button,
 	Flex,
 	FormControl,
-	FormErrorMessage,
 	FormLabel,
 	Heading,
 	HStack,
 	Input,
-	InputGroup,
 	Link,
 	Stack,
 	Text,
@@ -24,8 +22,10 @@ import {formatPhoneNumber, getTrialDates} from '../utils/misc.utils';
 import {PhoneSignUpForm} from '../types/misc.types';
 import {PHONE_SIGN_UP} from '../constants/misc.constants';
 import {InitSignUpSchema} from '../utils/validation-schemas';
+import PhoneAuthForm from '../components/phone-auth-form';
 
 export interface PhoneLoginProps {
+	isLogin: boolean;
 }
 
 export const PhoneLogin = (props: PhoneLoginProps) => {
@@ -123,22 +123,7 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 													</FormControl>
 												</Box>
 											</HStack>
-											<FormControl id="email" isRequired
-														 isInvalid={!!formik.errors.phoneNumber && formik.touched.phoneNumber}>
-												<FormLabel>Phone Number</FormLabel>
-												<Input onChange={formik.handleChange} name="phoneNumber"/>
-												{!!formik.errors.phoneNumber && formik.touched.phoneNumber &&
-												<FormErrorMessage>{formik.errors.phoneNumber}</FormErrorMessage>}
-											</FormControl>
-											{showCode && <FormControl id="password" isRequired>
-												<FormLabel>Verification Code</FormLabel>
-												<InputGroup>
-													<Input onChange={formik.handleChange} name="verificationCode"
-													/>
-												</InputGroup>
-												{!!formik.errors.verificationCode && formik.touched.verificationCode &&
-												<FormErrorMessage>{formik.errors.verificationCode}</FormErrorMessage>}
-											</FormControl>}
+											<PhoneAuthForm formik={formik} showCode={showCode}/>
 											<div id="recaptcha-container"/>
 											<Stack spacing={10} pt={2}>
 												<Button
