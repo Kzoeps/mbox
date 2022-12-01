@@ -17,7 +17,7 @@ export const useLoaderHook = (): UseLoaderHook => {
 		const nestedFunc = async (...args: any) => {
 			setIsLoading(true);
 			try {
-				await functionCall(...args);
+				const result = await functionCall(...args);
 				if (showToast) {
 					toast({
 						title: successMessage,
@@ -25,12 +25,14 @@ export const useLoaderHook = (): UseLoaderHook => {
 						status: 'success'
 					});
 				}
+				return result
 			} catch (e: any) {
 				toast({
 					title: e?.message || e || 'An error occurred',
 					isClosable: true,
 					status: 'error'
 				});
+				return false
 			} finally {
 				setIsLoading(false);
 			}

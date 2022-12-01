@@ -44,8 +44,8 @@ export const Payment = (props: PaymentProps) => {
 	const navigate = useNavigate()
 	const handleSubmit = async (values: PaymentRecord & { name: string }) => {
 		const wrapped = wrapperBhai(addPayment, true, 'Successfully added your payment');
-		await wrapped(user?.email, values);
-		navigate(`/success`, {
+		const data = await wrapped(user?.uid, values);
+		data && navigate(`/success`, {
 			state: {
 				headline: 'Your payment is succesfull',
 				description: 'We will get back to you in 5-7 business days, please email us at kzoepa@gmail.com if you have any inquiries.'
