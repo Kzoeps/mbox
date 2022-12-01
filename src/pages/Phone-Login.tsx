@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React from 'react';
 import {Form, Formik} from 'formik';
 import {
 	Box,
@@ -15,45 +15,33 @@ import {
 	useToast
 } from '@chakra-ui/react';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
-import {RecaptchaVerifier, signInWithPhoneNumber, updateProfile} from 'firebase/auth';
-import {auth} from '../firebase.config';
+import {updateProfile} from 'firebase/auth';
 import {updateUserProfile} from '../api/misc.api';
-import {formatPhoneNumber, getTrialDates} from '../utils/misc.utils';
+import {getTrialDates} from '../utils/misc.utils';
 import {PhoneSignUpForm} from '../types/misc.types';
 import {PHONE_SIGN_UP} from '../constants/misc.constants';
 import {InitSignUpSchema} from '../utils/validation-schemas';
 import PhoneAuthForm from '../components/phone-auth-form';
+import usePhoneAuth from '../hooks/usePhoneAuth';
 
 export interface PhoneLoginProps {
 	isLogin: boolean;
 }
 
 export const PhoneLogin = (props: PhoneLoginProps) => {
-	const [showCode, setShowCode] = useState<boolean>(false);
-	const confirmationRef = useRef<undefined | any>(undefined);
 	const initialValue: PhoneSignUpForm = PHONE_SIGN_UP;
 	const navigate = useNavigate();
 	const toast = useToast();
+	const {deliverCode, showCode, verifyCode} = usePhoneAuth({});
 
 	const handleDelivery = async (vals: PhoneSignUpForm) => {
-		// @ts-ignore
-		try {
-			const phNum = formatPhoneNumber(vals.phoneNumber);
-			let recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {}, auth);
-			const confRes = await signInWithPhoneNumber(auth, phNum, recaptchaVerifier);
-			confirmationRef.current = confRes;
-			setShowCode(true);
-			toast({title: 'OTP has been sent', status: 'success'})
-		} catch (e: any) {
-			toast({title: e?.message || 'An error occurred', status: 'error'});
-		}
+		await deliverCode(vals.phoneNumber);
 	};
 
 	const verifyOtp = async (vals: PhoneSignUpForm) => {
 		try {
-			if (confirmationRef.current) {
-				const {verificationCode} = vals;
-				const userCredentials = await confirmationRef.current.confirm(+verificationCode);
+			const userCredentials = await verifyCode(+vals.verificationCode);
+			if (userCredentials) {
 				await handleProfileGeneration(vals, userCredentials.user);
 				toast({
 					title: 'Account created',
@@ -64,7 +52,6 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 				navigate('/dashboard', {replace: true});
 			}
 		} catch (e: any) {
-			console.error(e);
 			toast({title: e?.message || e || 'an error occurred', status: 'error'});
 		}
 	};
