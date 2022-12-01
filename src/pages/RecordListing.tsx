@@ -102,8 +102,8 @@ export const RecordListing = (props: RecordListingProps) => {
 	const {user} = useContext(UserContext);
 	useEffect(() => {
 		const getTotalCount = async (): Promise<number> => {
-			if (user?.email) {
-				const recordsSnap = await getRecordsTrackInfo(user?.email);
+			if (user?.uid) {
+				const recordsSnap = await getRecordsTrackInfo(user?.uid);
 				const recordsCount = recordsSnap.data()?.recordsCount ?? 0;
 				setTotalCount(recordsSnap.data()?.recordsCount ?? 0);
 				return recordsCount;
@@ -111,8 +111,8 @@ export const RecordListing = (props: RecordListingProps) => {
 			return 0;
 		}
 		const getAndSaveRecords = async (): Promise<void> => {
-			if (user?.email) {
-				const {lastVisibleRecord, data}: FormattedRecordsResponse = await getFormattedRecords(user.email);
+			if (user?.uid) {
+				const {lastVisibleRecord, data}: FormattedRecordsResponse = await getFormattedRecords(user.uid);
 				setLastRecord(lastVisibleRecord);
 				setRecords(data);
 			}
@@ -121,22 +121,22 @@ export const RecordListing = (props: RecordListingProps) => {
 		getTotalCount().then(() => {
 			void getAndSaveRecords();
 		}).finally(() => setIsLoading(false));
-	}, [user?.email, setIsLoading])
+	}, [user?.uid, setIsLoading])
 
 	const handlePageChange = async (page: number): Promise<void> => {
-		if (user?.email) {
+		if (user?.uid) {
 			const {
 				data,
 				lastVisibleRecord
-			}: FormattedRecordsResponse = await getFormattedRecords(user.email, rowsPerPage, lastRecord);
+			}: FormattedRecordsResponse = await getFormattedRecords(user.uid, rowsPerPage, lastRecord);
 			setRecords((records) => [...records, ...data]);
 			setLastRecord(lastVisibleRecord);
 		}
 	};
 	const handleRowsChange = async (rowsPerPage: number) => {
 		setRowsPerPage(rowsPerPage);
-		if (user?.email) {
-			const { data, lastVisibleRecord } = await getFormattedRecords(user.email, rowsPerPage);
+		if (user?.uid) {
+			const { data, lastVisibleRecord } = await getFormattedRecords(user.uid, rowsPerPage);
 			setRecords(data);
 			setLastRecord(lastVisibleRecord)
 		}
