@@ -18,7 +18,7 @@ export const PaymentEntrySchema = object().shape({
 })
 export const LoginSchemaBase = {
 	phoneNumber: string().required('Phone number is required').matches(/^(\+?975)?[1|7][7]\d{6}(\s+)?$/, 'Number must be in format 17/77 or +975 and 8 digits long'),
-	verificationCode: string().required('Verification code is required').min(6, {min: '6 digits required'}).max(6, {max: '6 digits required'})
+	verificationCode: string().required('Verification code is required').min(6, 'OTP is 6 digits long').max(6, 'OTP is 6 digits long')
 }
 
 // since at the start verification code is hidden

@@ -17,7 +17,7 @@ export const PhoneAuthForm = (props: PhoneAuthFormProps) => {
 				{!!formik.errors.phoneNumber && formik.touched.phoneNumber &&
 				<FormErrorMessage>{formik.errors.phoneNumber}</FormErrorMessage>}
 			</FormControl>
-			{showCode && <FormControl id="password" isRequired>
+			{showCode && <FormControl id="password" isRequired isInvalid={!!formik.errors.verificationCode && formik.touched.verificationCode}>
 				<FormLabel>Verification Code</FormLabel>
 				<InputGroup>
 					<Input onChange={formik.handleChange} name="verificationCode"
