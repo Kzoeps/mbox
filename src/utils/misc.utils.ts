@@ -32,3 +32,13 @@ export const getTrialDates = (): TrialProfile => {
 		expiry_date: expiry_date.toDate()
 	}
 }
+
+export const formatPhoneNumber = (number: string): string => {
+	if (number.startsWith('+975')) {
+		return number.trim()
+	} else if (number.startsWith('975')) {
+		return `+${number.trim()}`
+	} else {
+		return `+975${number.trim()}`
+	}
+}

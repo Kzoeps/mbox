@@ -20,7 +20,7 @@ import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {RecaptchaVerifier, signInWithPhoneNumber, updateProfile} from 'firebase/auth';
 import {auth} from '../firebase.config';
 import {updateUserProfile} from '../api/misc.api';
-import {getTrialDates} from '../utils/misc.utils';
+import {formatPhoneNumber, getTrialDates} from '../utils/misc.utils';
 import {PhoneSignUpForm} from '../types/misc.types';
 import {PHONE_SIGN_UP} from '../constants/misc.constants';
 import {InitSignUpSchema} from '../utils/validation-schemas';
@@ -38,8 +38,9 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 	const handleDelivery = async (vals: PhoneSignUpForm) => {
 		// @ts-ignore
 		try {
+			const phNum = formatPhoneNumber(vals.phoneNumber);
 			let recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {}, auth);
-			const confRes = await signInWithPhoneNumber(auth, vals.phoneNumber, recaptchaVerifier);
+			const confRes = await signInWithPhoneNumber(auth, phNum, recaptchaVerifier);
 			confirmationRef.current = confRes;
 			setShowCode(true);
 		} catch (e: any) {
