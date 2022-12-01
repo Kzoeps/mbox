@@ -43,8 +43,9 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 			const confRes = await signInWithPhoneNumber(auth, phNum, recaptchaVerifier);
 			confirmationRef.current = confRes;
 			setShowCode(true);
+			toast({title: 'OTP has been sent', status: 'success'})
 		} catch (e: any) {
-			toast({title: e?.message || 'An error occurred'});
+			toast({title: e?.message || 'An error occurred', status: 'error'});
 		}
 	};
 
@@ -64,7 +65,7 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 			}
 		} catch (e: any) {
 			console.error(e);
-			toast({title: e?.message || e || 'an error occurred'});
+			toast({title: e?.message || e || 'an error occurred', status: 'error'});
 		}
 	};
 
