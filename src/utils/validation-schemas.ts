@@ -21,6 +21,8 @@ export const LoginSchemaBase = {
 	verificationCode: string().required('Verification code is required').min(6, {min: '6 digits required'}).max(6, {max: '6 digits required'})
 }
 
+export const LoginSchema = object().shape(LoginSchemaBase)
+
 export const SignUpSchema = object().shape({
 	firstName: string().required('First name is required'),
 	lastName: string().required('Last name is required'),

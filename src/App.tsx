@@ -16,6 +16,7 @@ import BottomNav from './components/bottom-nav';
 import Payment from './pages/Payment';
 import Success from './pages/Success';
 import PhoneSignUp from './pages/Phone-Sign-Up';
+import PhoneLogin from './pages/Phone-Login';
 
 function ChakraProvided(props: {children: ReactNode}) {
 	return (
@@ -34,7 +35,8 @@ function App() {
 					<Routes>
 						<Route path={'/'} element={<ChakraProvided><HomePage/></ChakraProvided>}/>
 						<Route element={<UnauthenticatedRoutes redirectPath={`/dashboard`}/>}>
-							<Route path={'/sign-in'} element={<ChakraProvided><SignIn/></ChakraProvided>}/>
+							<Route path={'/email-in'} element={<ChakraProvided><SignIn/></ChakraProvided>}/>
+							<Route path={'/sign-in'} element={<ChakraProvided><PhoneLogin/></ChakraProvided>}/>
 							<Route path={'/email-up'} element={<ChakraProvided><SignUp/></ChakraProvided>}/>
 							<Route path={'/sign-up'} element={<ChakraProvided><PhoneSignUp/></ChakraProvided>}/>
 						</Route>

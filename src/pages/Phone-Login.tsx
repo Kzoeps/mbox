@@ -5,7 +5,7 @@ import {Link as RouterLink} from 'react-router-dom';
 import PhoneAuthForm from '../components/phone-auth-form';
 import usePhoneAuth from '../hooks/usePhoneAuth';
 import {BASE_PHONE_LOGIN} from '../constants/misc.constants';
-import {LoginSchemaBase} from '../utils/validation-schemas';
+import {LoginSchema} from '../utils/validation-schemas';
 import {PhoneSignUpForm} from '../types/misc.types';
 import useLoaderHook from '../hooks/useLoaderHook';
 
@@ -30,7 +30,7 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 	}
 	return (
 		<>
-			<Formik initialValues={initialValues} validationSchema={LoginSchemaBase} onSubmit={async (values) => {
+			<Formik initialValues={initialValues} validationSchema={LoginSchema} onSubmit={async (values) => {
 				showCode ? handleDelivery(values) : handleConfirmation(values);
 			}}>
 				{(formik) => {
