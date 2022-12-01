@@ -21,7 +21,9 @@ export const LoginSchemaBase = {
 	verificationCode: string().required('Verification code is required').min(6, {min: '6 digits required'}).max(6, {max: '6 digits required'})
 }
 
-export const LoginSchema = object().shape(LoginSchemaBase)
+// since at the start verification code is hidden
+export const LoginSchemaInit = object().shape({ phoneNumber: LoginSchemaBase.phoneNumber });
+export const LoginSchemaFinal = object().shape(LoginSchemaBase)
 
 export const SignUpSchema = object().shape({
 	firstName: string().required('First name is required'),
