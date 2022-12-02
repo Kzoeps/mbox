@@ -61,7 +61,7 @@ export const PaymentBanner = (props: PaymentBannerProps) => {
 		}
 		void handleDisplay()
 	}, [user?.uid, setDisplayText])
-	if (!showBanner) { return null }
+	if (!showBanner || !user) { return null }
     return (
         <>
 			<Stack p="4" boxShadow="md" borderRadius="sm">
