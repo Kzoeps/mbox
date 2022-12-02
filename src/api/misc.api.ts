@@ -33,3 +33,8 @@ export const updateUserProfile = async (uid: string, profileData: TrialProfile) 
 	const recordsRef = doc(db, 'user_profiles', uid);
 	await setDoc(recordsRef, profileData, {merge: true})
 }
+
+export const getPaymentInfo = async (uid: string) => {
+	const docRef = doc(db, "user_profiles", uid);
+	return await getDoc(docRef)
+}
