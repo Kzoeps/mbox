@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {Button, Stack, Text } from '@chakra-ui/react'
 import {UserContext} from './user-context';
 import {getPaymentInfo} from '../api/misc.api';
@@ -7,20 +7,26 @@ import dayjs, {Dayjs} from 'dayjs';
 export interface PaymentBannerProps {
 }
 
+const getTrialText = (expiry: Dayjs, current: Dayjs): string => {
+	let differenceText = '';
+	const differenceDays = expiry.diff(current, 'd');
+	const differenceHours = expiry.diff(current, 'h');
+	differenceText = differenceDays ? `${differenceDays} ${differenceDays > 1 ? 'days' : 'day'}` : `${differenceHours} ${differenceHours > 1 ? 'hours' : 'hour'}`
+	return `Your free trial ends in ${differenceText}, subscribe now to continue using mbox`;
+}
+
+const isInvalidPayment = (lastPayment: undefined | any) => {
+	if (!lastPayment) return true;
+	const latestPayment = dayjs(lastPayment.toDate())
+	return dayjs().isAfter(latestPayment)
+}
+
 export const PaymentBanner = (props: PaymentBannerProps) => {
 	const [showBanner, setShowBanner] = useState<boolean>(false);
 	const [text, setText] = useState('');
 	const {user} = useContext(UserContext)
-	const isInvalidPayment = (lastPayment: undefined | any) => {
-		if (!lastPayment) return true;
-		const latestPayment = dayjs(lastPayment.toDate())
-		return dayjs().isAfter(latestPayment)
-	}
-	const getTrialText = (expiry: Dayjs, current: Dayjs): string => {
-		return `Your free trial ends in ${expiry.diff(current, 'd')} day, subscribe now to continue using mbox`;
-	}
 
-	const setDisplayText = (expiry: Dayjs, current: Dayjs, lastPayment: undefined | any) => {
+	const setDisplayText = useCallback((expiry: Dayjs, current: Dayjs, lastPayment: undefined | any) => {
 		const isInvalid = isInvalidPayment(lastPayment);
 		if (current.isBefore(expiry) && isInvalid) {
 			setShowBanner(true);
@@ -32,7 +38,7 @@ export const PaymentBanner = (props: PaymentBannerProps) => {
 			setShowBanner(true);
 			setText('Your subscription has expired, subscribe again to continue using mbox')
 		}
-	}
+	}, [])
 
 	useEffect(() => {
 		const handleDisplay = async () => {
@@ -46,7 +52,7 @@ export const PaymentBanner = (props: PaymentBannerProps) => {
 			}
 		}
 		void handleDisplay()
-	}, [user?.uid])
+	}, [user?.uid, setDisplayText])
 	if (!showBanner) { return null }
     return (
         <>
