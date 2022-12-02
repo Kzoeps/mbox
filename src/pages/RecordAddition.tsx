@@ -107,8 +107,6 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 												name="journalNumber"
 												value={formik.values.journalNumber ?? ''}
 												onChange={formik.handleChange}
-												placeholder="8099920"
-												_placeholder={{color: 'gray.500'}}
 											/></InputGroup>
 										{formik.errors.journalNumber && formik.touched.journalNumber ?
 											<FormErrorMessage>{formik.errors.journalNumber}</FormErrorMessage> : ''}
