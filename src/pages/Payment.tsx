@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {PaymentEntrySchema} from '../utils/validation-schemas';
 import {Form, Formik} from 'formik';
 import {
+	Box,
 	Button,
 	Flex,
 	FormControl,
@@ -24,6 +25,7 @@ import {UserContext} from '../components/user-context';
 import useLoaderHook from '../hooks/useLoaderHook';
 import {addPayment} from '../api/misc.api';
 import {useNavigate} from 'react-router-dom';
+import StatsCard from '../components/stats-card';
 
 export interface PaymentProps {
 }
@@ -59,10 +61,13 @@ export const Payment = (props: PaymentProps) => {
 					return (
 						<Form>
 							<Flex
+								direction='column'
 								minH={'100vh'}
 								align={'center'}
 								justify={'center'}
 								bg={'gray.50'}>
+								<Box w={'full'} maxW={'md'} m={2}><StatsCard title="Subscription Amount" stat="Nu 500" icon={<FaMoneyBillAlt size={'3em'}/>}/></Box>
+
 								<Stack
 									spacing={4}
 									w={'full'}
