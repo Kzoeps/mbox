@@ -3,6 +3,7 @@ import {Button, Stack, Text } from '@chakra-ui/react'
 import {UserContext} from './user-context';
 import {getPaymentInfo} from '../api/misc.api';
 import dayjs, {Dayjs} from 'dayjs';
+import {useNavigate} from 'react-router-dom';
 
 export interface PaymentBannerProps {
 }
@@ -24,7 +25,8 @@ const isInvalidPayment = (lastPayment: undefined | any) => {
 export const PaymentBanner = (props: PaymentBannerProps) => {
 	const [showBanner, setShowBanner] = useState<boolean>(false);
 	const [text, setText] = useState('');
-	const {user} = useContext(UserContext)
+	const {user} = useContext(UserContext);
+	const navigate = useNavigate();
 
 	const setDisplayText = useCallback((expiry: Dayjs, current: Dayjs, lastPayment: undefined | any) => {
 		const isInvalid = isInvalidPayment(lastPayment);
@@ -63,7 +65,7 @@ export const PaymentBanner = (props: PaymentBannerProps) => {
 						<Button variant="outline" colorScheme="green">
 							Dismiss
 						</Button>
-						<Button colorScheme="green">Subscribe</Button>
+						<Button onClick={() => navigate('/subscribe')} colorScheme="green">Subscribe</Button>
 					</Stack>
 				</Stack>
 			</Stack>

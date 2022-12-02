@@ -44,7 +44,7 @@ function App() {
 						</Route>
 						<Route path={'/dashboard'} element={<ChakraProvided><Dashboard/></ChakraProvided>}/>
 						<Route path={'/add-record'} element={<ChakraProvided><RecordAddition/></ChakraProvided>}/>
-						<Route path={'/pay'} element={<ChakraProvided><Payment/></ChakraProvided>}/>
+						<Route path={'/subscribe'} element={<ChakraProvided><Payment/></ChakraProvided>}/>
 						<Route path={'/success'} element={<ChakraProvided><Success/></ChakraProvided>}/>
 						<Route path={'/records'} element={<RecordListing/>}/>
 					</Routes>
