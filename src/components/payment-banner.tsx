@@ -42,9 +42,15 @@ export const PaymentBanner = (props: PaymentBannerProps) => {
 		}
 	}, [])
 
+	const handleDismiss = () => {
+		sessionStorage.setItem('dismissPayment', "true")
+		setShowBanner(false)
+	}
+
 	useEffect(() => {
 		const handleDisplay = async () => {
-			if (user?.uid) {
+			const dismissedInfo = sessionStorage.getItem('dismissPayment') === "true";
+			if (user?.uid && !dismissedInfo) {
 				const paymentInfo = await getPaymentInfo(user.uid);
 				// latest_payment is actually the last validity date for subscription
 				const {expiry_date, latest_payment} = paymentInfo.data() as any;
@@ -62,7 +68,7 @@ export const PaymentBanner = (props: PaymentBannerProps) => {
 				<Stack maxW="930px" direction="row" justify="space-around" alignItems="center">
 					<Text fontSize="xl" fontWeight="semibold">{text}</Text>
 					<Stack spacing="24px" direction={{ base: 'column', md: 'row' }}>
-						<Button variant="outline" colorScheme="green">
+						<Button onClick={handleDismiss} variant="outline" colorScheme="green">
 							Dismiss
 						</Button>
 						<Button onClick={() => navigate('/subscribe')} colorScheme="green">Subscribe</Button>

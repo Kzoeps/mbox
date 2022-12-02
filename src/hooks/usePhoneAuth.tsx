@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import {useRef, useState} from 'react';
 import {useToast} from '@chakra-ui/react';
 import {RecaptchaVerifier, signInWithPhoneNumber} from 'firebase/auth';
 import {auth} from '../firebase.config';
