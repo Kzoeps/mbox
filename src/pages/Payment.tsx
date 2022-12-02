@@ -26,6 +26,7 @@ import useLoaderHook from '../hooks/useLoaderHook';
 import {addPayment} from '../api/misc.api';
 import {useNavigate} from 'react-router-dom';
 import StatsCard from '../components/stats-card';
+import {formatPhoneNumber} from '../utils/misc.utils';
 
 export interface PaymentProps {
 }
@@ -46,7 +47,7 @@ export const Payment = (props: PaymentProps) => {
 	const navigate = useNavigate()
 	const handleSubmit = async (values: PaymentRecord & { name: string }) => {
 		const wrapped = wrapperBhai(addPayment, true, 'Successfully added your payment');
-		const data = await wrapped(user?.uid, values);
+		const data = await wrapped(user?.uid, {...values, phoneNumber: formatPhoneNumber(values.phoneNumber.toString()) ?? ''});
 		data && navigate(`/success`, {
 			state: {
 				headline: 'Your payment is succesfull',

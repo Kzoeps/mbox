@@ -24,6 +24,7 @@ import {PhoneIcon} from '@chakra-ui/icons';
 import {ImListNumbered} from 'react-icons/im';
 import {FaMoneyBillAlt} from 'react-icons/fa'
 import {BiCommentAdd} from 'react-icons/bi';
+import {formatPhoneNumber} from '../utils/misc.utils';
 
 
 export interface RecordAdditionProps {
@@ -48,7 +49,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 	const handleRecordAddition = async (values: Record) => {
 		if (user) {
 			setIsLoading(true);
-			const phoneNumber = values.phoneNumber ? `+975${values.phoneNumber}` : '';
+			const phoneNumber = values.phoneNumber ? formatPhoneNumber(values.phoneNumber.toString()) : '';
 			await addRecord(user.uid, {...values, phoneNumber, date: dayjs(values.date).toDate()});
 			await increaseRecordNumber(user.uid, totalCount+1);
 			setTotalCount(totalCount+1);
