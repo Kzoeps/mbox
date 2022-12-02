@@ -50,7 +50,7 @@ export const Payment = (props: PaymentProps) => {
 		const data = await wrapped(user?.uid, {...values, phoneNumber: formatPhoneNumber(values.phoneNumber.toString()) ?? ''});
 		data && navigate(`/success`, {
 			state: {
-				headline: 'Your payment is succesfull',
+				headline: 'Your payment is successful',
 				description: 'We will get back to you in 5-7 business days, please email us at kzoepa@gmail.com if you have any inquiries.'
 			}
 		});
