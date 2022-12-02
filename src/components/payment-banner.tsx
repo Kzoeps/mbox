@@ -2,28 +2,47 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Button, Stack, Text } from '@chakra-ui/react'
 import {UserContext} from './user-context';
 import {getPaymentInfo} from '../api/misc.api';
-import dayjs from 'dayjs';
+import dayjs, {Dayjs} from 'dayjs';
 
 export interface PaymentBannerProps {
 }
 
 export const PaymentBanner = (props: PaymentBannerProps) => {
-	const [showBanner, setShowBanner] = useState<boolean>(false)
+	const [showBanner, setShowBanner] = useState<boolean>(false);
+	const [text, setText] = useState('');
 	const {user} = useContext(UserContext)
 	const isInvalidPayment = (lastPayment: undefined | any) => {
 		if (!lastPayment) return true;
 		const latestPayment = dayjs(lastPayment.toDate())
 		return dayjs().isAfter(latestPayment)
 	}
+	const getTrialText = (expiry: Dayjs, current: Dayjs): string => {
+		return `Your free trial ends in ${expiry.diff(current, 'd')} day, subscribe now to continue using mbox`;
+	}
+
+	const setDisplayText = (expiry: Dayjs, current: Dayjs, lastPayment: undefined | any) => {
+		const isInvalid = isInvalidPayment(lastPayment);
+		if (current.isBefore(expiry) && isInvalid) {
+			setShowBanner(true);
+			setText(getTrialText(expiry, current));
+		} else if ([undefined, null].includes(lastPayment) && current.isAfter(expiry)) {
+			setShowBanner(true);
+			setText('Your free trial has ended, subscribe now to continue using mbox')
+		} else if (lastPayment && isInvalid) {
+			setShowBanner(true);
+			setText('Your subscription has expired, subscribe again to continue using mbox')
+		}
+	}
+
 	useEffect(() => {
 		const handleDisplay = async () => {
 			if (user?.uid) {
 				const paymentInfo = await getPaymentInfo(user.uid);
+				// latest_payment is actually the last validity date for subscription
 				const {expiry_date, latest_payment} = paymentInfo.data() as any;
-				const isInvalid = isInvalidPayment(latest_payment);
 				const expiryDate = dayjs(expiry_date.toDate());
 				const currentDate = dayjs();
-				setShowBanner(currentDate.isAfter(expiryDate) && isInvalid)
+				setDisplayText(expiryDate, currentDate, latest_payment)
 			}
 		}
 		void handleDisplay()
@@ -33,7 +52,7 @@ export const PaymentBanner = (props: PaymentBannerProps) => {
         <>
 			<Stack p="4" boxShadow="md" borderRadius="sm">
 				<Stack maxW="930px" direction="row" justify="space-around" alignItems="center">
-					<Text fontSize="xl" fontWeight="semibold">Your free trial ends in 2 days, subscribe now to continue using mbox</Text>
+					<Text fontSize="xl" fontWeight="semibold">{text}</Text>
 					<Stack spacing="24px" direction={{ base: 'column', md: 'row' }}>
 						<Button variant="outline" colorScheme="green">
 							Dismiss
