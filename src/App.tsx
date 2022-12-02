@@ -17,6 +17,7 @@ import Payment from './pages/Payment';
 import Success from './pages/Success';
 import PhoneSignUp from './pages/Phone-Sign-Up';
 import PhoneLogin from './pages/Phone-Login';
+import PaymentBanner from './components/payment-banner';
 
 function ChakraProvided(props: {children: ReactNode}) {
 	return (
@@ -32,6 +33,7 @@ function App() {
 			<UserContextProvider>
 				<BrowserRouter>
 					<ChakraProvided><Navigation/></ChakraProvided>
+					<ChakraProvided><PaymentBanner/></ChakraProvided>
 					<Routes>
 						<Route path={'/'} element={<ChakraProvided><HomePage/></ChakraProvided>}/>
 						<Route element={<UnauthenticatedRoutes redirectPath={`/dashboard`}/>}>
