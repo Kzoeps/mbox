@@ -9,17 +9,17 @@ import {
 	Link,
 	Popover,
 	PopoverContent,
-	PopoverTrigger,
+	PopoverTrigger, Spacer,
 	Stack,
 	Text,
 	useColorModeValue,
 	useDisclosure,
 	useToast
 } from '@chakra-ui/react';
+import {ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon, SunIcon} from '@chakra-ui/icons';
 import Logo from '../assets/images/hacket_logo.png';
 import {signOut} from 'firebase/auth';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
-import {ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon} from '@chakra-ui/icons';
 import {useContext} from 'react';
 import {UserContext} from './user-context';
 import {auth} from '../firebase.config';
@@ -59,7 +59,7 @@ export default function Navigation() {
 				borderColor={useColorModeValue('gray.200', 'gray.900')}
 				align={'center'}>
 				<Flex
-					flex={{base: 1, md: 'auto'}}
+					flex={{base: -2, md: 'auto'}}
 					ml={{base: -2}}
 					display={{base: 'flex', md: 'none'}}>
 					<IconButton
@@ -71,7 +71,7 @@ export default function Navigation() {
 						aria-label={'Toggle Navigation'}
 					/>
 				</Flex>
-				<Flex flex={{base: 1}} justify={{base: 'center', md: 'start'}}>
+				<Flex flex={{base: -2}} justify={{base: 'center', md: 'start'}}>
 					<Image style={{cursor: 'pointer'}} onClick={() => navigate('/')} htmlHeight={'20'} htmlWidth={'30'}
 						   src={Logo}/>
 					<Flex display={{base: 'none', md: 'flex'}} ml={10}>
@@ -79,43 +79,49 @@ export default function Navigation() {
 					</Flex>
 				</Flex>
 
-				<Stack
-					flex={{base: 1, md: 0}}
-					justify={'flex-end'}
-					direction={'row'}
-					spacing={6}>
-					{!user ? <><Button
-							as={RouterLink}
-							to={`/sign-in`}
-							fontSize={'sm'}
-							fontWeight={400}
-							variant={'link'}
-						>
-							Sign In
-						</Button>
-							<Button
-								display={{base: 'none', md: 'inline-flex'}}
+				<Spacer/>
+					<Button mr={'6px'} variant={'ghost'} onClick={() => {
+					}}>
+						{/*{colorMode === 'light' ? <MoonIcon /> : <SunIcon />}*/}
+						<SunIcon/>
+					</Button>
+					<Stack
+						flex={{base: 0, md: 0}}
+						justify={'flex-end'}
+						direction={'row'}
+						spacing={6}>
+						{!user ? <><Button
 								as={RouterLink}
-								to={`/sign-up`}
+								to={`/sign-in`}
 								fontSize={'sm'}
-								fontWeight={600}
-								color={'white'}
-								bg={'pink.400'}
-								_hover={{
-									bg: 'pink.300'
-								}}>
-								Sign Up
-							</Button></> :
-						<Button
-							fontSize={'sm'}
-							fontWeight={400}
-							variant={'link'}
-							onClick={handleSignOut}
-						>
-							Sign Out
-						</Button>
-					}
-				</Stack>
+								fontWeight={400}
+								variant={'link'}
+							>
+								Sign In
+							</Button>
+								<Button
+									display={{base: 'none', md: 'inline-flex'}}
+									as={RouterLink}
+									to={`/sign-up`}
+									fontSize={'sm'}
+									fontWeight={600}
+									color={'white'}
+									bg={'orange.400'}
+									_hover={{
+										bg: 'orange.500'
+									}}>
+									Sign Up
+								</Button></> :
+							<Button
+								fontSize={'sm'}
+								fontWeight={400}
+								variant={'link'}
+								onClick={handleSignOut}
+							>
+								Sign Out
+							</Button>
+						}
+					</Stack>
 			</Flex>
 
 			<Collapse in={isOpen} animateOpacity>

@@ -68,10 +68,10 @@ export const PaymentBanner = (props: PaymentBannerProps) => {
 				<Stack maxW="930px" direction="row" justify="space-around" alignItems="center">
 					<Text fontSize="xl" fontWeight="semibold">{text}</Text>
 					<Stack spacing="24px" direction={{ base: 'column', md: 'row' }}>
-						<Button onClick={handleDismiss} variant="outline" colorScheme="green">
+						<Button onClick={handleDismiss} variant="outline" borderColor='orange.400' color={'orange.400'}>
 							Dismiss
 						</Button>
-						<Button onClick={() => navigate('/subscribe')} colorScheme="green">Subscribe</Button>
+						<Button onClick={() => navigate('/subscribe')} color="white" bg="orange.400" _hover={{bg: 'orange.500'}}>Subscribe</Button>
 					</Stack>
 				</Stack>
 			</Stack>

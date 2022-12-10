@@ -159,10 +159,10 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 										<Button
 											isLoading={isLoading}
 											type={'submit'}
-											bg={'blue.400'}
+											bg={'orange.400'}
 											color={'white'}
 											_hover={{
-												bg: 'blue.500'
+												bg: 'orange.500'
 											}}>
 											Submit
 										</Button>

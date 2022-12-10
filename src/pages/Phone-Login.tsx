@@ -62,11 +62,11 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 													isLoading={isLoading}
 													size="lg"
 													type="submit"
-													bg={'blue.400'}
+													bg={'orange.400'}
 													color={'white'}
 													id={'request-otp'}
 													_hover={{
-														bg: 'blue.500'
+														bg: 'orange.500'
 													}}>
 													Login
 												</Button>
@@ -74,7 +74,7 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 											<Stack pt={6}>
 												<Text align={'center'}>
 													Dont have an account? <Link as={RouterLink} to={`/sign-up`}
-																				color={'blue.400'}>Sign Up</Link>
+																				color={'orange.400'}>Sign Up</Link>
 												</Text>
 											</Stack>
 										</Stack>

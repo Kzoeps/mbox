@@ -80,7 +80,7 @@ export const PhoneSignUp = (props: PhoneSignUpProps) => {
 								bg={'gray.50'}>
 								<Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
 									<Stack align={'center'}>
-										<Heading fontSize={'4xl'} textAlign={'center'}>
+										<Heading color={'orange.400'} fontSize={'4xl'} textAlign={'center'}>
 											Sign up
 										</Heading>
 										<Text fontSize={'lg'} color={'gray.600'}>
@@ -117,11 +117,11 @@ export const PhoneSignUp = (props: PhoneSignUpProps) => {
 													isLoading={false}
 													size="lg"
 													type="submit"
-													bg={'blue.400'}
+													bg={'orange.400'}
 													color={'white'}
 													id={'request-otp'}
 													_hover={{
-														bg: 'blue.500'
+														bg: 'orange.500'
 													}}>
 													{showCode ? 'Confirm' : 'Send Code'}
 												</Button>
@@ -129,7 +129,7 @@ export const PhoneSignUp = (props: PhoneSignUpProps) => {
 											<Stack pt={6}>
 												<Text align={'center'}>
 													Already a user? <Link as={RouterLink} to={`/sign-in`}
-																		  color={'blue.400'}>Login</Link>
+																		  color={'orange.400'}>Login</Link>
 												</Text>
 											</Stack>
 										</Stack>
