@@ -12,7 +12,7 @@ import {
 	Input,
 	InputGroup,
 	InputLeftElement,
-	Stack
+	Stack, useColorMode
 } from '@chakra-ui/react';
 import {ImListNumbered} from 'react-icons/im';
 import {FaMoneyBillAlt} from 'react-icons/fa';
@@ -41,6 +41,7 @@ const INITIAL_VALUES = {
 }
 
 export const Payment = (props: PaymentProps) => {
+	const {colorMode} = useColorMode();
 	const formattedTodaysDate = dayjs().format(`YYYY-MM-DD`);
 	const {user} = useContext(UserContext);
 	const {isLoading, wrapperBhai} = useLoaderHook();
@@ -66,14 +67,14 @@ export const Payment = (props: PaymentProps) => {
 								minH={'100vh'}
 								align={'center'}
 								justify={'center'}
-								bg={'gray.50'}>
+								bg={colorMode === 'light' ? 'gray.50' : 'gray.700'}>
 								<Box w={'full'} maxW={'md'} m={2}><StatsCard title="Subscription Amount" stat="Nu 500" icon={<FaMoneyBillAlt size={'3em'}/>}/></Box>
 
 								<Stack
 									spacing={4}
 									w={'full'}
 									maxW={'md'}
-									bg={'white'}
+									bg={colorMode === 'light' ? 'white' : 'gray.500'}
 									rounded={'xl'}
 									boxShadow={'lg'}
 									p={6}
