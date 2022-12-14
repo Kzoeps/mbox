@@ -18,10 +18,12 @@ import Success from './pages/Success';
 import PhoneSignUp from './pages/Phone-Sign-Up';
 import PhoneLogin from './pages/Phone-Login';
 import PaymentBanner from './components/payment-banner';
+import theme from './constants/theme';
+
 
 function ChakraProvided(props: {children: ReactNode}) {
 	return (
-		<ChakraProvider>
+		<ChakraProvider theme={theme}>
 			{props.children}
 		</ChakraProvider>
 	)

@@ -11,13 +11,14 @@ import {
 	PopoverContent,
 	PopoverTrigger, Spacer,
 	Stack,
-	Text,
+	Text, useColorMode,
 	useColorModeValue,
 	useDisclosure,
 	useToast
 } from '@chakra-ui/react';
-import {ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon, SunIcon} from '@chakra-ui/icons';
+import {ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon, MoonIcon, SunIcon} from '@chakra-ui/icons';
 import Logo from '../assets/images/hacket_logo.png';
+import WhiteLogo from '../assets/images/hacket_logo_white.png';
 import {signOut} from 'firebase/auth';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {useContext} from 'react';
@@ -27,6 +28,7 @@ import {AUTHENTICATED_NAV_ITEMS} from '../constants/misc.constants';
 import {NavItem} from '../types/misc.types';
 
 export default function Navigation() {
+	const { colorMode, toggleColorMode } = useColorMode()
 	const {isOpen, onToggle} = useDisclosure();
 	const navigate = useNavigate();
 	const {user} = useContext(UserContext);
@@ -71,19 +73,17 @@ export default function Navigation() {
 						aria-label={'Toggle Navigation'}
 					/>
 				</Flex>
-				<Flex flex={{base: -2}} justify={{base: 'center', md: 'start'}}>
+				<Flex flex={{base: -2}} ml={2} justify={{base: 'center', md: 'start'}}>
 					<Image style={{cursor: 'pointer'}} onClick={() => navigate('/')} htmlHeight={'20'} htmlWidth={'30'}
-						   src={Logo}/>
+						   src={colorMode === 'light' ? Logo : WhiteLogo}/>
 					<Flex display={{base: 'none', md: 'flex'}} ml={10}>
 						<DesktopNav isAuthenticated={!!user}/>
 					</Flex>
 				</Flex>
 
 				<Spacer/>
-					<Button mr={'6px'} variant={'ghost'} onClick={() => {
-					}}>
-						{/*{colorMode === 'light' ? <MoonIcon /> : <SunIcon />}*/}
-						<SunIcon/>
+					<Button mr={'6px'} variant={'ghost'} onClick={toggleColorMode}>
+						{colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
 					</Button>
 					<Stack
 						flex={{base: 0, md: 0}}
