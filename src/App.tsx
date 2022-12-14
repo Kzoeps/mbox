@@ -19,8 +19,10 @@ import PhoneSignUp from './pages/Phone-Sign-Up';
 import PhoneLogin from './pages/Phone-Login';
 import PaymentBanner from './components/payment-banner';
 import theme from './constants/theme';
+import {createTheme, ThemeProvider} from '@mui/material';
 
 
+const muiTheme = createTheme({});
 function ChakraProvided(props: {children: ReactNode}) {
 	return (
 		<ChakraProvider theme={theme}>
@@ -32,29 +34,30 @@ function ChakraProvided(props: {children: ReactNode}) {
 
 function App() {
 	return (
-			<UserContextProvider>
-				<BrowserRouter>
-					<ChakraProvided><Navigation/></ChakraProvided>
-					<ChakraProvided><PaymentBanner/></ChakraProvided>
+		<UserContextProvider>
+			<BrowserRouter>
+				<ChakraProvided>
+					<Navigation/>
+					<PaymentBanner/>
 					<Routes>
-						<Route path={'/'} element={<ChakraProvided><HomePage/></ChakraProvided>}/>
+						<Route path={'/'} element={<HomePage/>}/>
 						<Route element={<UnauthenticatedRoutes redirectPath={`/dashboard`}/>}>
-							<Route path={'/email-in'} element={<ChakraProvided><SignIn/></ChakraProvided>}/>
-							<Route path={'/sign-in'} element={<ChakraProvided><PhoneLogin/></ChakraProvided>}/>
-							<Route path={'/email-up'} element={<ChakraProvided><SignUp/></ChakraProvided>}/>
-							<Route path={'/sign-up'} element={<ChakraProvided><PhoneSignUp/></ChakraProvided>}/>
+							<Route path={'/email-in'} element={<SignIn/>}/>
+							<Route path={'/sign-in'} element={<PhoneLogin/>}/>
+							<Route path={'/email-up'} element={<SignUp/>}/>
+							<Route path={'/sign-up'} element={<PhoneSignUp/>}/>
 						</Route>
-						<Route path={'/dashboard'} element={<ChakraProvided><Dashboard/></ChakraProvided>}/>
-						<Route path={'/add-record'} element={<ChakraProvided><RecordAddition/></ChakraProvided>}/>
-						<Route path={'/subscribe'} element={<ChakraProvided><Payment/></ChakraProvided>}/>
-						<Route path={'/success'} element={<ChakraProvided><Success/></ChakraProvided>}/>
-						<Route path={'/records'} element={<RecordListing/>}/>
+						<Route path={'/dashboard'} element={<Dashboard/>}/>
+						<Route path={'/add-record'} element={<RecordAddition/>}/>
+						<Route path={'/subscribe'} element={<Payment/>}/>
+						<Route path={'/success'} element={<Success/>}/>
+						<Route path={'/records'}
+							   element={<ThemeProvider theme={muiTheme}><RecordListing/></ThemeProvider>}/>
 					</Routes>
-					<ChakraProvided>
-						<BottomNav/>
-					</ChakraProvided>
-				</BrowserRouter>
-			</UserContextProvider>
+					<BottomNav/>
+				</ChakraProvided>
+			</BrowserRouter>
+		</UserContextProvider>
 	);
 }
 

@@ -9,7 +9,7 @@ import {
 	Input,
 	InputGroup,
 	InputLeftElement,
-	Stack,
+	Stack, useColorMode,
 	useToast
 } from '@chakra-ui/react';
 import {useLocation, useNavigate} from 'react-router-dom';
@@ -31,6 +31,7 @@ export interface RecordAdditionProps {
 }
 
 export const RecordAddition = (props: RecordAdditionProps) => {
+	const {colorMode} = useColorMode()
 	const location = useLocation();
 	const {user} = useContext(UserContext);
 	const navigate = useNavigate();
@@ -86,12 +87,12 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 								minH={'100vh'}
 								align={'center'}
 								justify={'center'}
-								bg={'gray.50'}>
+								bg={colorMode==='light' ? 'gray.50' : 'gray.700'}>
 								<Stack
 									spacing={4}
 									w={'full'}
 									maxW={'md'}
-									bg={'white'}
+									bg={colorMode === 'light' ? 'white' : 'gray.500'}
 									rounded={'xl'}
 									boxShadow={'lg'}
 									p={6}
