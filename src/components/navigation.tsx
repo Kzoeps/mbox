@@ -24,7 +24,7 @@ import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {useContext} from 'react';
 import {UserContext} from './user-context';
 import {auth} from '../firebase.config';
-import {AUTHENTICATED_NAV_ITEMS} from '../constants/misc.constants';
+import {AUTHENTICATED_NAV_ITEMS, UNAUTHENTICATED_NAV_ITEMS} from '../constants/misc.constants';
 import {NavItem} from '../types/misc.types';
 
 export default function Navigation() {
@@ -139,7 +139,7 @@ const DesktopNav = (props: {isAuthenticated: boolean}) => {
 
 	return (
 		<Stack direction={'row'} spacing={4}>
-			{(isAuthenticated ? AUTHENTICATED_NAV_ITEMS : []).map((navItem) => (
+			{(isAuthenticated ? AUTHENTICATED_NAV_ITEMS : UNAUTHENTICATED_NAV_ITEMS).map((navItem) => (
 				<Box key={navItem.label}>
 					<Popover trigger={'hover'} placement={'bottom-start'}>
 						<PopoverTrigger>
@@ -222,7 +222,7 @@ const MobileNav = (props: { isAuthenticated: boolean}) => {
 			bg={useColorModeValue('white', 'gray.800')}
 			p={4}
 			display={{ md: 'none' }}>
-			{(isAuthenticated ? AUTHENTICATED_NAV_ITEMS : []).map((navItem) => (
+			{(isAuthenticated ? AUTHENTICATED_NAV_ITEMS : UNAUTHENTICATED_NAV_ITEMS).map((navItem) => (
 				<MobileNavItem key={navItem.label} {...navItem} />
 			))}
 		</Stack>

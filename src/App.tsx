@@ -20,6 +20,7 @@ import PhoneLogin from './pages/Phone-Login';
 import PaymentBanner from './components/payment-banner';
 import theme from './constants/theme';
 import {createTheme, ThemeProvider} from '@mui/material';
+import Pricing from './pages/Pricing';
 
 
 const muiTheme = createTheme({});
@@ -53,6 +54,7 @@ function App() {
 						<Route path={'/success'} element={<Success/>}/>
 						<Route path={'/records'}
 							   element={<ThemeProvider theme={muiTheme}><RecordListing/></ThemeProvider>}/>
+						<Route path={'/pricing'} element={<Pricing/>}/>
 					</Routes>
 					<BottomNav/>
 				</ChakraProvided>

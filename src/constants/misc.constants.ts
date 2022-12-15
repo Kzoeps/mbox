@@ -25,6 +25,11 @@ export const RECORDS_COLUMNS: readonly RecordsColumn[] = [
 	}
 ];
 
+export const UNAUTHENTICATED_NAV_ITEMS: NavItem[] = [{
+	label: 'Pricing',
+	href: '/pricing'
+}, {label: 'Demo', href: '/demo'}]
+
 export const AUTHENTICATED_NAV_ITEMS: NavItem[] = [{
 	label: 'Dashboard',
 	href: '/dashboard'
@@ -36,7 +41,7 @@ export const AUTHENTICATED_NAV_ITEMS: NavItem[] = [{
 	{
 		label: 'Add Record',
 		href: '/add-record'
-	}, {label: 'Subscribe', href: '/subscribe'}];
+	}, {label: 'Subscribe', href: '/subscribe'}, ...UNAUTHENTICATED_NAV_ITEMS];
 
 export const IMAGE_COMPRESSION_OPTIONS = {
 	maxSizeMB: 0.1,
