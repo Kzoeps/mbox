@@ -1,6 +1,6 @@
 import React from 'react';
 import {Form, Formik} from 'formik';
-import {Box, Button, Flex, Heading, Link, Stack, Text} from '@chakra-ui/react';
+import {Box, Button, Flex, Heading, Link, Stack, Text, useColorMode} from '@chakra-ui/react';
 import {Link as RouterLink} from 'react-router-dom';
 import PhoneAuthForm from '../components/phone-auth-form';
 import usePhoneAuth from '../hooks/usePhoneAuth';
@@ -16,6 +16,7 @@ type PhoneLoginForm = Pick<PhoneSignUpForm, 'phoneNumber' | 'verificationCode'>;
 
 export const PhoneLogin = (props: PhoneLoginProps) => {
 	const initialValues = BASE_PHONE_LOGIN;
+	const { colorMode } = useColorMode();
 	const {deliverCode, showCode, verifyCode} = usePhoneAuth({})
 	const {isLoading, wrapperBhai} = useLoaderHook()
 
@@ -39,19 +40,19 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 								minH={'100vh'}
 								align={'center'}
 								justify={'center'}
-								bg={'gray.50'}>
+								bg={colorMode === 'light' ? 'gray.50' : 'gray.700'}>
 								<Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
 									<Stack align={'center'}>
 										<Heading fontSize={'4xl'} textAlign={'center'}>
 											Welcome Back! Sign In
 										</Heading>
-										<Text fontSize={'lg'} color={'gray.600'}>
+										<Text fontSize={'lg'} color={colorMode==='light' ? 'gray.600' : 'gray.50'}>
 											to enjoy all of our cool features ✌️
 										</Text>
 									</Stack>
 									<Box
 										rounded={'lg'}
-										bg={'white'}
+										bg={colorMode === 'light' ? 'white' : 'gray.500'}
 										boxShadow={'lg'}
 										p={8}>
 										<Stack spacing={4}>
