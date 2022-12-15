@@ -11,7 +11,7 @@ import {
 	InputRightElement,
 	Link,
 	Stack,
-	Text,
+	Text, useColorModeValue,
 	useToast
 } from '@chakra-ui/react';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
@@ -82,31 +82,33 @@ export default function SignUp() {
 	};
 
 	return (
-		<Formik initialValues={initialValue} onSubmit={async (values) => {
-			await handleOtpRequest(values);
-		}}>
-			{(formik) => {
-				return (
-					<Form>
-						<Flex
-							minH={'100vh'}
-							align={'center'}
-							justify={'center'}
-							bg={'gray.50'}>
-							<Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
-								<Stack align={'center'}>
-									<Heading fontSize={'4xl'} textAlign={'center'}>
-										Sign up
-									</Heading>
-									<Text fontSize={'lg'} color={'gray.600'}>
-										to enjoy all of our cool features ✌️
-									</Text>
-								</Stack>
-								<Box
-									rounded={'lg'}
-									bg={'white'}
-									boxShadow={'lg'}
-									p={8}>
+		<Flex
+			minH={'100vh'}
+			align={'center'}
+			justify={'center'}
+			bg={useColorModeValue('gray.50','gray.700')}>
+			<Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+				<Stack align={'center'}>
+					<Heading fontSize={'4xl'} textAlign={'center'}>
+						Sign up
+					</Heading>
+					<Text fontSize={'lg'} color={'gray.600'}>
+						to enjoy all of our cool features ✌️
+					</Text>
+				</Stack>
+				<Box
+					rounded={'lg'}
+					bg={'white'}
+					boxShadow={'lg'}
+					p={8}>
+
+					<Formik initialValues={initialValue} onSubmit={async (values) => {
+						await handleOtpRequest(values);
+					}}>
+						{(formik) => {
+							return (
+								<Form>
+
 									<Stack spacing={4}>
 										<HStack>
 											<Box>
@@ -160,16 +162,19 @@ export default function SignUp() {
 										</Stack>
 										<Stack pt={6}>
 											<Text align={'center'}>
-												Already a user? <Link  as={RouterLink} to={`/sign-in`} color={'blue.400'}>Login</Link>
+												Already a user? <Link as={RouterLink} to={`/sign-in`}
+																	  color={'blue.400'}>Login</Link>
 											</Text>
 										</Stack>
 									</Stack>
-								</Box>
-							</Stack>
-						</Flex>
-					</Form>
-				);
-			}}
-		</Formik>
+								</Form>
+							);
+						}}
+					</Formik>
+				</Box>
+
+			</Stack>
+
+		</Flex>
 	);
 }

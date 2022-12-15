@@ -11,7 +11,7 @@ import {
 	Input,
 	Link,
 	Stack,
-	Text,
+	Text, useColorMode,
 	useToast
 } from '@chakra-ui/react';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
@@ -29,6 +29,7 @@ export interface PhoneSignUpProps{
 
 export const PhoneSignUp = (props: PhoneSignUpProps) => {
 	const initialValue: PhoneSignUpForm = PHONE_SIGN_UP;
+	const { colorMode } = useColorMode();
 	const navigate = useNavigate();
 	const toast = useToast();
 	const {deliverCode, showCode, verifyCode} = usePhoneAuth({});
@@ -77,19 +78,19 @@ export const PhoneSignUp = (props: PhoneSignUpProps) => {
 								minH={'100vh'}
 								align={'center'}
 								justify={'center'}
-								bg={'gray.50'}>
+								bg={colorMode === 'light' ? 'gray.50' : 'gray.700'}>
 								<Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
 									<Stack align={'center'}>
 										<Heading color={'orange.400'} fontSize={'4xl'} textAlign={'center'}>
 											Sign up
 										</Heading>
-										<Text fontSize={'lg'} color={'gray.600'}>
+										<Text fontSize={'lg'} color={colorMode==='light' ? 'gray.600' : 'gray.50'}>
 											to enjoy all of our cool features ✌️
 										</Text>
 									</Stack>
 									<Box
 										rounded={'lg'}
-										bg={'white'}
+										bg={colorMode==='light' ? 'white' : 'gray.500'}
 										boxShadow={'lg'}
 										p={8}>
 										<Stack spacing={4}>
