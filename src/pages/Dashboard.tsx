@@ -75,7 +75,7 @@ export const Dashboard = (props: DashboardProps) => {
 				setIsLoading(true);
 				const formData = new FormData();
 				formData.append('file', compressedFile);
-				const response = await fetch('https://api.mbox.kongtsey.com/api', {method: 'POST', body: formData});
+				const response = await fetch('https://api.mbox.kongtsey.com/', {method: 'POST', body: formData});
 				const data = await response.json();
 				const extractedData = extractText(data);
 				const {journalNumber, cost} = findRelevantInfo(extractedData);
