@@ -28,15 +28,15 @@ export const PaymentBanner = (props: PaymentBannerProps) => {
 	const {user} = useContext(UserContext);
 	const navigate = useNavigate();
 
-	const setDisplayText = useCallback((expiry: Dayjs, current: Dayjs, lastPayment: undefined | any) => {
-		const isInvalid = isInvalidPayment(lastPayment);
+	const setDisplayText = useCallback((expiry: Dayjs, current: Dayjs, paymentValidity: undefined | any) => {
+		const isInvalid = isInvalidPayment(paymentValidity);
 		if (current.isBefore(expiry) && isInvalid) {
 			setShowBanner(true);
 			setText(getTrialText(expiry, current));
-		} else if ([undefined, null].includes(lastPayment) && current.isAfter(expiry)) {
+		} else if ([undefined, null].includes(paymentValidity) && current.isAfter(expiry)) {
 			setShowBanner(true);
 			setText('Your free trial has ended, subscribe now to continue using mbox')
-		} else if (lastPayment && isInvalid) {
+		} else if (paymentValidity && isInvalid) {
 			setShowBanner(true);
 			setText('Your subscription has expired, subscribe again to continue using mbox')
 		}
@@ -53,10 +53,10 @@ export const PaymentBanner = (props: PaymentBannerProps) => {
 			if (user?.uid && !dismissedInfo) {
 				const paymentInfo = await getPaymentInfo(user.uid);
 				// latest_payment is actually the last validity date for subscription
-				const {expiry_date, latest_payment} = paymentInfo.data() as any;
+				const {expiry_date, payment_valid_till} = paymentInfo.data() as any;
 				const expiryDate = dayjs(expiry_date.toDate());
 				const currentDate = dayjs();
-				setDisplayText(expiryDate, currentDate, latest_payment)
+				setDisplayText(expiryDate, currentDate, payment_valid_till)
 			}
 		}
 		void handleDisplay()
