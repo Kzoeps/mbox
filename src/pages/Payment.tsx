@@ -48,7 +48,7 @@ export const Payment = (props: PaymentProps) => {
 	const navigate = useNavigate()
 	const handleSubmit = async (values: PaymentRecord & { name: string }) => {
 		const wrapped = wrapperBhai(addPayment, true, 'Successfully added your payment');
-		const data = await wrapped(user?.uid, {...values, phoneNumber: formatPhoneNumber(values.phoneNumber.toString()) ?? ''});
+		const data = await wrapped(user?.uid, {...values, user_phone_number: user.phoneNumber , phoneNumber: formatPhoneNumber(values.phoneNumber.toString()) ?? ''});
 		data && navigate(`/success`, {
 			state: {
 				headline: 'Your payment is successful',
