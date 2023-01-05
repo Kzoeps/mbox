@@ -35,7 +35,7 @@ export default function Pricing() {
 	const navigateToHome = () => {
 		navigate('/sign-up')
 	}
-	
+
 	return (
 		<Box py={12}>
 			<VStack spacing={2} textAlign="center">
