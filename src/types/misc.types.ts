@@ -49,7 +49,9 @@ export interface FormattedRecordsResponse {
 
 export interface TrialProfile {
 	start_date: Date,
-	expiry_date: Date
+	expiry_date: Date,
+	phone_number: string,
+	payment_valid_till?: Date
 }
 
 export interface SignUpBase {

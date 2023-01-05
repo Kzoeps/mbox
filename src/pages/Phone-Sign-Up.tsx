@@ -60,7 +60,7 @@ export const PhoneSignUp = (props: PhoneSignUpProps) => {
 		const {firstName, lastName} = formVals;
 		const displayName = `${firstName.trim()} ${lastName.trim()}`;
 		await updateProfile(user, {displayName});
-		await updateUserProfile(user.uid, getTrialDates());
+		await updateUserProfile(user.uid, { ...getTrialDates(), phone_number: user.phoneNumber });
 	};
 
 	const handleOtpRequest = async (vals: PhoneSignUpForm) => {

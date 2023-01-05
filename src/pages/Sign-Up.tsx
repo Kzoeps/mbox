@@ -51,6 +51,7 @@ export default function SignUp() {
 		const expiry_date = dayjs().add(3, 'day')
 		return {
 			start_date: start_date.toDate(),
+			phone_number: '',
 			expiry_date: expiry_date.toDate()
 		}
 	}

@@ -24,7 +24,7 @@ export const getFormattedRecords = async (email: string, limit?: number, lastRec
 	return ({lastVisibleRecord, data: datifyRecords(arrayifyRecords(recordsSnapshot as unknown as any))});
 };
 
-export const getTrialDates = (): TrialProfile => {
+export const getTrialDates = (): Pick<TrialProfile, 'start_date' | 'expiry_date'> => {
 	const start_date = dayjs()
 	const expiry_date = dayjs().add(3, 'day')
 	return {
