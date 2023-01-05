@@ -13,6 +13,7 @@ import {
 	Button,
 } from '@chakra-ui/react';
 import { FaCheckCircle } from 'react-icons/fa';
+import {useNavigate} from 'react-router-dom';
 
 function PriceWrapper({ children }: { children: ReactNode }) {
 	return (
@@ -29,6 +30,12 @@ function PriceWrapper({ children }: { children: ReactNode }) {
 }
 
 export default function Pricing() {
+	const navigate = useNavigate();
+
+	const navigateToHome = () => {
+		navigate('/sign-up')
+	}
+	
 	return (
 		<Box py={12}>
 			<VStack spacing={2} textAlign="center">
@@ -82,7 +89,7 @@ export default function Pricing() {
 							</ListItem>
 						</List>
 						<Box w="80%" pt={7}>
-							<Button w="full" variant="outline">
+							<Button onClick={navigateToHome} w="full" variant="outline">
 								Start trial
 							</Button>
 						</Box>
@@ -164,7 +171,7 @@ export default function Pricing() {
 								</ListItem>
 							</List>
 							<Box w="80%" pt={7}>
-								<Button w="full" >
+								<Button w="full" onClick={navigateToHome} >
 									Start trial
 								</Button>
 							</Box>
@@ -215,7 +222,7 @@ export default function Pricing() {
 							</ListItem>
 						</List>
 						<Box w="80%" pt={7}>
-							<Button w="full" variant="outline">
+							<Button w="full" onClick={navigateToHome} variant="outline">
 								Start trial
 							</Button>
 						</Box>
