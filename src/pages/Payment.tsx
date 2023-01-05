@@ -68,7 +68,7 @@ export const Payment = (props: PaymentProps) => {
 								align={'center'}
 								justify={'center'}
 								bg={colorMode === 'light' ? 'gray.50' : 'gray.700'}>
-								<Box w={'full'} maxW={'md'} m={2}><StatsCard title="Subscription Amount" stat="Nu 500" icon={<FaMoneyBillAlt size={'3em'}/>}/></Box>
+								<Box w={'full'} maxW={'md'} m={2}><StatsCard title="Subscription Amount" stat="Nu 2000" icon={<FaMoneyBillAlt size={'3em'}/>}/></Box>
 
 								<Stack
 									spacing={4}
