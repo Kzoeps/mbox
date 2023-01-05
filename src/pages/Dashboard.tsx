@@ -113,7 +113,7 @@ export const Dashboard = (props: DashboardProps) => {
 						icon={<AiOutlineFileAdd size={'3em'}/>}
 					/>
 					<input onChange={handleFileSelection} ref={inputRef} style={{display: 'none'}} type="file"
-						   accept="image/*" capture={false}/>
+						   accept="image/*" capture={true}/>
 					{isLoading && <div className={'spinner_overlay'}>
 						<Spinner
 							className={'spinner'}
