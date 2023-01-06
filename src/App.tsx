@@ -21,6 +21,7 @@ import PaymentBanner from './components/payment-banner';
 import theme from './constants/theme';
 import {createTheme, ThemeProvider} from '@mui/material';
 import Pricing from './pages/Pricing';
+import Demo from './pages/Demo';
 
 
 const muiTheme = createTheme({});
@@ -48,6 +49,7 @@ function App() {
 							<Route path={'/email-up'} element={<SignUp/>}/>
 							<Route path={'/sign-up'} element={<PhoneSignUp/>}/>
 						</Route>
+						<Route path={'/demo'} element={<Demo/>}/>
 						<Route path={'/dashboard'} element={<Dashboard/>}/>
 						<Route path={'/add-record'} element={<RecordAddition/>}/>
 						<Route path={'/subscribe'} element={<Payment/>}/>
