@@ -1,14 +1,14 @@
-import {Record, TrialProfile} from '../types/misc.types';
+import {MboxRecord, TrialProfile} from '../types/misc.types';
 import {addDoc, collection, doc, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter} from 'firebase/firestore';
 import {db} from '../firebase.config';
 import dayjs from 'dayjs';
 
-export const addRecord = async (userEmail: string, record: Record) => {
+export const addRecord = async (userEmail: string, record:MboxRecord) => {
 	const response = await addDoc(collection(db, userEmail), record);
 	return response;
 };
 
-export const addPayment = async (userId: string, record: Record & {name: string}) => {
+export const addPayment = async (userId: string, record: MboxRecord & {name: string}) => {
 	const time_stamp= dayjs().toISOString()
 	const time_stamp_date = dayjs().toDate()
 	return await setDoc(doc(db, "payments", `${userId}_${time_stamp}`), {...record, uid: userId, time_stamp_date})

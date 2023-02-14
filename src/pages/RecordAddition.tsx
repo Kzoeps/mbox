@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {Form, Formik} from 'formik';
-import {Record} from '../types/misc.types';
+import {MboxRecord} from '../types/misc.types';
 import {addRecord, getRecordsTrackInfo, increaseRecordNumber} from '../api/misc.api';
 import {UserContext} from '../components/user-context';
 import dayjs from 'dayjs';
@@ -38,7 +38,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 	const {isLoading, setIsLoading} = useLoaderHook();
 	const [totalCount, setTotalCount] = useState(0);
 	const formattedTodaysDate = dayjs().format(`YYYY-MM-DD`);
-	const initialValues: Record = {
+	const initialValues: MboxRecord = {
 		journalNumber: (location?.state as any)?.journalNumber ?? '',
 		amount: (location?.state as any)?.amount ?? '',
 		remarks: '',
@@ -47,7 +47,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 	};
 	const toast = useToast();
 
-	const handleRecordAddition = async (values: Record) => {
+	const handleRecordAddition = async (values: MboxRecord) => {
 		if (user) {
 			setIsLoading(true);
 			const phoneNumber = values.phoneNumber ? formatPhoneNumber(values.phoneNumber.toString()) : '';

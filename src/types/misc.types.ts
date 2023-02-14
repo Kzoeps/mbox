@@ -1,6 +1,6 @@
 import {NumString} from '../utils/util.types';
 
-export interface Record {
+export interface MboxRecord {
 	journalNumber: NumString,
 	amount: NumString,
 	remarks: string,
@@ -63,4 +63,19 @@ export interface PhoneSignUpForm extends SignUpBase{
 	//has to be in the format of +97517123456
 	phoneNumber: string,
 	verificationCode: string
+}
+
+export type PrettyOCRData = Record<number, string[]>[]
+
+export interface OCRRecord {
+	regions: {
+		boundingBox: string;
+		lines: {
+			boundingBox: string;
+			words: {
+				boundingBox: string;
+				text: string;
+			}[]
+		}[]
+	}[]
 }

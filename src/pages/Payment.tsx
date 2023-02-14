@@ -20,7 +20,7 @@ import {PhoneIcon} from '@chakra-ui/icons';
 import {BiCommentAdd} from 'react-icons/bi';
 import {MdOutlinePermIdentity} from 'react-icons/md';
 import dayjs from 'dayjs';
-import {Record as PaymentRecord} from '../types/misc.types';
+import {MboxRecord as PaymentRecord} from '../types/misc.types';
 import {UserContext} from '../components/user-context';
 import useLoaderHook from '../hooks/useLoaderHook';
 import {addPayment} from '../api/misc.api';
