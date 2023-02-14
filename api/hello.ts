@@ -1,7 +1,6 @@
-export const config = {
-  runtime: 'edge'
-}
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-export default (req: Request) => {
-  return new Response(`Hello from ${req.url}, is an edge function`)
+
+export default (req: VercelRequest, res: VercelResponse) => {
+  res.send(`Hello ${req.body.name}`)
 }
