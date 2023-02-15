@@ -1,9 +1,18 @@
-import { ImageAnnotatorClient } from "@google-cloud/vision"
-import { Buffer } from "buffer";
+const vision = require('@google-cloud/vision');
+const fs = require('fs');
+const client = new vision.ImageAnnotatorClient();
 
-const client = new ImageAnnotatorClient();
+const analyze = async (req, res) => {
+  const fileBuffer = Buffer.from(req.body.image, 'base64');
+  const [result] = await client.textDetection(fileBuffer);
+  const response = {
+    detection: result
+  }
+  res.send(response);
+}
 
-export default async (req, res) => {
-  const fileBuffer = Buffer.from(req.body.image, 'base64url');
-  res.send(`Hello ${req.body.name}`)
+
+module.exports = {
+  analyze,
+  default: analyze
 }
