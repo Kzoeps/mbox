@@ -17,8 +17,9 @@ export interface DashboardProps {
 }
 
 const TestFunction = async (image: File) => {
-  const sf = await axios.post(`/api/hello`, {image: image});
-  console.log(sf)
+  const base64 = toBase64(image); 
+  const sf = await axios.post(`/api/hello`, {image: base64});
+  console.log(sf);
 }
 
 export type DetectionResponse = ((NumString[])[])[]
