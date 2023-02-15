@@ -16,46 +16,9 @@ import { getRelevantInfo, prettyFormatOCRData, toBase64 } from '../utils/misc.ut
 export interface DashboardProps {
 }
 
-const url = `https://hacket-mbox-vision.cognitiveservices.azure.com/vision/v3.2/ocr`
-const gclURL = `https://vision.googleapis.com/v1/images:annotate`
-const projID = 'hacket-344816'
-const token = 'ya29.a0AVvZVsorw1xE0ULCGUimAfu8x3E92i6GpUsc-i3KSrA8oA1Sz4D3OJasau8Yq7GNtt_Hst5bhB15Mb-XHYDfjbmYgBa-XzcDSN2tAySF6BTxWv1qlBB7TJytbD4rwCCBELEEJrBG1tufRx0UELygdUjcGxSwIOAP1gw_lwaCgYKAc0SAQASFQGbdwaIn8t6udF1-qajNqOJRe6FkA0173'
-
 const TestFunction = async (image: File) => {
-	const blob = new Blob([image], {type: image.type})
-  const base64Image = await toBase64(image);
-	const gcl = await axios.post(gclURL, {
-		requests: [
-			{
-				image: {
-					content: base64Image 
-				},
-				features: [
-					{
-						type: 'TEXT_DETECTION'
-					}
-				]
-			}
-		]
-	}, {
-		headers: { Authorization: `Bearer ${token}`,
-		'x-goog-user-project': projID,
-		'Content-Type': 'application/json',
-	}
-	})
-	// const response = await axios.post(url, blob,{
-	// 	'params': {
-	// 		language: 'unk',
-	// 		detectOrientation: true,
-	// 		'model-version': 'latest'
-	// 	},
-	// 	'headers': {
-	// 		'Content-Type': 'application/octet-stream',
-	// 		'Ocp-Apim-Subscription-Key': process.env.REACT_APP_OCR_KEY 
-	// 	},
-	// })
-	// getRelevantInfo(prettyFormatOCRData(response.data))
-	console.log(gcl)
+  const sf = await axios.post(`/api/hello`, {image: image});
+  console.log(sf)
 }
 
 export type DetectionResponse = ((NumString[])[])[]
