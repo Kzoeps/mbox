@@ -12,15 +12,12 @@ import useLoaderHook from '../hooks/useLoaderHook';
 import imageCompression from 'browser-image-compression';
 import {IMAGE_COMPRESSION_OPTIONS} from '../constants/misc.constants';
 import { getRelevantInfo, prettyFormatOCRData, toBase64 } from '../utils/misc.utils';
+import { readScreenShot } from '../api/misc.api';
 
 export interface DashboardProps {
 }
 
-const TestFunction = async (image: File) => {
-  const base64 = await toBase64(image); 
-  const sf = await axios.post(`/api/hello`, {image: base64});
-  console.log(sf);
-}
+
 
 export type DetectionResponse = ((NumString[])[])[]
 
@@ -77,30 +74,35 @@ export const Dashboard = (props: DashboardProps) => {
 
 	const handleFileSelection = async (event: ChangeEvent<HTMLInputElement>) => {
 		const uploadedFile = event?.target?.files?.[0];
-		if (uploadedFile) await TestFunction(uploadedFile);
-		// if (uploadedFile) {
-			// try {
-				// let compressedFile = await imageCompression(uploadedFile, IMAGE_COMPRESSION_OPTIONS) as unknown as Blob;
-				// compressedFile = new File([compressedFile], uploadedFile.name, {'type': compressedFile.type})
-				// setIsLoading(true);
-				// const formData = new FormData();
-				// formData.append('file', compressedFile);
-				// const response = await fetch('https://api.mbox.kongtsey.com/', {method: 'POST', body: formData});
-				// const data = await response.json();
-				// const extractedData = extractText(data);
-				// const {journalNumber, cost} = findRelevantInfo(extractedData);
-				// navigate('/add-record', {
-					// state: {
-						// journalNumber,
-						// amount: cost
-					// }
-				// });
-			// } catch (e: any) {
-				// toast({title: e?.message || e, status: 'error', isClosable: true});
-			// } finally {
-				// setIsLoading(false);
-			// }
-		// }
+		if (uploadedFile) {
+		try {
+        let compressedFile = await imageCompression(uploadedFile, IMAGE_COMPRESSION_OPTIONS) as unknown as Blob;
+				compressedFile = new File([compressedFile], uploadedFile.name, {'type': compressedFile.type})
+				setIsLoading(true);
+        const rawText = await readScreenShot(compressedFile as File); 
+        console.log(rawText);
+        /*
+				const formData = new FormData();
+				formData.append('file', compressedFile);
+				const response = await fetch('https://api.mbox.kongtsey.com/', {method: 'POST', body: formData});
+				const data = await response.json();
+        */
+        /*
+				const extractedData = extractText(data);
+				const {journalNumber, cost} = findRelevantInfo(extractedData);
+				navigate('/add-record', {
+					state: {
+						journalNumber,
+						amount: cost
+					}
+				});
+        */
+			} catch (e: any) {
+				toast({title: e?.message || e, status: 'error', isClosable: true});
+			} finally {
+				setIsLoading(false);
+			}
+		}
 	};
 
 	return (

@@ -1,8 +1,15 @@
 import {MboxRecord, TrialProfile} from '../types/misc.types';
 import {addDoc, collection, doc, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter} from 'firebase/firestore';
 import {db} from '../firebase.config';
+import { toBase64 } from '../utils/misc.utils';
+import axios from 'axios';
 import dayjs from 'dayjs';
 
+export const readScreenShot = async (image: File) => {
+  const base64 = await toBase64(image); 
+  const text = await axios.post(`/api/hello`, {image: base64});
+  return text 
+}
 export const addRecord = async (userEmail: string, record:MboxRecord) => {
 	const response = await addDoc(collection(db, userEmail), record);
 	return response;
