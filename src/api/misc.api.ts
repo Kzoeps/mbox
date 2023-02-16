@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 export const readScreenShot = async (image: File) => {
   const base64 = await toBase64(image); 
   const text = await axios.post(`/api/hello`, {image: base64});
-  return text 
+  return text.data; 
 }
 export const addRecord = async (userEmail: string, record:MboxRecord) => {
 	const response = await addDoc(collection(db, userEmail), record);

@@ -17,6 +17,7 @@ specifiers:
   '@types/react': ^18.0.17
   '@types/react-datepicker': ^4.4.2
   '@types/react-dom': ^18.0.6
+  '@types/string-similarity': ^4.0.0
   '@vercel/node': ^2.9.3
   axios: ^1.3.2
   browser-image-compression: ^2.0.0
@@ -31,6 +32,7 @@ specifiers:
   react-icons: ^4.4.0
   react-router-dom: ^6.3.0
   react-scripts: 5.0.1
+  string-similarity: ^4.0.4
   typescript: ^4.7.4
   vercel: ^28.15.5
   web-vitals: ^2.1.4
@@ -52,6 +54,7 @@ dependencies:
   '@types/node': 16.18.3
   '@types/react': 18.0.25
   '@types/react-dom': 18.0.9
+  '@types/string-similarity': 4.0.0
   axios: 1.3.2
   browser-image-compression: 2.0.0
   dayjs: 1.11.6
@@ -65,6 +68,7 @@ dependencies:
   react-icons: 4.6.0_react@18.2.0
   react-router-dom: 6.4.3_biqbaboplfbrettd7655fr4n2y
   react-scripts: 5.0.1_eetduzquwu67aqoq5644t6dxzu
+  string-similarity: 4.0.4
   typescript: 4.9.3
   vercel: 28.15.5
   web-vitals: 2.1.4
@@ -5278,6 +5282,10 @@ packages:
 
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
+    dev: false
+
+  /@types/string-similarity/4.0.0:
+    resolution: {integrity: sha512-dMS4S07fbtY1AILG/RhuwmptmzK1Ql8scmAebOTJ/8iBtK/KI17NwGwKzu1uipjj8Kk+3mfPxum56kKZE93mzQ==}
     dev: false
 
   /@types/testing-library__jest-dom/5.14.5:
@@ -14642,6 +14650,10 @@ packages:
 
   /string-natural-compare/3.0.1:
     resolution: {integrity: sha512-n3sPwynL1nwKi3WJ6AIsClwBMa0zTi54fn2oLU6ndfTSIO05xaznjSf15PcBZU6FNWbmN5Q6cxT4V5hGvB4taw==}
+    dev: false
+
+  /string-similarity/4.0.4:
+    resolution: {integrity: sha512-/q/8Q4Bl4ZKAPjj8WerIBJWALKkaPRfrvhfF8k/B23i4nzrlRj2/go1m90In7nG/3XDSbOo0+pu6RvCTM9RGMQ==}
     dev: false
 
   /string-width/4.2.3:

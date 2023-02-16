@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {Form, Formik} from 'formik';
-import {MboxRecord} from '../types/misc.types';
+import {BaseRecordInfo, MboxRecord} from '../types/misc.types';
 import {addRecord, getRecordsTrackInfo, increaseRecordNumber} from '../api/misc.api';
 import {UserContext} from '../components/user-context';
 import dayjs from 'dayjs';
@@ -39,9 +39,9 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 	const [totalCount, setTotalCount] = useState(0);
 	const formattedTodaysDate = dayjs().format(`YYYY-MM-DD`);
 	const initialValues: MboxRecord = {
-		journalNumber: (location?.state as any)?.journalNumber ?? '',
-		amount: (location?.state as any)?.amount ?? '',
-		remarks: '',
+		journalNumber: (location?.state as BaseRecordInfo)?.journalNumber ?? '',
+		amount: (location?.state as BaseRecordInfo)?.amount ?? '',
+		remarks: (location?.state as BaseRecordInfo)?.remarks ?? '',
 		phoneNumber: '',
 		date: formattedTodaysDate
 	};

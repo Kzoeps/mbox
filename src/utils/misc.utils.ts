@@ -1,8 +1,9 @@
 import {QuerySnapshot} from '@firebase/firestore-types';
 import {getRecords} from '../api/misc.api';
-import {OCRRecord, PrettyOCRData, TrialProfile} from '../types/misc.types';
+import {ExtractedOCRData, TrialProfile, VisionOCRData} from '../types/misc.types';
 import dayjs from 'dayjs';
-import Fuse from 'fuse.js';
+import {findBestMatch} from 'string-similarity';
+import { PrimaryInfo } from '../types/enums';
 
 
 const datifyRecords = (records: any[]) => {
@@ -22,18 +23,6 @@ export const toBase64 = (file: File) => new Promise((resolve, reject) => {
   };
 	reader.onerror = error => reject(error);
 })
-
-export const prettyFormatOCRData = (data: OCRRecord): PrettyOCRData => {
-	const prettyData: PrettyOCRData = [] 
-	data.regions.forEach((region) => {
-		const regionData: any = {};
-		region.lines.forEach((line, index) => {
-			regionData[index] = line.words.map((word) => word.text); 
-		})
-		prettyData.push(regionData)
-	})
-	return prettyData
-}
 
 const arrayifyRecords = (recordsSnapshot: QuerySnapshot<any>): any[] => {
 	const formattedData: any[] = [];
@@ -68,15 +57,89 @@ export const formatPhoneNumber = (number: string): string => {
 	}
 }
 
-export const getRelevantInfo = (data: PrettyOCRData) => {
-	let words: string[] = []
-	data.forEach((region) => {
-		Object.keys(region).forEach((line) => {
-			words = [...words, ...region[+line]]
-		})
-	})
-	const searcher = new Fuse(words);
-	console.log(words);
-	console.log(searcher.search('Nu'))
+export const extractOCRData = (data: VisionOCRData): ExtractedOCRData => {
+  const textSummary = data?.detection?.[0]?.description?.split('\n') || []; 
+  if (textSummary?.length) {
+    return {
+      amount: findAmount(textSummary),
+      remarks: findRemark(textSummary),
+      journalNumber: findJournalNumber(textSummary),
+    }
+  }
+  return {
+    amount: undefined,
+    remarks: undefined,
+    journalNumber: undefined
+  } 
 
+} 
+
+const findRemark = (data: string[]): string | undefined => {
+  const {bestMatchIndex} = findBestMatch(PrimaryInfo.Remark, data);
+  if (data.length > bestMatchIndex + 1) {
+    return data[bestMatchIndex+1];
+  }
 }
+
+const findAmount = (data: string[]): string | undefined => {
+  const {bestMatch: {target: bestMatch}} = findBestMatch(PrimaryInfo.Amount, data);
+  const amountRegex = /\d+/g;
+  if (bestMatch) {
+    const amounts = bestMatch.match(amountRegex);
+    if (amounts?.length) {
+      return amounts[0]; 
+    }
+  }
+  return undefined;
+}
+
+const findJournalNumber = (data: string[]): string | undefined => {
+  const {bestMatchIndex} = findBestMatch(PrimaryInfo.Journal, data);
+  const journalExpression = /\d{4,}/;
+  if (data[bestMatchIndex+1] && journalExpression.test(data[bestMatchIndex+1])) {
+    return data[bestMatchIndex+1]; 
+  }
+}
+
+/*
+* FROM PREVIOUS TRIALS OF TRYING TO FIND INFO 
+* 	const findJournalNumber = (data: string[], journalIndex: number) => {
+		const possibilities: { value: NumString, distance: number }[] = [];
+		data.forEach((piece, index) => {
+			if (!isNaN(+piece)) {
+				possibilities.push({
+					value: piece,
+					distance: Math.abs(journalIndex - index)
+				});
+			}
+		});
+		if (!possibilities.length) {
+			return data[journalIndex + 1];
+		}
+		return possibilities.sort(({distance: firstDistance}, {distance: secondDistance}) => {
+			if (firstDistance > secondDistance) {
+				return 1;
+			} else if (firstDistance < secondDistance) {
+				return -1;
+			} else {
+				return 0;
+			}
+		})[0].value;
+	};
+const findRelevantInfo = (data: string[]): { journalNumber: NumString, cost: string } => {
+		const searcher = new Fuse(data);
+		const result = searcher.search('Jrnl');
+		const queriedResult = result[0]?.refIndex || 0;
+		const journalNumber = findJournalNumber(data, queriedResult);
+		let cost = searcher.search('Nu.')?.[0]?.item;
+		if (cost) {
+			const justCost = cost.split(' ')?.[1];
+			cost = justCost ?? cost;
+		}
+		return {journalNumber, cost};
+	};
+				const formData = new FormData();
+				formData.append('file', compressedFile);
+				const response = await fetch('https://api.mbox.kongtsey.com/', {method: 'POST', body: formData});
+				const data = await response.json();
+*/

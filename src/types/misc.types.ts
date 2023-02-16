@@ -1,5 +1,17 @@
 import {NumString} from '../utils/util.types';
 
+export interface ExtractedOCRData {
+  amount: string | undefined,
+  remarks: string | undefined,
+  journalNumber: string | undefined
+}
+
+export interface BaseRecordInfo {
+  amount: string,
+  journalNumber: string,
+  remarks: string
+}
+
 export interface MboxRecord {
 	journalNumber: NumString,
 	amount: NumString,
@@ -18,12 +30,9 @@ export interface RecordsColumn {
 	format?: (value: Date) => string;
 }
 
-export interface RecordData {
+export interface RecordData extends BaseRecordInfo {
 	id: string;
-	journalNumber: string;
-	amount: string;
 	phoneNumber: number;
-	remarks: number;
 	date: Date;
 }
 
@@ -65,17 +74,25 @@ export interface PhoneSignUpForm extends SignUpBase{
 	verificationCode: string
 }
 
-export type PrettyOCRData = Record<number, string[]>[]
-
-export interface OCRRecord {
-	regions: {
-		boundingBox: string;
-		lines: {
-			boundingBox: string;
-			words: {
-				boundingBox: string;
-				text: string;
-			}[]
-		}[]
-	}[]
+export interface VisionOCRData {
+  detection?: (DetectionEntity)[] | null;
+}
+export interface DetectionEntity {
+  locations?: (null)[] | null;
+  properties?: (null)[] | null;
+  mid: string;
+  locale: string;
+  description: string;
+  score: number;
+  confidence: number;
+  topicality: number;
+  boundingPoly: BoundingPoly;
+}
+export interface BoundingPoly {
+  vertices?: (VerticesEntity)[] | null;
+  normalizedVertices?: (null)[] | null;
+}
+export interface VerticesEntity {
+  x: number;
+  y: number;
 }
