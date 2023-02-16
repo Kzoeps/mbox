@@ -1,5 +1,5 @@
-const vision = require('@google-cloud/vision');
-const {GoogleAuth}= require('google-auth-library');
+import vision from '@google-cloud/vision';
+import {GoogleAuth} from 'google-auth-library';
 
 const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 const auth = new GoogleAuth({credentials })
