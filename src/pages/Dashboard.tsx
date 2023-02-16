@@ -28,6 +28,7 @@ export const Dashboard = (props: DashboardProps) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const navigate = useNavigate();
 	const {isLoading, setIsLoading} = useLoaderHook();
+  console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 	const handleAdditionClick = async () => {
 		await inputRef.current?.click();
 	};

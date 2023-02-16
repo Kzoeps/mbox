@@ -25,6 +25,7 @@ specifiers:
   formik: ^2.2.9
   framer-motion: ^7.0.1
   fuse.js: ^6.6.2
+  google-auth-library: ^8.7.0
   react: ^18.2.0
   react-dom: ^18.2.0
   react-icons: ^4.4.0
@@ -58,6 +59,7 @@ dependencies:
   formik: 2.2.9_react@18.2.0
   framer-motion: 7.6.7_biqbaboplfbrettd7655fr4n2y
   fuse.js: 6.6.2
+  google-auth-library: 8.7.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-icons: 4.6.0_react@18.2.0
