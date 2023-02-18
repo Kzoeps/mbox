@@ -9,15 +9,11 @@ import {useNavigate} from 'react-router-dom';
 import useLoaderHook from '../hooks/useLoaderHook';
 import imageCompression from 'browser-image-compression';
 import {IMAGE_COMPRESSION_OPTIONS} from '../constants/misc.constants';
-import { extractOCRData} from '../utils/misc.utils';
+import { extractOCRData, findDate} from '../utils/misc.utils';
 import { readScreenShot } from '../api/misc.api';
 
 export interface DashboardProps {
 }
-
-
-
-export type DetectionResponse = ((NumString[])[])[]
 
 export const Dashboard = (props: DashboardProps) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);

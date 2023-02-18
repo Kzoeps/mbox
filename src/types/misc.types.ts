@@ -1,9 +1,11 @@
 import {NumString} from '../utils/util.types';
+import { Dayjs } from 'dayjs';
 
 export interface ExtractedOCRData {
   amount: string | undefined,
   remarks: string | undefined,
-  journalNumber: string | undefined
+  journalNumber: string | undefined,
+  date: Dayjs | undefined
 }
 
 export interface BaseRecordInfo {
@@ -18,6 +20,11 @@ export interface MboxRecord {
 	remarks: string,
 	phoneNumber: NumString,
 	date: string | Date
+}
+
+export interface SegregatedDateTime {
+  date: string | undefined;
+  time: string | undefined;
 }
 
 export type TableIds = 'journalNumber' | 'amount' | 'phoneNumber' | 'remarks' | 'date';

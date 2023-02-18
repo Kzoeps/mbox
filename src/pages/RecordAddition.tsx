@@ -17,7 +17,7 @@ import {Form, Formik} from 'formik';
 import {BaseRecordInfo, MboxRecord} from '../types/misc.types';
 import {addRecord, getRecordsTrackInfo, increaseRecordNumber} from '../api/misc.api';
 import {UserContext} from '../components/user-context';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import useLoaderHook from '../hooks/useLoaderHook';
 import {RecordEntrySchema} from '../utils/validation-schemas';
 import {PhoneIcon} from '@chakra-ui/icons';
@@ -25,9 +25,14 @@ import {ImListNumbered} from 'react-icons/im';
 import {FaMoneyBillAlt} from 'react-icons/fa'
 import {BiCommentAdd} from 'react-icons/bi';
 import {formatPhoneNumber} from '../utils/misc.utils';
+import { DateFormats } from '../types/enums';
 
 
 export interface RecordAdditionProps {
+}
+
+const getStringiDate = (date: Dayjs | undefined): string => {
+    return date ? date.format(DateFormats.CalendarDate) : dayjs().format(DateFormats.CalendarDate);
 }
 
 export const RecordAddition = (props: RecordAdditionProps) => {
@@ -35,17 +40,18 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 	const location = useLocation();
 	const {user} = useContext(UserContext);
 	const navigate = useNavigate();
+  const [totalCount, setTotalCount] = useState(0);
 	const {isLoading, setIsLoading} = useLoaderHook();
-	const [totalCount, setTotalCount] = useState(0);
-	const formattedTodaysDate = dayjs().format(`YYYY-MM-DD`);
 	const initialValues: MboxRecord = {
 		journalNumber: (location?.state as BaseRecordInfo)?.journalNumber ?? '',
 		amount: (location?.state as BaseRecordInfo)?.amount ?? '',
 		remarks: (location?.state as BaseRecordInfo)?.remarks ?? '',
 		phoneNumber: '',
-		date: formattedTodaysDate
+		date: getStringiDate(location?.state?.date) 
 	};
 	const toast = useToast();
+
+  
 
 	const handleRecordAddition = async (values: MboxRecord) => {
 		if (user) {
@@ -148,7 +154,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 												  onChange={formik.handleChange}/></InputGroup>
 									</FormControl>
 									<FormLabel>Date</FormLabel>
-									<input type="date" max={formattedTodaysDate}
+									<input type="date" max={getStringiDate(undefined)}
 										   value={formik.values.date as string}
 										   name={'date'} onChange={formik.handleChange}
 										   style={{

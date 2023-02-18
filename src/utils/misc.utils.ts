@@ -1,9 +1,9 @@
 import {QuerySnapshot} from '@firebase/firestore-types';
 import {getRecords} from '../api/misc.api';
-import {ExtractedOCRData, TrialProfile, VisionOCRData} from '../types/misc.types';
-import dayjs from 'dayjs';
+import {ExtractedOCRData, SegregatedDateTime, TrialProfile, VisionOCRData} from '../types/misc.types';
+import dayjs, { Dayjs } from 'dayjs';
 import {findBestMatch} from 'string-similarity';
-import { PrimaryInfo } from '../types/enums';
+import { DateFormats, PrimaryInfo } from '../types/enums';
 
 
 const datifyRecords = (records: any[]) => {
@@ -64,12 +64,14 @@ export const extractOCRData = (data: VisionOCRData): ExtractedOCRData => {
       amount: findAmount(textSummary),
       remarks: findRemark(textSummary),
       journalNumber: findJournalNumber(textSummary),
+      date: dateConversion(findDate(textSummary))
     }
   }
   return {
     amount: undefined,
     remarks: undefined,
-    journalNumber: undefined
+    journalNumber: undefined,
+    date: undefined
   } 
 
 } 
@@ -99,6 +101,32 @@ const findJournalNumber = (data: string[]): string | undefined => {
   if (data[bestMatchIndex+1] && journalExpression.test(data[bestMatchIndex+1])) {
     return data[bestMatchIndex+1]; 
   }
+}
+
+export const findDate = (data: string[]): SegregatedDateTime => {
+  const dateTime: SegregatedDateTime = {
+    date: undefined,
+    time: undefined
+  }
+  const {bestMatchIndex} = findBestMatch(PrimaryInfo.Date, data);
+  const dateExpression = /(\d{1,2}?\s+[a-zA-z]{3,4}\s+\d{4})\s+(\d{2}:?\d{2}:?\d{0,2})?/g;
+  const dateMatch = data[bestMatchIndex+1];
+  if (dateMatch) {
+    const matches = Array.from(dateMatch.matchAll(dateExpression));
+    dateTime.date = matches?.[0]?.[1];
+    dateTime.time = matches?.[0]?.[2];
+  }
+  return dateTime;
+}
+
+export const dateConversion = (dateTime: SegregatedDateTime): Dayjs | undefined => {
+  const { date, time } = dateTime;
+  if (date) {
+    let dateAndTime = dayjs(`${date} ${time}`, DateFormats.Date);
+    dateAndTime = dateAndTime.isValid() ? dateAndTime : dayjs(`${date}`, DateFormats.Date);
+    return dateAndTime.isValid() ? dateAndTime : undefined;
+  }
+  return;
 }
 
 /*
