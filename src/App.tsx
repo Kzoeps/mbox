@@ -42,15 +42,15 @@ function App() {
 					<Navigation/>
 					<PaymentBanner/>
 					<Routes>
-						<Route path={'/'} element={<HomePage/>}/>
 						<Route element={<UnauthenticatedRoutes redirectPath={`/dashboard`}/>}>
+              <Route path={'/'} element={<HomePage/>}/>
 							<Route path={'/email-in'} element={<SignIn/>}/>
 							<Route path={'/sign-in'} element={<PhoneLogin/>}/>
 							<Route path={'/email-up'} element={<SignUp/>}/>
 							<Route path={'/sign-up'} element={<PhoneSignUp/>}/>
 						</Route>
 						<Route path={'/demo'} element={<Demo/>}/>
-						<Route path={'/dashboard'} element={<Dashboard/>}/>
+            <Route path={'/dashboard'} element={<Dashboard/>}/>
 						<Route path={'/add-record'} element={<RecordAddition/>}/>
 						<Route path={'/subscribe'} element={<Payment/>}/>
 						<Route path={'/success'} element={<Success/>}/>
