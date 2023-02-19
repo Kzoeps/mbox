@@ -4,7 +4,7 @@ export const RecordEntrySchema = object().shape({
 	journalNumber: string().required(),
 	amount: string().required(),
 	remarks: string(),
-	phoneNumber: string().required('Phone number is required').matches(/^(\+?975)?[1|7][7]\d{6}(\s+)?$/, 'Number must be in format 17/77 or +975 and 8 digits long'),
+	phoneNumber: string().matches(/^(\+?975)?[1|7][7]\d{6}(\s+)?$/, 'Number must be in format 17/77 or +975 and 8 digits long'),
 	date: date().required()
 })
 

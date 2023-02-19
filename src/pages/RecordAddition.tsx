@@ -146,8 +146,8 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 											<InputLeftElement><BiCommentAdd/></InputLeftElement>
 											<Input autoComplete={'off'} value={formik.values.remarks} name={'remarks'}
 												  onChange={formik.handleChange}/></InputGroup>
+                    <FormLabel>Date</FormLabel>
 									</FormControl>
-									<FormLabel>Date</FormLabel>
 									<input type="datetime-local" max={getStringiDate(undefined)}
 										   value={formik.values.date as string}
 										   name={'date'} onChange={formik.handleChange}

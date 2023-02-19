@@ -7,5 +7,5 @@ export enum PrimaryInfo {
 
 export enum DateFormats {
   Date = 'DD MMM YYYY HH:mm:ss',
-  CalendarDate = 'YYYY-MM-DD HH:mm:ss' 
+  CalendarDate = 'YYYY-MM-DDTHH:mm:ss' 
 }
