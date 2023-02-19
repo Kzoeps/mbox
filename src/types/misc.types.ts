@@ -1,11 +1,10 @@
 import {NumString} from '../utils/util.types';
-import { Dayjs } from 'dayjs';
 
 export interface ExtractedOCRData {
   amount: string | undefined,
   remarks: string | undefined,
   journalNumber: string | undefined,
-  date: Dayjs | undefined
+  date: string 
 }
 
 export interface BaseRecordInfo {

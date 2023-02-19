@@ -64,14 +64,14 @@ export const extractOCRData = (data: VisionOCRData): ExtractedOCRData => {
       amount: findAmount(textSummary),
       remarks: findRemark(textSummary),
       journalNumber: findJournalNumber(textSummary),
-      date: dateConversion(findDate(textSummary))
+      date: getStringiDate(dateConversion(findDate(textSummary)))
     }
   }
   return {
     amount: undefined,
     remarks: undefined,
     journalNumber: undefined,
-    date: undefined
+    date: dayjs().format(DateFormats.CalendarDate) 
   } 
 
 } 
@@ -128,6 +128,11 @@ export const dateConversion = (dateTime: SegregatedDateTime): Dayjs | undefined 
   }
   return;
 }
+
+export const getStringiDate = (date: Dayjs | undefined): string => {
+    return date ? date.format(DateFormats.CalendarDate) : dayjs().format(DateFormats.CalendarDate);
+}
+ 
 
 /*
 * FROM PREVIOUS TRIALS OF TRYING TO FIND INFO 

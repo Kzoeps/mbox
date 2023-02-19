@@ -4,12 +4,11 @@ import {TbCameraPlus} from 'react-icons/tb';
 import {AiOutlineFileAdd} from 'react-icons/ai';
 import {MdOutlineViewList} from 'react-icons/md';
 import StatsCard from '../components/stats-card';
-import {NumString} from '../utils/util.types';
 import {useNavigate} from 'react-router-dom';
 import useLoaderHook from '../hooks/useLoaderHook';
 import imageCompression from 'browser-image-compression';
 import {IMAGE_COMPRESSION_OPTIONS} from '../constants/misc.constants';
-import { extractOCRData, findDate} from '../utils/misc.utils';
+import { extractOCRData} from '../utils/misc.utils';
 import { readScreenShot } from '../api/misc.api';
 
 export interface DashboardProps {
