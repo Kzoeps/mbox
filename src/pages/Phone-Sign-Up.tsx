@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import {Form, Formik} from 'formik';
 import {
 	Box,
@@ -23,6 +23,7 @@ import {PHONE_SIGN_UP} from '../constants/misc.constants';
 import {InitSignUpSchema, SignUpSchema} from '../utils/validation-schemas';
 import PhoneAuthForm from '../components/phone-auth-form';
 import usePhoneAuth from '../hooks/usePhoneAuth';
+import { UserContext } from '../components/user-context';
 
 export interface PhoneSignUpProps{
 }
@@ -32,6 +33,8 @@ export const PhoneSignUp = (props: PhoneSignUpProps) => {
 	const { colorMode } = useColorMode();
 	const navigate = useNavigate();
 	const toast = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const {isCreating} = useContext(UserContext);
 	const {deliverCode, showCode, verifyCode} = usePhoneAuth({});
 
 	const handleDelivery = async (vals: PhoneSignUpForm) => {
@@ -40,20 +43,25 @@ export const PhoneSignUp = (props: PhoneSignUpProps) => {
 
 	const verifyOtp = async (vals: PhoneSignUpForm) => {
 		try {
+      setIsLoading(true);
+      isCreating.current = true;
 			const userCredentials = await verifyCode(+vals.verificationCode);
 			if (userCredentials) {
-				await handleProfileGeneration(vals, userCredentials.user);
-				toast({
-					title: 'Account created',
+        await handleProfileGeneration(vals, userCredentials.user);
+        toast({
+					title: 'Account successfully created',
 					description: 'We\'ve created your account for you',
 					status: 'success',
 					isClosable: true
 				});
-				navigate('/dashboard', {replace: true});
-			}
+        navigate('/dashboard', {replace: true});
+      }
 		} catch (e: any) {
 			toast({title: e?.message || e || 'an error occurred', status: 'error'});
-		}
+		} finally {
+      isCreating.current = false 
+      setIsLoading(false);
+    }
 	};
 
 	const handleProfileGeneration = async (formVals: PhoneSignUpForm, user: any) => {
@@ -85,7 +93,7 @@ export const PhoneSignUp = (props: PhoneSignUpProps) => {
 											Sign up
 										</Heading>
 										<Text fontSize={'lg'} color={colorMode==='light' ? 'gray.600' : 'gray.50'}>
-											to enjoy all of our cool features ✌️
+											to enjoy all of our neat features ✌️
 										</Text>
 									</Stack>
 									<Box
@@ -115,7 +123,7 @@ export const PhoneSignUp = (props: PhoneSignUpProps) => {
 											<Stack spacing={10} pt={2}>
 												<Button
 													loadingText="Creating Account"
-													isLoading={false}
+													isLoading={isLoading}
 													size="lg"
 													type="submit"
 													bg={'orange.400'}
