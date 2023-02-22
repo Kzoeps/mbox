@@ -102,3 +102,10 @@ export interface VerticesEntity {
   x: number;
   y: number;
 }
+
+export interface SignUpForm {
+	firstName: string;
+	lastName: string;
+	email: string;
+	password: string;
+}

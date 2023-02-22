@@ -23,15 +23,8 @@ import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
 import {FirebaseErrorCodesMessages} from '../utils/firebase-error-codes';
 import useLoaderHook from '../hooks/useLoaderHook';
 import dayjs from 'dayjs';
-import {TrialProfile} from '../types/misc.types';
+import {TrialProfile, SignUpForm} from '../types/misc.types';
 import {updateUserProfile} from '../api/misc.api';
-
-export interface SignUpForm {
-	firstName: string;
-	lastName: string;
-	email: string;
-	password: string;
-}
 
 export default function SignUp() {
 	const [showPassword, setShowPassword] = useState(false);
