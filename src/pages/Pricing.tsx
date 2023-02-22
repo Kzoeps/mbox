@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import {
   Box,
   Stack,
@@ -14,21 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { FaCheckCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
-function PriceWrapper({ children }: { children: ReactNode }) {
-  return (
-    <Box
-      mb={4}
-      shadow="base"
-      borderWidth="1px"
-      alignSelf={{ base: "center", lg: "flex-start" }}
-      borderColor={useColorModeValue("gray.200", "gray.500")}
-      borderRadius={"xl"}
-    >
-      {children}
-    </Box>
-  );
-}
+import PriceWrapper from "../components/price-wrapper";
 
 export default function Pricing() {
   const navigate = useNavigate();
