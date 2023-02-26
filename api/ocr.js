@@ -1,4 +1,4 @@
- import vision from '@google-cloud/vision';
+import vision from '@google-cloud/vision';
 import {GoogleAuth} from 'google-auth-library';
 
 const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);

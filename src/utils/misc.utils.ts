@@ -84,9 +84,11 @@ const findRemark = (data: string[]): string | undefined => {
 }
 
 const findAmount = (data: string[]): string | undefined => {
-  const {bestMatch: {target: bestMatch}} = findBestMatch(PrimaryInfo.Amount, data);
+  let {bestMatch: {target: bestMatch}} = findBestMatch(PrimaryInfo.Amount, data);
   const amountRegex = /\d+/g;
   if (bestMatch) {
+	// to remove commas from large numbers such as Nu. 18,230
+	bestMatch = bestMatch.replace(/(\d)(,)(\d)/, '$1$3')	
     const amounts = bestMatch.match(amountRegex);
     if (amounts?.length) {
       return amounts[0]; 
