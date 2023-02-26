@@ -53,17 +53,17 @@ export const Dashboard = (props: DashboardProps) => {
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 5, lg: 8 }}>
           <StatsCard
             onClick={handleAdditionClick}
-            stat={"Capture Record"}
+            stat={"Capture Payment"}
             icon={<TbCameraPlus size={"3em"} />}
           />
           <StatsCard
             onClick={() => navigate(`/records`)}
-            stat={"View Records"}
+            stat={"View Payments"}
             icon={<MdOutlineViewList size={"3em"} />}
           />
           <StatsCard
             onClick={() => navigate(`/add-record`)}
-            stat={"Add Record"}
+            stat={"Add Payment"}
             icon={<AiOutlineFileAdd size={"3em"} />}
           />
           <input
