@@ -22,6 +22,7 @@ import theme from './constants/theme';
 import {createTheme, ThemeProvider} from '@mui/material';
 import Pricing from './pages/Pricing';
 import Demo from './pages/Demo';
+import Analytics from './pages/Analytics';
 
 
 const muiTheme = createTheme({});
@@ -53,6 +54,7 @@ function App() {
 						<Route path={'/dashboard'} element={<Dashboard/>}/>
 						<Route path={'/add-record'} element={<RecordAddition/>}/>
 						<Route path={'/subscribe'} element={<Payment/>}/>
+						<Route path={'/analytics'} element={<Analytics/>}/>
 						<Route path={'/success'} element={<Success/>}/>
 						<Route path={'/records'}
 							   element={<ThemeProvider theme={muiTheme}><RecordListing/></ThemeProvider>}/>

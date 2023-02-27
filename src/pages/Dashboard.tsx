@@ -68,7 +68,7 @@ export const Dashboard = (props: DashboardProps) => {
             icon={<AiOutlineFileAdd size={"3em"} />}
           />
           <StatsCard
-            onClick={() => navigate(`/add-record`)}
+            onClick={() => navigate(`/analytics`)}
             stat={"Analytics"}
             icon={<GrAnalytics size={"3em"} />}
           />
