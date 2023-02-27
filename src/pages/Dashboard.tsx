@@ -3,6 +3,7 @@ import { Box, SimpleGrid, Spinner, useToast } from "@chakra-ui/react";
 import { TbCameraPlus } from "react-icons/tb";
 import { AiOutlineFileAdd } from "react-icons/ai";
 import { MdOutlineViewList } from "react-icons/md";
+import { GrAnalytics } from "react-icons/gr";
 import StatsCard from "../components/stats-card";
 import { useNavigate } from "react-router-dom";
 import useLoaderHook from "../hooks/useLoaderHook";
@@ -66,13 +67,18 @@ export const Dashboard = (props: DashboardProps) => {
             stat={"Add Payment"}
             icon={<AiOutlineFileAdd size={"3em"} />}
           />
+          <StatsCard
+            onClick={() => navigate(`/add-record`)}
+            stat={"Analytics"}
+            icon={<GrAnalytics size={"3em"} />}
+          />
           <input
             onChange={handleFileSelection}
             ref={inputRef}
             style={{ display: "none" }}
             type="file"
             accept="image/*"
-            capture={true}
+            capture="environment"
           />
           {isLoading && (
             <div className={"spinner_overlay"}>
