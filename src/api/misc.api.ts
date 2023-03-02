@@ -3,7 +3,9 @@ import {addDoc, collection, doc, getDoc, getDocs, limit, orderBy, query, setDoc,
 import {db} from '../firebase.config';
 import { toBase64 } from '../utils/misc.utils';
 import axios from 'axios';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { date } from 'yup';
+import { DateFormats } from '../types/enums';
 
 export const readScreenShot = async (image: File) => {
   const base64 = await toBase64(image); 
@@ -44,4 +46,9 @@ export const updateUserProfile = async (uid: string, profileData: TrialProfile) 
 export const getPaymentInfo = async (uid: string) => {
 	const docRef = doc(db, "user_profiles", uid);
 	return await getDoc(docRef)
+}
+
+export const getTodaysTotal = async (date: Dayjs, uid: string) => {
+	const docRef = doc(db,uid, "Analytics", date.year().toString(), date.format(DateFormats.CalendarDate)) 
+	return await getDoc(docRef);
 }

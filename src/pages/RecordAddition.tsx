@@ -49,6 +49,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
     date: location?.state?.date || getStringiDate(undefined),
   };
   const toast = useToast();
+  const todaysDate = dayjs();
 
   const handleRecordAddition = async (values: MboxRecord) => {
     if (user) {
