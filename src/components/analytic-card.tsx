@@ -15,7 +15,7 @@ interface AnalyticsCardProps {
 export default function AnalyticCard(props: AnalyticsCardProps) {
     const { title, amount, date, children} = props;
   return (
-    <Box borderRadius={'md'} borderWidth={'1px'} m={'auto'} mt='35px' maxW={'296px'} paddingLeft={'10px'} paddingTop={'5px'}>
+    <Box borderRadius={'md'} borderWidth={'1px'} m={'auto'} mt='35px' maxW={'315px'} paddingLeft={'10px'} paddingTop={'10px'}>
     <Stat>
       <StatLabel>{title}</StatLabel>
       <Box display='flex' justifyContent={'space-between'} mr='15px'>
