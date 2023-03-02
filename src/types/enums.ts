@@ -6,6 +6,8 @@ export enum PrimaryInfo {
 }
 
 export enum DateFormats {
-  Date = 'DD MMM YYYY HH:mm:ss',
-  CalendarDate = 'YYYY-MM-DDTHH:mm:ss' 
+  Date = 'DD MMM YYYY',
+  CalendarDate = 'YYYY-MM-DD',
+  DateTime = 'DD MMM YYYY HH:mm:ss',
+  CalendarDateTime = 'YYYY-MM-DDTHH:mm:ss' 
 }
