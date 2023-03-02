@@ -46,7 +46,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
     amount: (location?.state as BaseRecordInfo)?.amount ?? "",
     remarks: (location?.state as BaseRecordInfo)?.remarks ?? "",
     phoneNumber: "",
-    date: location?.state?.date,
+    date: location?.state?.date || getStringiDate(undefined),
   };
   const toast = useToast();
 
@@ -205,9 +205,9 @@ export const RecordAddition = (props: RecordAdditionProps) => {
                     <FormLabel>Date</FormLabel>
                   </FormControl>
                   <input
-                    type="datetime-local"
+                    type="date"
                     max={getStringiDate(undefined)}
-                    value={formik.values.date as string}
+                    value={formik.values.date as string }
                     name={"date"}
                     onChange={formik.handleChange}
                     style={{
