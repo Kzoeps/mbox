@@ -1,9 +1,7 @@
-import React, {
+import {
   useContext,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
+  useEffect, useRef,
+  useState
 } from "react";
 import {
   Button,
@@ -22,10 +20,8 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { Form, Formik, FormikProps } from "formik";
 import {
-  AnalyticsRecordAction,
-  AnalyticsRecordTrack,
   BaseRecordInfo,
-  MboxRecord,
+  MboxRecord
 } from "../types/misc.types";
 import {
   addRecord,
@@ -42,10 +38,10 @@ import { FaMoneyBillAlt } from "react-icons/fa";
 import { BiCommentAdd } from "react-icons/bi";
 import { formatPhoneNumber, getStringiDate } from "../utils/misc.utils";
 import { DateFormats } from "../types/enums";
-import { INITIAL_ANALYTICS_REDUCER_ACTION } from "../constants/misc.constants";
 
 export interface RecordAdditionProps {}
 
+/* 
 const RecordsReducer = (
   analyticsRecord: AnalyticsRecordTrack,
   action: AnalyticsRecordAction
@@ -85,6 +81,7 @@ const RecordsReducer = (
       return analyticsRecord;
   }
 };
+*/
 
 export const RecordAddition = (props: RecordAdditionProps) => {
   const { colorMode } = useColorMode();
