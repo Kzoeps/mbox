@@ -30,7 +30,6 @@ import {
 import {
   addRecord,
   getRecordsTrackInfo,
-  getThisMonthsTotal,
   increaseRecordNumber,
 } from "../api/misc.api";
 import { UserContext } from "../components/user-context";
@@ -103,10 +102,6 @@ export const RecordAddition = (props: RecordAdditionProps) => {
   };
   const formRef = useRef<FormikProps<MboxRecord> | null>(null);
   const toast = useToast();
-  const [metaTxn, dispatch] = useReducer(
-    RecordsReducer,
-    INITIAL_ANALYTICS_REDUCER_ACTION
-  );
 
   const handleRecordAddition = async (values: MboxRecord) => {
     if (user) {
