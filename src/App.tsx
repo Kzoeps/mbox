@@ -1,70 +1,72 @@
-import React, {ReactNode} from 'react';
-import './App.css';
-import {ChakraProvider} from '@chakra-ui/react';
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import HomePage from './pages/Home';
-import Navigation from './components/navigation';
-import SignUp from './pages/Sign-Up';
-import './firebase.config';
-import SignIn from './sign-in';
-import Dashboard from './pages/Dashboard';
-import RecordAddition from './pages/RecordAddition';
-import UserContextProvider from './components/user-context';
-import RecordListing from './pages/RecordListing';
-import UnauthenticatedRoutes from './components/unauthenticated-routes';
-import BottomNav from './components/bottom-nav';
-import Payment from './pages/Payment';
-import Success from './pages/Success';
-import PhoneSignUp from './pages/Phone-Sign-Up';
-import PhoneLogin from './pages/Phone-Login';
-import PaymentBanner from './components/payment-banner';
-import theme from './constants/theme';
-import {createTheme, ThemeProvider} from '@mui/material';
-import Pricing from './pages/Pricing';
-import Demo from './pages/Demo';
-import Analytics from './pages/Analytics';
-
+import React, { ReactNode } from "react";
+import "./App.css";
+import { ChakraProvider } from "@chakra-ui/react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/Home";
+import Navigation from "./components/navigation";
+import SignUp from "./pages/Sign-Up";
+import "./firebase.config";
+import SignIn from "./sign-in";
+import Dashboard from "./pages/Dashboard";
+import RecordAddition from "./pages/RecordAddition";
+import UserContextProvider from "./components/user-context";
+import RecordListing from "./pages/RecordListing";
+import UnauthenticatedRoutes from "./components/unauthenticated-routes";
+import BottomNav from "./components/bottom-nav";
+import Payment from "./pages/Payment";
+import Success from "./pages/Success";
+import PhoneSignUp from "./pages/Phone-Sign-Up";
+import PhoneLogin from "./pages/Phone-Login";
+import PaymentBanner from "./components/payment-banner";
+import theme from "./constants/theme";
+import { createTheme, ThemeProvider } from "@mui/material";
+import Pricing from "./pages/Pricing";
+import Demo from "./pages/Demo";
+import Analytics from "./pages/Analytics";
 
 const muiTheme = createTheme({});
-function ChakraProvided(props: {children: ReactNode}) {
-	return (
-		<ChakraProvider theme={theme}>
-			{props.children}
-		</ChakraProvider>
-	)
+function ChakraProvided(props: { children: ReactNode }) {
+  return <ChakraProvider theme={theme}>{props.children}</ChakraProvider>;
 }
 
-
 function App() {
-	return (
-		<UserContextProvider>
-			<BrowserRouter>
-				<ChakraProvided>
-					<Navigation/>
-					<PaymentBanner/>
-					<Routes>
-						<Route element={<UnauthenticatedRoutes redirectPath={`/dashboard`}/>}>
-							<Route path={'/'} element={<HomePage/>}/>
-							<Route path={'/email-in'} element={<SignIn/>}/>
-							<Route path={'/sign-in'} element={<PhoneLogin/>}/>
-							<Route path={'/email-up'} element={<SignUp/>}/>
-							<Route path={'/sign-up'} element={<PhoneSignUp/>}/>
-						</Route>
-						<Route path={'/demo'} element={<Demo/>}/>
-						<Route path={'/dashboard'} element={<Dashboard/>}/>
-						<Route path={'/add-record'} element={<RecordAddition/>}/>
-						<Route path={'/subscribe'} element={<Payment/>}/>
-						<Route path={'/analytics'} element={<Analytics/>}/>
-						<Route path={'/success'} element={<Success/>}/>
-						<Route path={'/records'}
-							   element={<ThemeProvider theme={muiTheme}><RecordListing/></ThemeProvider>}/>
-						<Route path={'/pricing'} element={<Pricing/>}/>
-					</Routes>
-					<BottomNav/>
-				</ChakraProvided>
-			</BrowserRouter>
-		</UserContextProvider>
-	);
+  return (
+    <UserContextProvider>
+      <BrowserRouter>
+        <ChakraProvided>
+          <Navigation />
+          <PaymentBanner />
+          <Routes>
+            <Route
+              element={<UnauthenticatedRoutes redirectPath={`/dashboard`} />}
+            >
+              <Route path={"/"} element={<HomePage />} />
+              <Route path={"/email-in"} element={<SignIn />} />
+              <Route path={"/sign-in"} element={<PhoneLogin />} />
+              <Route path={"/email-up"} element={<SignUp />} />
+              <Route path={"/sign-up"} element={<PhoneSignUp />} />
+            </Route>
+            <Route path={"/demo"} element={<Demo />} />
+            <Route path={"/dashboard"} element={<Dashboard />} />
+            <Route path={"/add-record"} element={<RecordAddition />} />
+            <Route path={"/subscribe"} element={<Payment />} />
+            <Route path={"/analytics"} element={<Analytics />} />
+            <Route path={"/success"} element={<Success />} />
+            <Route
+              path={"/records"}
+              element={
+                <ThemeProvider theme={muiTheme}>
+                  <RecordListing />
+                </ThemeProvider>
+              }
+            />
+            <Route path={"/pricing"} element={<Pricing />} />
+          </Routes>
+          <BottomNav />
+        </ChakraProvided>
+      </BrowserRouter>
+    </UserContextProvider>
+  );
 }
 
 export default App;

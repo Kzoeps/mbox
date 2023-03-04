@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import {
   Button,
   Flex,
@@ -14,11 +20,17 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Form, Formik } from "formik";
-import { BaseRecordInfo, MboxRecord } from "../types/misc.types";
+import { Form, Formik, FormikProps } from "formik";
+import {
+  AnalyticsRecordAction,
+  AnalyticsRecordTrack,
+  BaseRecordInfo,
+  MboxRecord,
+} from "../types/misc.types";
 import {
   addRecord,
   getRecordsTrackInfo,
+  getThisMonthsTotal,
   increaseRecordNumber,
 } from "../api/misc.api";
 import { UserContext } from "../components/user-context";
@@ -31,8 +43,49 @@ import { FaMoneyBillAlt } from "react-icons/fa";
 import { BiCommentAdd } from "react-icons/bi";
 import { formatPhoneNumber, getStringiDate } from "../utils/misc.utils";
 import { DateFormats } from "../types/enums";
+import { INITIAL_ANALYTICS_REDUCER_ACTION } from "../constants/misc.constants";
 
 export interface RecordAdditionProps {}
+
+const RecordsReducer = (
+  analyticsRecord: AnalyticsRecordTrack,
+  action: AnalyticsRecordAction
+) => {
+  switch (action.type) {
+    case "set_monthly_total": {
+      return {
+        ...analyticsRecord,
+        monthlyTotal: action.monthlyTotal,
+      };
+    }
+    case "set_daily_total": {
+      return {
+        ...analyticsRecord,
+        dailyTotal: action.dailyTotal,
+      };
+    }
+    case "set_highest_daily": {
+      return {
+        ...analyticsRecord,
+        highestDailyTxn:
+          action.highestDailyTxn > analyticsRecord.highestDailyTxn
+            ? action.highestDailyTxn
+            : analyticsRecord.highestDailyTxn,
+      };
+    }
+    case "set_highest_monthly": {
+      return {
+        ...analyticsRecord,
+        highestMonthlyTxn:
+          action.highestMonthlyTxn > analyticsRecord.highestMonthlyTxn
+            ? action.highestMonthlyTxn
+            : analyticsRecord.highestMonthlyTxn,
+      };
+    }
+    default:
+      return analyticsRecord;
+  }
+};
 
 export const RecordAddition = (props: RecordAdditionProps) => {
   const { colorMode } = useColorMode();
@@ -48,8 +101,12 @@ export const RecordAddition = (props: RecordAdditionProps) => {
     phoneNumber: "",
     date: location?.state?.date || getStringiDate(undefined),
   };
+  const formRef = useRef<FormikProps<MboxRecord> | null>(null);
   const toast = useToast();
-  const todaysDate = dayjs();
+  const [metaTxn, dispatch] = useReducer(
+    RecordsReducer,
+    INITIAL_ANALYTICS_REDUCER_ACTION
+  );
 
   const handleRecordAddition = async (values: MboxRecord) => {
     if (user) {
@@ -90,6 +147,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
   return (
     <>
       <Formik
+        innerRef={formRef}
         initialValues={initialValues}
         validationSchema={RecordEntrySchema}
         onSubmit={handleRecordAddition}
@@ -208,7 +266,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
                   <input
                     type="date"
                     max={getStringiDate(undefined)}
-                    value={formik.values.date as string }
+                    value={formik.values.date as string}
                     name={"date"}
                     onChange={formik.handleChange}
                     style={{

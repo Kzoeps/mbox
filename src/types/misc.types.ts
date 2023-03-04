@@ -1,24 +1,24 @@
-import {NumString} from '../utils/util.types';
+import { BaseReducerAction, NumString } from "../utils/util.types";
 
 export interface ExtractedOCRData {
-  amount: string | undefined,
-  remarks: string | undefined,
-  journalNumber: string | undefined,
-  date: string 
+  amount: string | undefined;
+  remarks: string | undefined;
+  journalNumber: string | undefined;
+  date: string;
 }
 
 export interface BaseRecordInfo {
-  amount: string,
-  journalNumber: string,
-  remarks: string
+  amount: string;
+  journalNumber: string;
+  remarks: string;
 }
 
 export interface MboxRecord {
-	journalNumber: NumString,
-	amount: NumString,
-	remarks: string,
-	phoneNumber: NumString,
-	date: string | Date
+  journalNumber: NumString;
+  amount: NumString;
+  remarks: string;
+  phoneNumber: NumString;
+  date: string | Date;
 }
 
 export interface SegregatedDateTime {
@@ -26,66 +26,71 @@ export interface SegregatedDateTime {
   time: string | undefined;
 }
 
-export type TableIds = 'journalNumber' | 'amount' | 'phoneNumber' | 'remarks' | 'date';
+export type TableIds =
+  | "journalNumber"
+  | "amount"
+  | "phoneNumber"
+  | "remarks"
+  | "date";
 
 export interface RecordsColumn {
-	id: TableIds;
-	label: string;
-	minWidth?: number;
-	align?: 'right';
-	format?: (value: Date) => string;
+  id: TableIds;
+  label: string;
+  minWidth?: number;
+  align?: "right";
+  format?: (value: Date) => string;
 }
 
 export interface RecordData extends BaseRecordInfo {
-	id: string;
-	phoneNumber: number;
-	date: Date;
+  id: string;
+  phoneNumber: number;
+  date: Date;
 }
 
 export interface NavItem {
-	label: string;
-	subLabel?: string;
-	children?: Array<NavItem>;
-	href?: string;
+  label: string;
+  subLabel?: string;
+  children?: Array<NavItem>;
+  href?: string;
 }
 
 export interface StickyHeadTableProps {
-	handleChangePage: (page: number) => void;
-	handleRowsChange: (rowsPerPage: number) => void;
-	records: RecordData[];
-	totalRecords: number;
-	isLoadingData: boolean
+  handleChangePage: (page: number) => void;
+  handleRowsChange: (rowsPerPage: number) => void;
+  records: RecordData[];
+  totalRecords: number;
+  isLoadingData: boolean;
 }
 
 export interface FormattedRecordsResponse {
-	lastVisibleRecord: any;
-	data: RecordData[];
+  lastVisibleRecord: any;
+  data: RecordData[];
 }
 
 export interface TrialProfile {
-	start_date: Date,
-	expiry_date: Date,
-	phone_number: string,
-	payment_valid_till?: Date
+  start_date: Date;
+  expiry_date: Date;
+  phone_number: string;
+  payment_valid_till?: Date;
 }
 
 export interface SignUpBase {
-	firstName: string,
-	lastName: string
+  firstName: string;
+  lastName: string;
 }
 
-export interface PhoneSignUpForm extends SignUpBase{
-	//has to be in the format of +97517123456
-	phoneNumber: string,
-	verificationCode: string
+export interface PhoneSignUpForm extends SignUpBase {
+  //has to be in the format of +97517123456
+  phoneNumber: string;
+  verificationCode: string;
 }
 
 export interface VisionOCRData {
-  detection?: (DetectionEntity)[] | null;
+  detection?: DetectionEntity[] | null;
 }
 export interface DetectionEntity {
-  locations?: (null)[] | null;
-  properties?: (null)[] | null;
+  locations?: null[] | null;
+  properties?: null[] | null;
   mid: string;
   locale: string;
   description: string;
@@ -95,8 +100,8 @@ export interface DetectionEntity {
   boundingPoly: BoundingPoly;
 }
 export interface BoundingPoly {
-  vertices?: (VerticesEntity)[] | null;
-  normalizedVertices?: (null)[] | null;
+  vertices?: VerticesEntity[] | null;
+  normalizedVertices?: null[] | null;
 }
 export interface VerticesEntity {
   x: number;
@@ -104,8 +109,23 @@ export interface VerticesEntity {
 }
 
 export interface SignUpForm {
-	firstName: string;
-	lastName: string;
-	email: string;
-	password: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
 }
+
+export interface AnalyticsRecord {
+  date: Date;
+  total: number;
+  highestTransaction: number;
+}
+
+export interface AnalyticsRecordTrack {
+  monthlyTotal: number;
+  dailyTotal: number;
+  highestDailyTxn: number;
+  highestMonthlyTxn: number;
+}
+
+export type AnalyticsRecordAction = AnalyticsRecordTrack & BaseReducerAction;
