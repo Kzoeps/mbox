@@ -18,7 +18,12 @@ import { getRecordsTrackInfo } from "../api/misc.api";
 import { RECORDS_COLUMNS } from "../constants/misc.constants";
 import { getFormattedRecords } from "../utils/misc.utils";
 import useLoaderHook from "../hooks/useLoaderHook";
-import { Box, CircularProgress } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 
 export interface RecordListingProps {}
 
@@ -120,6 +125,7 @@ export const RecordListing = (props: RecordListingProps) => {
   const { isLoading, setIsLoading } = useLoaderHook();
   const [lastRecord, setLastRecord] = useState<any>(undefined);
   const { user } = useContext(UserContext);
+  const muiTheme = createTheme({});
   useEffect(() => {
     const getTotalCount = async (): Promise<number> => {
       if (user?.uid) {
@@ -167,13 +173,15 @@ export const RecordListing = (props: RecordListingProps) => {
   };
   return (
     <>
-      <StickyHeadTable
-        isLoadingData={isLoading}
-        totalRecords={totalCount}
-        handleChangePage={handlePageChange}
-        handleRowsChange={handleRowsChange}
-        records={records}
-      />
+      <ThemeProvider theme={muiTheme}>
+        <StickyHeadTable
+          isLoadingData={isLoading}
+          totalRecords={totalCount}
+          handleChangePage={handlePageChange}
+          handleRowsChange={handleRowsChange}
+          records={records}
+        />
+      </ThemeProvider>
     </>
   );
 };

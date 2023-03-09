@@ -10,7 +10,6 @@ import SignIn from "./sign-in";
 import Dashboard from "./pages/Dashboard";
 import RecordAddition from "./pages/RecordAddition";
 import UserContextProvider from "./components/user-context";
-import RecordListing from "./pages/RecordListing";
 import UnauthenticatedRoutes from "./components/unauthenticated-routes";
 import BottomNav from "./components/bottom-nav";
 import Payment from "./pages/Payment";
@@ -19,12 +18,15 @@ import PhoneSignUp from "./pages/Phone-Sign-Up";
 import PhoneLogin from "./pages/Phone-Login";
 import PaymentBanner from "./components/payment-banner";
 import theme from "./constants/theme";
-import { createTheme, ThemeProvider } from "@mui/material";
 import Pricing from "./pages/Pricing";
 import Demo from "./pages/Demo";
-import Analytics from "./pages/Analytics";
+import { withSuspense } from "./components/suspense-wrapper";
 
-const muiTheme = createTheme({});
+const Analytics = withSuspense(React.lazy(() => import("./pages/Analytics")));
+const RecordListing = withSuspense(
+  React.lazy(() => import("./pages/RecordListing"))
+);
+
 function ChakraProvided(props: { children: ReactNode }) {
   return <ChakraProvider theme={theme}>{props.children}</ChakraProvider>;
 }
@@ -52,14 +54,7 @@ function App() {
             <Route path={"/subscribe"} element={<Payment />} />
             <Route path={"/analytics"} element={<Analytics />} />
             <Route path={"/success"} element={<Success />} />
-            <Route
-              path={"/records"}
-              element={
-                <ThemeProvider theme={muiTheme}>
-                  <RecordListing />
-                </ThemeProvider>
-              }
-            />
+            <Route path={"/records"} element={<RecordListing />} />
             <Route path={"/pricing"} element={<Pricing />} />
           </Routes>
           <BottomNav />

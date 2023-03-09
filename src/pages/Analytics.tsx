@@ -104,9 +104,9 @@ export default function Analytics() {
           </GenericDialog>
         </Box>
         {isLoading ? (
-          <Box mt={'150px'}>
-          <MboxSpinner />
-          </Box>
+          <>
+            <MboxSpinner />
+          </>
         ) : (
           <>
             <AnalyticCard
