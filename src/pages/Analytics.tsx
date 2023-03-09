@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css";
 import AnalyticCard from "../components/analytic-card";
-import { Box, Button, Skeleton, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, useDisclosure } from "@chakra-ui/react";
 import { FcMoneyTransfer } from "react-icons/fc";
 import { RiExchangeBoxLine } from "react-icons/ri";
 import { IoPricetagsOutline } from "react-icons/io5";

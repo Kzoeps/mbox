@@ -1,9 +1,8 @@
 import {
-  AnalyticsRecord,
   AnalyticsRecordTrack,
   NavItem,
   PhoneSignUpForm,
-  RecordsColumn,
+  RecordsColumn
 } from "../types/misc.types";
 import dayjs from "dayjs";
 

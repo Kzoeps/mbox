@@ -1,10 +1,6 @@
 import {
-  createContext,
-  Dispatch,
-  MutableRefObject,
-  SetStateAction,
-  useRef,
-  useState,
+  createContext, MutableRefObject, useRef,
+  useState
 } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase.config";
