@@ -41,6 +41,7 @@ export interface RecordsColumn {
   format?: (value: Date) => string;
 }
 
+
 export interface RecordData extends BaseRecordInfo {
   id: string;
   phoneNumber: number;
@@ -115,6 +116,12 @@ export interface SignUpForm {
   password: string;
 }
 
+export interface Analytics {
+  highestTransaction: WithId<MboxRecord>;
+  totalTransactions: number;
+  totalAmount: number;
+}
+
 export interface AnalyticsRecord {
   date: Date;
   total: number;
@@ -127,5 +134,7 @@ export interface AnalyticsRecordTrack {
   highestDailyTxn: number;
   highestMonthlyTxn: number;
 }
+
+export type WithId<T> = {id: string} & T;
 
 export type AnalyticsRecordAction = AnalyticsRecordTrack & BaseReducerAction;

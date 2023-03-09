@@ -10,6 +10,7 @@ import {
   query,
   setDoc,
   startAfter,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { toBase64 } from "../utils/misc.utils";
@@ -82,6 +83,12 @@ export const getPaymentInfo = async (uid: string) => {
   return await getDoc(docRef);
 };
 
+export const queryRecordsByDate = async (start: Date, endDate: Date, uid: string) => {
+  const recordsRef = collection(db, uid);
+  const recordsQuery = query(recordsRef, where('date', '>=', start), where('date', '<=', endDate));
+  return await getDocs(recordsQuery);
+}
+/*
 export const getTodaysTotal = async (date: Dayjs, uid: string) => {
   const docRef = doc(
     db,
@@ -92,7 +99,6 @@ export const getTodaysTotal = async (date: Dayjs, uid: string) => {
   );
   return await getDoc(docRef);
 };
-/*
 export const getThisMonthsTotal = async (date: Dayjs, uid: string) => {
 	const docRef = doc(db, uid, "Analytics", date.year().toString(), date.month().toString());
 	return await getDoc(docRef);

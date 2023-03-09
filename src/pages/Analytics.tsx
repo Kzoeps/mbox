@@ -2,17 +2,20 @@ import { useContext, useEffect, useState } from "react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css";
 import AnalyticCard from "../components/analytic-card";
-import { Box, Button, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Skeleton, useDisclosure } from "@chakra-ui/react";
 import { FcMoneyTransfer } from "react-icons/fc";
 import { RiExchangeBoxLine } from "react-icons/ri";
 import { IoPricetagsOutline } from "react-icons/io5";
 import { DateRange } from "react-date-range";
 import { UserContext } from "../components/user-context";
-import { getTodaysTotal } from "../api/misc.api";
 import dayjs from "dayjs";
 import GenericDialog from "../components/generic-dialog";
 import { DateFormats } from "../types/enums";
 import { AiOutlineCalendar } from "react-icons/ai";
+import { queryRecordsByDate } from "../api/misc.api";
+import { extractAnalytics } from "../utils/misc.utils";
+import { Analytics as AnalyticsRecord } from "../types/misc.types";
+import MboxSpinner from "../components/spinner";
 
 const getDisplayDate = (start?: Date, end?: Date): string => {
   const startString = start
@@ -24,29 +27,41 @@ const getDisplayDate = (start?: Date, end?: Date): string => {
   return `${startString}  -  ${endString}`;
 };
 
+const getDateRange = (start: Date, end: Date): string => {
+  return `${dayjs(start).format(DateFormats.BoxDateDisplay)} -- ${dayjs(
+    end
+  ).format(DateFormats.BoxDateDisplay)}`;
+};
+
 export default function Analytics() {
   const { user } = useContext(UserContext);
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const [finalDate, setFinalDate] = useState<string>(getDisplayDate());
-  const [dateRange, setDateRange] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
+  const initDateRange = {
+    startDate: dayjs().startOf("D").toDate(),
+    endDate: new Date(),
+    key: "selection",
+  };
+  const [analytics, setAnalytics] = useState<AnalyticsRecord>();
+  const [finalDate, setFinalDate] = useState(initDateRange);
+  const [dateRange, setDateRange] = useState([initDateRange]);
 
   const onDatesUpdate = async () => {
-    setFinalDate(getDisplayDate(dateRange[0].startDate, dateRange[0].endDate));
+    setFinalDate(dateRange[0]);
     onClose();
   };
   useEffect(() => {
     if (user?.uid) {
-      getTodaysTotal(dayjs(), user?.uid).then((data) => {
-        console.log(data);
-      });
+      const setMeta = async () => {
+        const snapshot = await queryRecordsByDate(
+          finalDate.startDate,
+          finalDate.endDate,
+          user?.uid
+        );
+        setAnalytics(extractAnalytics(snapshot));
+      };
+      setMeta();
     }
-  }, [user?.uid]);
+  }, [user?.uid, finalDate]);
 
   return (
     <>
@@ -67,7 +82,7 @@ export default function Analytics() {
             onClick={onOpen}
             variant="outline"
           >
-            {finalDate}
+            {getDisplayDate(finalDate.startDate, finalDate.endDate)}
           </Button>
           <GenericDialog
             onConfirm={onDatesUpdate}
@@ -75,6 +90,7 @@ export default function Analytics() {
             onClose={onClose}
           >
             <DateRange
+              maxDate={new Date()}
               showDateDisplay={false}
               editableDateInputs={true}
               /* @ts-ignore */
@@ -86,25 +102,28 @@ export default function Analytics() {
         </Box>
         <AnalyticCard
           title="Total transaction amount"
-          amount="Nu. 130,000"
-          date="Feb 1st - Feb 28th"
+          amount={`Nu. ${analytics?.totalAmount?.toLocaleString("en-US") || 0}`}
+          date={getDateRange(finalDate.startDate, finalDate.endDate)}
         >
           <FcMoneyTransfer size="2em" color="orange" />
         </AnalyticCard>
         <AnalyticCard
           title="Number of transactions"
-          amount="4000"
-          date="Feb 1st - Feb 28th"
+          amount={`${analytics?.totalTransactions || 0}`}
+          date={getDateRange(finalDate.startDate, finalDate.endDate)}
         >
           <RiExchangeBoxLine size="2em" color="orange" />
         </AnalyticCard>
         <AnalyticCard
           title="Highest transaction amount"
-          amount="Nu. 8000"
-          date="Feb 1st - Feb 28th"
+          amount={`Nu. ${analytics?.highestTransaction?.amount || 0}`}
+          date={`${dayjs(analytics?.highestTransaction?.date).format(
+            DateFormats.BoxDateDisplay
+          )}`}
         >
           <IoPricetagsOutline size="2em" color="orange" />
         </AnalyticCard>
+        <MboxSpinner/>
       </Box>
     </>
   );

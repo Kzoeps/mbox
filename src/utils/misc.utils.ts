@@ -1,10 +1,13 @@
 import { QuerySnapshot } from "@firebase/firestore-types";
 import { getRecords } from "../api/misc.api";
 import {
+  Analytics,
   ExtractedOCRData,
+  MboxRecord,
   SegregatedDateTime,
   TrialProfile,
   VisionOCRData,
+  WithId,
 } from "../types/misc.types";
 import dayjs, { Dayjs } from "dayjs";
 import { findBestMatch } from "string-similarity";
@@ -16,6 +19,11 @@ const datifyRecords = (records: any[]) => {
     date: record?.date?.toDate(),
   }));
 };
+
+export const numberFi = (num: number | string) => {
+  if (isNaN(+num)) return 0;
+  return +num;
+}
 
 export const toBase64 = (file: File) =>
   new Promise((resolve, reject) => {
@@ -161,6 +169,29 @@ export const getStringiDate = (date: Dayjs | undefined): string => {
     ? date.format(DateFormats.CalendarDate)
     : dayjs().format(DateFormats.CalendarDate);
 };
+export const compileRecordsData = (snapshot: any): WithId<MboxRecord>[] => {
+  const records: WithId<MboxRecord>[] = []
+  snapshot.forEach((doc: any) => {
+    let record = {
+      id: doc.id,
+      ...doc.data()
+    };
+    record.date = record.date.toDate();
+    records.push(record);
+  });
+  return records
+}
+
+export const extractAnalytics = (snapshot: any): Analytics => {
+  const records = compileRecordsData(snapshot);
+  const totalAmount = records.reduce((accumulator, record) => numberFi(record.amount) + accumulator, 0)
+  const totalTransactions = records.length;
+  const amounts = records.map(({amount}) => numberFi(amount));
+  // get the records of highest transaction by first getting the max and then index of max and finally the record itself
+  const highestTransaction = records[amounts.indexOf(Math.max.apply(null, amounts))];
+  return {highestTransaction, totalTransactions, totalAmount};
+}
+
 
 /*
 * FROM PREVIOUS TRIALS OF TRYING TO FIND INFO 
