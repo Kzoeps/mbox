@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 
 export type LoaderWrapper = (...args: any[]) => Promise<any> | any;
@@ -13,7 +13,7 @@ export const useLoaderHook = (): UseLoaderHook => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const toast = useToast();
 
-  const wrapperBhai = (
+  const wrapperBhai = useCallback((
     functionCall: LoaderWrapper,
     showToast = false,
     successMessage = "Success"
@@ -44,7 +44,7 @@ export const useLoaderHook = (): UseLoaderHook => {
       return result;
     };
     return nestedFunc;
-  };
+  }, [toast]);
   return {
     isLoading,
     setIsLoading,

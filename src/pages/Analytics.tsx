@@ -16,6 +16,7 @@ import { queryRecordsByDate } from "../api/misc.api";
 import { extractAnalytics } from "../utils/misc.utils";
 import { Analytics as AnalyticsRecord } from "../types/misc.types";
 import MboxSpinner from "../components/spinner";
+import useLoaderHook from "../hooks/useLoaderHook";
 
 const getDisplayDate = (start?: Date, end?: Date): string => {
   const startString = start
@@ -41,6 +42,7 @@ export default function Analytics() {
     endDate: new Date(),
     key: "selection",
   };
+  const { wrapperBhai, isLoading } = useLoaderHook();
   const [analytics, setAnalytics] = useState<AnalyticsRecord>();
   const [finalDate, setFinalDate] = useState(initDateRange);
   const [dateRange, setDateRange] = useState([initDateRange]);
@@ -59,9 +61,10 @@ export default function Analytics() {
         );
         setAnalytics(extractAnalytics(snapshot));
       };
-      setMeta();
+      const wrapped = wrapperBhai(setMeta);
+      wrapped();
     }
-  }, [user?.uid, finalDate]);
+  }, [user?.uid, wrapperBhai, finalDate]);
 
   return (
     <>
@@ -100,30 +103,39 @@ export default function Analytics() {
             />
           </GenericDialog>
         </Box>
-        <AnalyticCard
-          title="Total transaction amount"
-          amount={`Nu. ${analytics?.totalAmount?.toLocaleString("en-US") || 0}`}
-          date={getDateRange(finalDate.startDate, finalDate.endDate)}
-        >
-          <FcMoneyTransfer size="2em" color="orange" />
-        </AnalyticCard>
-        <AnalyticCard
-          title="Number of transactions"
-          amount={`${analytics?.totalTransactions || 0}`}
-          date={getDateRange(finalDate.startDate, finalDate.endDate)}
-        >
-          <RiExchangeBoxLine size="2em" color="orange" />
-        </AnalyticCard>
-        <AnalyticCard
-          title="Highest transaction amount"
-          amount={`Nu. ${analytics?.highestTransaction?.amount || 0}`}
-          date={`${dayjs(analytics?.highestTransaction?.date).format(
-            DateFormats.BoxDateDisplay
-          )}`}
-        >
-          <IoPricetagsOutline size="2em" color="orange" />
-        </AnalyticCard>
-        <MboxSpinner/>
+        {isLoading ? (
+          <Box mt={'150px'}>
+          <MboxSpinner />
+          </Box>
+        ) : (
+          <>
+            <AnalyticCard
+              title="Total transaction amount"
+              amount={`Nu. ${
+                analytics?.totalAmount?.toLocaleString("en-US") || 0
+              }`}
+              date={getDateRange(finalDate.startDate, finalDate.endDate)}
+            >
+              <FcMoneyTransfer size="2em" color="orange" />
+            </AnalyticCard>
+            <AnalyticCard
+              title="Number of transactions"
+              amount={`${analytics?.totalTransactions || 0}`}
+              date={getDateRange(finalDate.startDate, finalDate.endDate)}
+            >
+              <RiExchangeBoxLine size="2em" color="orange" />
+            </AnalyticCard>
+            <AnalyticCard
+              title="Highest transaction amount"
+              amount={`Nu. ${analytics?.highestTransaction?.amount || 0}`}
+              date={`${dayjs(analytics?.highestTransaction?.date).format(
+                DateFormats.BoxDateDisplay
+              )}`}
+            >
+              <IoPricetagsOutline size="2em" color="orange" />
+            </AnalyticCard>
+          </>
+        )}
       </Box>
     </>
   );
