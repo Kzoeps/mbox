@@ -24,6 +24,8 @@ import {
   ThemeProvider,
   createTheme,
 } from "@mui/material";
+import BillingRow from "../components/record-row";
+import RecordsTable from "../components/records-table";
 
 export interface RecordListingProps {}
 
@@ -173,15 +175,16 @@ export const RecordListing = (props: RecordListingProps) => {
   };
   return (
     <>
-      <ThemeProvider theme={muiTheme}>
-        <StickyHeadTable
+      {/* <ThemeProvider theme={muiTheme}> */}
+        <RecordsTable/>
+        {/* <StickyHeadTable
           isLoadingData={isLoading}
           totalRecords={totalCount}
           handleChangePage={handlePageChange}
           handleRowsChange={handleRowsChange}
           records={records}
-        />
-      </ThemeProvider>
+        /> */}
+      {/* </ThemeProvider> */}
     </>
   );
 };
