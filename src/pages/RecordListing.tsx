@@ -19,13 +19,11 @@ import { getRecordsTrackInfo } from "../api/misc.api";
 import { RECORDS_COLUMNS } from "../constants/misc.constants";
 import { getFormattedRecords } from "../utils/misc.utils";
 import useLoaderHook from "../hooks/useLoaderHook";
-import {
-  Box,
-  CircularProgress
-} from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import RecordsTable from "../components/records-table";
 import { DateFormats } from "../types/enums";
 import dayjs from "dayjs";
+import { useToast } from "@chakra-ui/react";
 
 export interface RecordListingProps {}
 
@@ -121,6 +119,7 @@ export function StickyHeadTable(props: StickyHeadTableProps) {
 
 export const RecordListing = (props: RecordListingProps) => {
   const [records, setRecords] = useState<RecordsTableData[]>([]);
+  const toast = useToast();
   const [totalCount, setTotalCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const visitedPages = React.useRef<Set<number>>(new Set([1]));
@@ -128,52 +127,69 @@ export const RecordListing = (props: RecordListingProps) => {
   const { isLoading, setIsLoading } = useLoaderHook();
   const [lastRecord, setLastRecord] = useState<any>(undefined);
   const { user } = useContext(UserContext);
+useEffect(() => {
+  console.log(isLoading)
+}, [isLoading])
+
   useEffect(() => {
     const getTotalCount = async (): Promise<number> => {
-      if (user?.uid) {
-        const recordsSnap = await getRecordsTrackInfo(user?.uid);
-        const recordsCount = recordsSnap.data()?.recordsCount ?? 0;
-        setTotalCount(recordsSnap.data()?.recordsCount ?? 0);
-        return recordsCount;
-      }
-      return 0;
+      const recordsSnap = await getRecordsTrackInfo(user?.uid);
+      const recordsCount = recordsSnap.data()?.recordsCount ?? 0;
+      setTotalCount(recordsSnap.data()?.recordsCount ?? 0);
+      return recordsCount;
     };
     const getAndSaveRecords = async (): Promise<void> => {
-      if (user?.uid) {
-        const { lastVisibleRecord, data }: FormattedRecordsResponse =
-          await getFormattedRecords(user.uid);
-        setLastRecord(lastVisibleRecord);
-        setRecords(formatRecords(data));
-      }
+      const { lastVisibleRecord, data }: FormattedRecordsResponse =
+        await getFormattedRecords(user.uid);
+      setLastRecord(lastVisibleRecord);
+      setRecords(formatRecords(data));
     };
     setIsLoading(true);
-    getTotalCount()
-      .then(() => {
-        void getAndSaveRecords();
-      })
-      .finally(() => setIsLoading(false));
+    if (user?.uid) {
+      getTotalCount().then(() => {
+        getAndSaveRecords()
+          .then((data) => {
+            console.log(data);
+          })
+          .finally(() => {setIsLoading(false)});
+      });
+    }
   }, [user?.uid, setIsLoading]);
-  
+
   const formatRecords = (records: RecordData[]): RecordsTableData[] => {
     return records.map((record) => ({
       ...record,
-      date: dayjs(record.date).format(DateFormats.ListingDisplay), 
-      amount:  `Nu. ${record.amount}`,
+      date: dayjs(record.date).format(DateFormats.ListingDisplay),
+      amount: `Nu. ${record.amount}`,
       phoneNumber: record.phoneNumber.toString(),
-    }))
-  }
+    }));
+  };
 
-  const handlePageChange = async (_: React.MouseEvent, page: number): Promise<void> => {
-    if (user?.uid && !visitedPages.current.has(page)) {
-      const { data, lastVisibleRecord }: FormattedRecordsResponse =
-        await getFormattedRecords(user.uid, rowsPerPage, lastRecord);
-      setRecords((records) => [...records, ...formatRecords(data)]);
-      setLastRecord(lastVisibleRecord);
-      visitedPages.current.add(page);
+  const handlePageChange = async (
+    _: React.MouseEvent,
+    page: number
+  ): Promise<void> => {
+    try {
+      setIsLoading(true);
+      if (user?.uid && !visitedPages.current.has(page)) {
+        const { data, lastVisibleRecord }: FormattedRecordsResponse =
+          await getFormattedRecords(user.uid, rowsPerPage, lastRecord);
+        setRecords((records) => [...records, ...formatRecords(data)]);
+        setLastRecord(lastVisibleRecord);
+        visitedPages.current.add(page);
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        status: "error",
+      });
+      console.log(error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
-  
   const handleRowsChange = async (_: React.MouseEvent, rowsPerPage: number) => {
     setRowsPerPage(rowsPerPage);
     if (user?.uid) {
@@ -187,16 +203,12 @@ export const RecordListing = (props: RecordListingProps) => {
   };
   return (
     <>
-      {/* <ThemeProvider theme={muiTheme}> */}
-        <RecordsTable data={records} count={totalCount} handlePageChange={handlePageChange}/>
-        {/* <StickyHeadTable
-          isLoadingData={isLoading}
-          totalRecords={totalCount}
-          handleChangePage={handlePageChange}
-          handleRowsChange={handleRowsChange}
-          records={records}
-        /> */}
-      {/* </ThemeProvider> */}
+      <RecordsTable
+        data={records}
+        isLoading={isLoading}
+        count={totalCount}
+        handlePageChange={handlePageChange}
+      />
     </>
   );
 };

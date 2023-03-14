@@ -15,15 +15,17 @@ import styles from "./records-table.module.css";
 import { useState, Fragment } from "react";
 import Pagination from "./pagination";
 import { RecordsTableData } from "../types/misc.types";
+import MboxSpinner from "./spinner";
 
 interface RecordsTableProps {
   data: RecordsTableData[];
   count: number;
+  isLoading: boolean;
   handlePageChange: (Event: React.MouseEvent, page: number) => void;
 }
 
 export default function RecordsTable(props: RecordsTableProps) {
-  const { data, count, handlePageChange } = props;
+  const { data, count, isLoading, handlePageChange } = props;
   const [openRows, setOpenRows] = useState<Record<string, boolean>>({});
   const [page, setPage] = useState(1);
   const giveBorder = (id: string | number) => {
@@ -97,6 +99,8 @@ export default function RecordsTable(props: RecordsTableProps) {
             </Tbody>
           </Table>
         </TableContainer>
+
+      {isLoading && <MboxSpinner top="50%"/>}
       </Box>
     </>
   );
