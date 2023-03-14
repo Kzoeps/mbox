@@ -9,74 +9,40 @@ import {
   TableCaption,
   TableContainer,
   Box,
-  IconButton,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import styles from "./records-table.module.css";
 import { useState, Fragment } from "react";
 import Pagination from "./pagination";
+import { RecordsTableData } from "../types/misc.types";
 
-interface RecordsTableData {
-  jrnlNumber: string;
-  id: string;
-  amount: string;
-  date: string;
-  remarks: string;
-  phoneNumber: string;
+interface RecordsTableProps {
+  data: RecordsTableData[];
+  count: number;
+  handlePageChange: (Event: React.MouseEvent, page: number) => void;
 }
-interface RecordsTableProps {}
-const data: RecordsTableData[] = [
-  {
-    jrnlNumber: "1238023",
-    id: "1",
-    amount: "Nu. 245,000",
-    date: "March 23 2023",
-    remarks: "Seed",
-    phoneNumber: "+97517553422",
-  }, // make more data
-  {
-    jrnlNumber: "1238023",
-    id: "2",
-    amount: "Nu. 245,000",
-    date: "March 23 2023",
-    remarks: "Seed",
-    phoneNumber: "+97517553422",
-  },
-  {
-    jrnlNumber: "1238023",
-    id: "3",
-    amount: "Nu. 245,000",
-    date: "March 23 2023",
-    remarks: "Seed",
-    phoneNumber: "+97517553422",
-  },
-  {
-    jrnlNumber: "1238023",
-    id: "4",
-    amount: "Nu. 245,000",
-    date: "March 23 2023",
-    remarks: "Seed",
-    phoneNumber: "+97517553422",
-  },
-  {
-    jrnlNumber: "1238023",
-    id: "5",
-    amount: "Nu. 245,000",
-    date: "March 23 2023",
-    remarks: "Seed",
-    phoneNumber: "+97517553422",
-  },
-];
 
 export default function RecordsTable(props: RecordsTableProps) {
+  const { data, count, handlePageChange } = props;
   const [openRows, setOpenRows] = useState<Record<string, boolean>>({});
   const [page, setPage] = useState(1);
-  const giveBorder = (id: string) => {
+  const giveBorder = (id: string | number) => {
     return openRows[id] ? styles.noBorder : "";
   };
-  const handleNext = (event: React.MouseEvent, page: number) => {
+  const setPageChange = (_: React.MouseEvent, page: number) => {
     setPage(page);
+    handlePageChange(_, page);
+  };
+
+  const spliceRecords = (records: RecordsTableData[], page: number) => {
+    const startIndex = (page-1) * 10;
+    const endIndex = startIndex + 10;
+    return records.slice(startIndex, endIndex);
+  };
+
+  const emptyRows = () => {
+    const rows = 10 - spliceRecords(data, page).length;
+    return rows;
   }
   return (
     <>
@@ -85,25 +51,12 @@ export default function RecordsTable(props: RecordsTableProps) {
         <TableContainer>
           <Table>
             <TableCaption>
-              <Pagination count={30} rowsPerPage={10} onChangePage={handleNext} currentPage={page}/>
-              {/* <Box
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"space-between"}
-                gap="20px"
-                alignContent={"flex-end"}
-              >
-                <Box flex={"1 1 100%"} />
-                <Text>1-10 of 21</Text>
-                <Box
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                  gap="8px"
-                >
-                  <IconButton isRound colorScheme="transparent" aria-label={"Go to previous page"} icon={<FaChevronLeft size="13px" color="rgba(0, 0, 0, 0.64)"/>} />
-                  <IconButton isRound colorScheme="transparent" aria-label={"Go to next page"} icon={<FaChevronRight size="13px" color="rgba(0, 0, 0, 0.64)"/>} />
-                </Box>
-              </Box> */}
+              <Pagination
+                count={count}
+                rowsPerPage={10}
+                onChangePage={setPageChange}
+                currentPage={page}
+              />
             </TableCaption>
             <Thead>
               <Tr>
@@ -113,15 +66,15 @@ export default function RecordsTable(props: RecordsTableProps) {
               </Tr>
             </Thead>
             <Tbody>
-              {data.map(
-                ({ id, amount, jrnlNumber, ...item }: RecordsTableData) => (
+              {spliceRecords(data, page).map(
+                ({ id, amount, journalNumber, ...item }: RecordsTableData) => (
                   <Fragment key={id}>
                     <Tr
                       onClick={() => {
                         setOpenRows({ ...openRows, [id]: !openRows[id] });
                       }}
                     >
-                      <Td className={giveBorder(id)}>{jrnlNumber}</Td>
+                      <Td className={giveBorder(id)}>{journalNumber}</Td>
                       <Td className={giveBorder(id)}>{amount}</Td>
                       <Td className={giveBorder(id)}>
                         {openRows[id] ? <BsChevronUp /> : <BsChevronDown />}
@@ -140,6 +93,7 @@ export default function RecordsTable(props: RecordsTableProps) {
                   </Fragment>
                 )
               )}
+              {!!emptyRows() && <Tr height={52*emptyRows()}><Td colSpan={3}></Td></Tr>}
             </Tbody>
           </Table>
         </TableContainer>

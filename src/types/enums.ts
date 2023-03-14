@@ -8,6 +8,7 @@ export enum PrimaryInfo {
 export enum DateFormats {
   Date = "DD MMM YYYY",
   DisplayDate = "DD/MMM/YYYY",
+  ListingDisplay = "MMM DD, YYYY",
   BoxDateDisplay = "MMM DD",
   CalendarDate = "YYYY-MM-DD",
   DateTime = "DD MMM YYYY HH:mm:ss",

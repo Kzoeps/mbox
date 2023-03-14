@@ -135,6 +135,15 @@ export interface AnalyticsRecordTrack {
   highestMonthlyTxn: number;
 }
 
+export interface RecordsTableData {
+  journalNumber: string | number;
+  id: string | number;
+  amount: string;
+  date: string;
+  remarks: string;
+  phoneNumber: string;
+}
+
 export type WithId<T> = {id: string} & T;
 
 export type AnalyticsRecordAction = AnalyticsRecordTrack & BaseReducerAction;

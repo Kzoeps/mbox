@@ -11,6 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import {
   FormattedRecordsResponse,
   RecordData,
+  RecordsTableData,
   StickyHeadTableProps,
 } from "../types/misc.types";
 import { UserContext } from "../components/user-context";
@@ -20,12 +21,11 @@ import { getFormattedRecords } from "../utils/misc.utils";
 import useLoaderHook from "../hooks/useLoaderHook";
 import {
   Box,
-  CircularProgress,
-  ThemeProvider,
-  createTheme,
+  CircularProgress
 } from "@mui/material";
-import BillingRow from "../components/record-row";
 import RecordsTable from "../components/records-table";
+import { DateFormats } from "../types/enums";
+import dayjs from "dayjs";
 
 export interface RecordListingProps {}
 
@@ -120,14 +120,14 @@ export function StickyHeadTable(props: StickyHeadTableProps) {
 }
 
 export const RecordListing = (props: RecordListingProps) => {
-  const [records, setRecords] = useState<RecordData[]>([]);
+  const [records, setRecords] = useState<RecordsTableData[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const visitedPages = React.useRef<Set<number>>(new Set([1]));
   // setting last record since firebase actually needs the exact same document for querying
   const { isLoading, setIsLoading } = useLoaderHook();
   const [lastRecord, setLastRecord] = useState<any>(undefined);
   const { user } = useContext(UserContext);
-  const muiTheme = createTheme({});
   useEffect(() => {
     const getTotalCount = async (): Promise<number> => {
       if (user?.uid) {
@@ -143,7 +143,7 @@ export const RecordListing = (props: RecordListingProps) => {
         const { lastVisibleRecord, data }: FormattedRecordsResponse =
           await getFormattedRecords(user.uid);
         setLastRecord(lastVisibleRecord);
-        setRecords(data);
+        setRecords(formatRecords(data));
       }
     };
     setIsLoading(true);
@@ -153,16 +153,28 @@ export const RecordListing = (props: RecordListingProps) => {
       })
       .finally(() => setIsLoading(false));
   }, [user?.uid, setIsLoading]);
+  
+  const formatRecords = (records: RecordData[]): RecordsTableData[] => {
+    return records.map((record) => ({
+      ...record,
+      date: dayjs(record.date).format(DateFormats.ListingDisplay), 
+      amount:  `Nu. ${record.amount}`,
+      phoneNumber: record.phoneNumber.toString(),
+    }))
+  }
 
-  const handlePageChange = async (page: number): Promise<void> => {
-    if (user?.uid) {
+  const handlePageChange = async (_: React.MouseEvent, page: number): Promise<void> => {
+    if (user?.uid && !visitedPages.current.has(page)) {
       const { data, lastVisibleRecord }: FormattedRecordsResponse =
         await getFormattedRecords(user.uid, rowsPerPage, lastRecord);
-      setRecords((records) => [...records, ...data]);
+      setRecords((records) => [...records, ...formatRecords(data)]);
       setLastRecord(lastVisibleRecord);
+      visitedPages.current.add(page);
     }
   };
-  const handleRowsChange = async (rowsPerPage: number) => {
+
+  
+  const handleRowsChange = async (_: React.MouseEvent, rowsPerPage: number) => {
     setRowsPerPage(rowsPerPage);
     if (user?.uid) {
       const { data, lastVisibleRecord } = await getFormattedRecords(
@@ -176,7 +188,7 @@ export const RecordListing = (props: RecordListingProps) => {
   return (
     <>
       {/* <ThemeProvider theme={muiTheme}> */}
-        <RecordsTable/>
+        <RecordsTable data={records} count={totalCount} handlePageChange={handlePageChange}/>
         {/* <StickyHeadTable
           isLoadingData={isLoading}
           totalRecords={totalCount}
