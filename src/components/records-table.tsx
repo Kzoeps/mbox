@@ -9,10 +9,13 @@ import {
   TableCaption,
   TableContainer,
   Box,
+  IconButton,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import styles from "./records-table.module.css";
 import { useState, Fragment } from "react";
+import Pagination from "./pagination";
 
 interface RecordsTableData {
   jrnlNumber: string;
@@ -68,16 +71,40 @@ const data: RecordsTableData[] = [
 
 export default function RecordsTable(props: RecordsTableProps) {
   const [openRows, setOpenRows] = useState<Record<string, boolean>>({});
+  const [page, setPage] = useState(1);
   const giveBorder = (id: string) => {
     return openRows[id] ? styles.noBorder : "";
   };
+  const handleNext = (event: React.MouseEvent, page: number) => {
+    setPage(page);
+  }
   return (
     <>
       <Box height="10px" maxW={"400px"} bg="orange.300" m={"10px"} mt="55px" />
       <Box borderRadius="lg" boxShadow={"base"} m="10px">
         <TableContainer>
           <Table>
-            <TableCaption>Records table</TableCaption>
+            <TableCaption>
+              <Pagination count={30} rowsPerPage={10} onChangePage={handleNext} currentPage={page}/>
+              {/* <Box
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                gap="20px"
+                alignContent={"flex-end"}
+              >
+                <Box flex={"1 1 100%"} />
+                <Text>1-10 of 21</Text>
+                <Box
+                  display={"flex"}
+                  justifyContent={"space-between"}
+                  gap="8px"
+                >
+                  <IconButton isRound colorScheme="transparent" aria-label={"Go to previous page"} icon={<FaChevronLeft size="13px" color="rgba(0, 0, 0, 0.64)"/>} />
+                  <IconButton isRound colorScheme="transparent" aria-label={"Go to next page"} icon={<FaChevronRight size="13px" color="rgba(0, 0, 0, 0.64)"/>} />
+                </Box>
+              </Box> */}
+            </TableCaption>
             <Thead>
               <Tr>
                 <Th>Jrnl No.</Th>
