@@ -48,7 +48,7 @@ export default function RecordsTable(props: RecordsTableProps) {
   }
   return (
     <>
-      <Box height="10px" maxW={"400px"} bg="orange.300" m={"10px"} mt="55px" />
+      <Box height="10px" maxW={"400px"} bg="orange.300" m={"10px"} mt="45px" />
       <Box borderRadius="lg" boxShadow={"base"} m="10px">
         <TableContainer>
           <Table>

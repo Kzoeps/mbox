@@ -160,7 +160,7 @@ useEffect(() => {
     return records.map((record) => ({
       ...record,
       date: dayjs(record.date).format(DateFormats.ListingDisplay),
-      amount: `Nu. ${record.amount}`,
+      amount: `Nu. ${!Number.isNaN(+record.amount) ? (+record.amount).toLocaleString() : record.amount }`,
       phoneNumber: record.phoneNumber.toString(),
     }));
   };
