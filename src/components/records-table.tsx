@@ -8,6 +8,7 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  Image,
   Box,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
@@ -16,6 +17,7 @@ import React, { useState, Fragment } from "react";
 import Pagination from "./pagination";
 import { RecordsTableData } from "../types/misc.types";
 import MboxSpinner from "./spinner";
+import empty from "../assets/images/empty-min.png";
 
 interface RecordsTableProps {
   data: RecordsTableData[];
@@ -63,6 +65,12 @@ export default function RecordsTable(props: RecordsTableProps) {
               </Tr>
             </Thead>
             <Tbody>
+              {data.length <= 0 && !isLoading && <Tr height={52*10}>
+                <Td colSpan={3} textAlign={'center'} className={styles.noBorder}>
+                  <Image loading="lazy"  maxW={250} margin={"auto"} src={empty} alt="no data" />
+                  <Text mt={5}>No data found</Text>
+                </Td>
+              </Tr>}
               {spliceRecords(data, page).map(
                 ({ id, amount, journalNumber, ...item }: RecordsTableData) => (
                   <Fragment key={id}>
@@ -90,7 +98,7 @@ export default function RecordsTable(props: RecordsTableProps) {
                   </Fragment>
                 )
               )}
-              {!!emptyRows(data, page) && (
+              {(!!emptyRows(data, page) && (data.length > 0 || isLoading)) && (
                 <Tr height={52 * emptyRows(data, page)}>
                   <Td colSpan={3}></Td>
                 </Tr>
@@ -131,6 +139,23 @@ export const BigRecordsTable = (props: RecordsTableProps) => {
               </Tr>
             </Thead>
             <Tbody>
+              {!isLoading && data.length <= 0 && (
+                <Tr height={52 * 10}>
+                  <Td
+                    colSpan={5}
+                    textAlign={"center"}
+                    className={styles.noBorder}
+                  >
+                    <Image
+                      maxW={250}
+                      margin={"auto"}
+                      src={empty}
+                      alt="no data"
+                    />
+                    <Text mt={5}>No data found</Text>
+                  </Td>
+                </Tr>
+              )}
               {spliceRecords(data, page).map((record) => (
                 <Tr key={record.id}>
                   <Td>{record.journalNumber}</Td>
@@ -140,7 +165,7 @@ export const BigRecordsTable = (props: RecordsTableProps) => {
                   <Td>{record.remarks}</Td>
                 </Tr>
               ))}
-              {!!emptyRows(data, page) && (
+              {!!emptyRows(data, page) && data.length !== 0 && (
                 <Tr height={52 * emptyRows(data, page)}>
                   <Td colSpan={3}></Td>
                 </Tr>
