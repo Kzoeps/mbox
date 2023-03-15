@@ -144,8 +144,7 @@ export const RecordListing = (props: RecordListingProps) => {
     if (user?.uid) {
       getTotalCount().then(() => {
         getAndSaveRecords()
-          .then((data) => {
-            console.log(data);
+          .then(() => {
           })
           .finally(() => {
             setIsLoading(false);
