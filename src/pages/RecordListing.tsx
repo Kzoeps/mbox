@@ -21,7 +21,7 @@ import useDateFilterFetch from "../hooks/useDateFilterFetch";
 export interface RecordListingProps {}
 
 export const RecordListing = (props: RecordListingProps) => {
-  const [records, setRecords] = useState<RecordsTableData[]>([]);
+  const [records, setRecords] = useState<RecordData[]>([]);
   const isLargerThan800 = useMediaQuery("(min-width:800px)");
   const { isLoading, setIsLoading, wrapperBhai } = useLoaderHook();
   const { user } = useContext(UserContext);
@@ -41,7 +41,7 @@ export const RecordListing = (props: RecordListingProps) => {
     const { lastVisibleRecord, data }: FormattedRecordsResponse =
       await getFormattedRecords(user.uid);
     setLastRecord(lastVisibleRecord);
-    setRecords(formatRecords(data));
+    setRecords(data);
   },[user?.uid])
 
   useEffect(() => {
@@ -88,7 +88,7 @@ export const RecordListing = (props: RecordListingProps) => {
           const { lastVisibleRecord, data }: FormattedRecordsResponse =
             await getFormattedRecords(user.uid, 10, lastRecord);
           setLastRecord(lastVisibleRecord);
-          setRecords((records) => [...records, ...formatRecords(data)]);
+          setRecords((records) => [...records, ...data]);
         }
         visitedPages.current.add(page);
       }
@@ -110,7 +110,7 @@ export const RecordListing = (props: RecordListingProps) => {
       dayjs(endDate).endOf("D").toDate()
     );
     if (result) {
-      setRecords(result.data);
+      setRecords(result.data as RecordData[]);
       setTotalCount(result.data.length);
     }
   };
@@ -137,17 +137,6 @@ export const RecordListing = (props: RecordListingProps) => {
     setIsFilterOn(filterStatus);
   }
 
-  // const handleRowsChange = async (_: React.MouseEvent, rowsPerPage: number) => {
-  //   setRowsPerPage(rowsPerPage);
-  //   if (user?.uid) {
-  //     const { data, lastVisibleRecord } = await getFormattedRecords(
-  //       user.uid,
-  //       rowsPerPage
-  //     );
-  //     setRecords(data);
-  //     setLastRecord(lastVisibleRecord);
-  //   }
-  // };
   return (
     <>
       <DateFilter
@@ -164,20 +153,20 @@ export const RecordListing = (props: RecordListingProps) => {
           colorScheme="orange"
           borderColor="orange"
           ml="10px"
-          mr="10px"
+          mr="20px"
         />
       </DateFilter>
       {isLargerThan800 ? (
         <BigRecordsTable
           handlePageChange={handlePageChange}
-          data={records}
+          data={formatRecords(records)}
           isLoading={isLoading}
           currentPage={currentPage}
           count={totalCount}
         />
       ) : (
         <RecordsTable
-          data={records}
+          data={formatRecords(records)}
           currentPage={currentPage}
           isLoading={isLoading}
           count={totalCount}
