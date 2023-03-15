@@ -2,10 +2,10 @@ import React from "react";
 import styles from "./spinner.module.css";
 
 interface MboxSpinnerProps {
-  top?: `${number}%}`;
+  top?: `${number}%`;
 }
 
-export default function MboxSpinner({ top = '180%'}) {
+export default function MboxSpinner({ top = '180%'}: MboxSpinnerProps) {
   return (
     <div className={styles.spinner} style={{top}}>
       <div className={`${styles.blob} ${styles.top}`}></div>

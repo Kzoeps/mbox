@@ -192,21 +192,26 @@ export const RecordListing = (props: RecordListingProps) => {
     }
   };
 
-  const handleRowsChange = async (_: React.MouseEvent, rowsPerPage: number) => {
-    setRowsPerPage(rowsPerPage);
-    if (user?.uid) {
-      const { data, lastVisibleRecord } = await getFormattedRecords(
-        user.uid,
-        rowsPerPage
-      );
-      setRecords(data);
-      setLastRecord(lastVisibleRecord);
-    }
-  };
+  // const handleRowsChange = async (_: React.MouseEvent, rowsPerPage: number) => {
+  //   setRowsPerPage(rowsPerPage);
+  //   if (user?.uid) {
+  //     const { data, lastVisibleRecord } = await getFormattedRecords(
+  //       user.uid,
+  //       rowsPerPage
+  //     );
+  //     setRecords(data);
+  //     setLastRecord(lastVisibleRecord);
+  //   }
+  // };
   return (
     <>
       {isLargerThan800 ? (
-        <BigRecordsTable handlePageChange={handlePageChange} data={records} isLoading={isLoading} count={totalCount} />
+        <BigRecordsTable
+          handlePageChange={handlePageChange}
+          data={records}
+          isLoading={isLoading}
+          count={totalCount}
+        />
       ) : (
         <RecordsTable
           data={records}

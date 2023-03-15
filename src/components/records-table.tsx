@@ -110,7 +110,7 @@ export default function RecordsTable(props: RecordsTableProps) {
 }
 
 export const BigRecordsTable = (props: RecordsTableProps) => {
-  const {handlePageChange, data, count, isLoading } = props;
+  const { handlePageChange, data, count, isLoading } = props;
   const [page, setPage] = useState(1);
   const setPageChange = (_: React.MouseEvent, page: number) => {
     setPage(page);
@@ -146,13 +146,13 @@ export const BigRecordsTable = (props: RecordsTableProps) => {
                   <Td>{record.date}</Td>
                   <Td>{record.phoneNumber}</Td>
                   <Td>{record.remarks}</Td>
-                  </Tr>
+                </Tr>
               ))}
               {!!emptyRows(data, page) && (
                 <Tr height={52 * emptyRows(data, page)}>
                   <Td colSpan={3}></Td>
                 </Tr>
-              )}              
+              )}
             </Tbody>
           </Table>
         </TableContainer>
