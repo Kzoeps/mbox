@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Checkbox } from "@chakra-ui/react";
 import React, { useState } from "react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css";
@@ -18,6 +18,7 @@ interface DateFilterProps {
   onConfirm: (param: DateRangeType) => void;
   isOpen: boolean;
   onClose: () => void;
+  children?: React.ReactNode;
 }  
 export const getDisplayDate = (start?: Date, end?: Date): string => {
   const startString = start
@@ -47,6 +48,7 @@ export default function DateFilter(props: DateFilterProps) {
         display={"flex"}
         justifyContent={"space-between"}
       >
+        {!!props.children && props.children}
         <Button
           w={"full"}
           rightIcon={<AiOutlineCalendar />}

@@ -14,7 +14,7 @@ import { useMediaQuery } from "@mui/material";
 import RecordsTable, { BigRecordsTable } from "../components/records-table";
 import { DateFormats } from "../types/enums";
 import dayjs from "dayjs";
-import { useDisclosure, useToast } from "@chakra-ui/react";
+import { Checkbox, useDisclosure, useToast } from "@chakra-ui/react";
 import DateFilter, { getDisplayDate } from "../components/date-filter";
 import useDateFilterFetch from "../hooks/useDateFilterFetch";
 
@@ -23,7 +23,7 @@ export interface RecordListingProps {}
 export const RecordListing = (props: RecordListingProps) => {
   const [records, setRecords] = useState<RecordsTableData[]>([]);
   const isLargerThan800 = useMediaQuery("(min-width:800px)");
-  const { isLoading, setIsLoading } = useLoaderHook();
+  const { isLoading, setIsLoading, wrapperBhai } = useLoaderHook();
   const { user } = useContext(UserContext);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { dateRange, setDateRange, getFilteredRecords } = useDateFilterFetch({
@@ -33,10 +33,16 @@ export const RecordListing = (props: RecordListingProps) => {
   const visitedPages = React.useRef<Set<number>>(new Set([1]));
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setPage] = useState(1);
-  const [isFilterOn, setIsFilterOn] = useState(true);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [isFilterOn, setIsFilterOn] = useState(false);
   // setting last record since firebase actually needs the exact same document for querying
   const [lastRecord, setLastRecord] = useState<any>(undefined);
+
+  const getAndSaveRecords = React.useCallback(async (): Promise<void> => {
+    const { lastVisibleRecord, data }: FormattedRecordsResponse =
+      await getFormattedRecords(user.uid);
+    setLastRecord(lastVisibleRecord);
+    setRecords(formatRecords(data));
+  },[user?.uid])
 
   useEffect(() => {
     const getTotalCount = async (): Promise<number> => {
@@ -44,12 +50,6 @@ export const RecordListing = (props: RecordListingProps) => {
       const recordsCount = recordsSnap.data()?.recordsCount ?? 0;
       setTotalCount(recordsSnap.data()?.recordsCount ?? 0);
       return recordsCount;
-    };
-    const getAndSaveRecords = async (): Promise<void> => {
-      const { lastVisibleRecord, data }: FormattedRecordsResponse =
-        await getFormattedRecords(user.uid);
-      setLastRecord(lastVisibleRecord);
-      setRecords(formatRecords(data));
     };
     setIsLoading(true);
     if (user?.uid) {
@@ -61,7 +61,7 @@ export const RecordListing = (props: RecordListingProps) => {
           });
       });
     }
-  }, [user?.uid, setIsLoading]);
+  }, [user?.uid, getAndSaveRecords, setIsLoading]);
 
   const formatRecords = (records: RecordData[]): RecordsTableData[] => {
     return records.map((record) => ({
@@ -104,27 +104,38 @@ export const RecordListing = (props: RecordListingProps) => {
     }
   };
 
-  const queryFilteredRecords = async (
-    startDate: Date,
-    endDate: Date,
-  ) => {
-      const result = await getFilteredRecords(
-        dayjs(startDate).startOf("D").toDate(),
-        dayjs(endDate).endOf("D").toDate(),
-      );
-      if (result) {
-        setRecords(result.data);
-        setTotalCount(result.data.length);
-      }
+  const queryFilteredRecords = async (startDate: Date, endDate: Date) => {
+    const result = await getFilteredRecords(
+      dayjs(startDate).startOf("D").toDate(),
+      dayjs(endDate).endOf("D").toDate()
+    );
+    if (result) {
+      setRecords(result.data);
+      setTotalCount(result.data.length);
+    }
   };
 
   const onFiltration = async (dateRange: DateRangeType) => {
+    setIsFilterOn(true);
     setDateRange(dateRange);
     setPage(1);
     queryFilteredRecords(dateRange.startDate, dateRange.endDate);
     visitedPages.current = new Set([1]);
     onClose();
   };
+
+  const handleCheckBoxChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const filterStatus = !!e.target.checked;
+    if (filterStatus) {
+      let wrapped = wrapperBhai(onFiltration);
+      await wrapped(dateRange);
+    } else {
+      getAndSaveRecords();
+      setPage(1);
+      visitedPages.current= new Set([1]);
+    }
+    setIsFilterOn(filterStatus);
+  }
 
   // const handleRowsChange = async (_: React.MouseEvent, rowsPerPage: number) => {
   //   setRowsPerPage(rowsPerPage);
@@ -145,7 +156,17 @@ export const RecordListing = (props: RecordListingProps) => {
         onConfirm={onFiltration}
         isOpen={isOpen}
         onClose={onClose}
-      />
+      >
+        <Checkbox
+          checked={isFilterOn}
+          onChange={handleCheckBoxChange}
+          size="lg"
+          colorScheme="orange"
+          borderColor="orange"
+          ml="10px"
+          mr="10px"
+        />
+      </DateFilter>
       {isLargerThan800 ? (
         <BigRecordsTable
           handlePageChange={handlePageChange}
