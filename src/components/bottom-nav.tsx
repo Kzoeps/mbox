@@ -26,6 +26,7 @@ export const BottomNav = (props: BottomNavProps) => {
   }
   return (
     <>
+      <div style={{marginBottom: '80px'}}/>
       <div className={styles.bottomNav}>
         <Tabs
           onChange={(index) => navigate(INDEX_LOCATION[index])}

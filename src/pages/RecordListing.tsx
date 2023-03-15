@@ -31,6 +31,7 @@ export const RecordListing = (props: RecordListingProps) => {
   });
   const toast = useToast();
   const visitedPages = React.useRef<Set<number>>(new Set([1]));
+  const [totalUnfilteredCount, setTotalUnfilteredCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setPage] = useState(1);
   const [isFilterOn, setIsFilterOn] = useState(false);
@@ -48,6 +49,7 @@ export const RecordListing = (props: RecordListingProps) => {
     const getTotalCount = async (): Promise<number> => {
       const recordsSnap = await getRecordsTrackInfo(user?.uid);
       const recordsCount = recordsSnap.data()?.recordsCount ?? 0;
+      setTotalUnfilteredCount(recordsSnap.data()?.recordsCount ?? 0);
       setTotalCount(recordsSnap.data()?.recordsCount ?? 0);
       return recordsCount;
     };
@@ -131,6 +133,7 @@ export const RecordListing = (props: RecordListingProps) => {
       await wrapped(dateRange);
     } else {
       getAndSaveRecords();
+      setTotalCount(totalUnfilteredCount);
       setPage(1);
       visitedPages.current= new Set([1]);
     }
@@ -147,7 +150,7 @@ export const RecordListing = (props: RecordListingProps) => {
         onClose={onClose}
       >
         <Checkbox
-          checked={isFilterOn}
+          isChecked={isFilterOn}
           onChange={handleCheckBoxChange}
           size="lg"
           colorScheme="orange"
