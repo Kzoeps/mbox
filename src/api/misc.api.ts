@@ -16,6 +16,7 @@ import { db } from "../firebase.config";
 import { toBase64 } from "../utils/misc.utils";
 import axios from "axios";
 import dayjs from "dayjs";
+import { Maybe } from "../utils/util.types";
 
 export const readScreenShot = async (image: File) => {
   const base64 = await toBase64(image);
@@ -82,10 +83,22 @@ export const getPaymentInfo = async (uid: string) => {
   return await getDoc(docRef);
 };
 
-export const queryRecordsByDate = async (start: Date, endDate: Date, uid: string) => {
+export const queryRecordsByDate = async (start: Date, endDate: Date, uid: string, cap?: number, lastDoc?: any) => {
   const recordsRef = collection(db, uid);
-  const recordsQuery = query(recordsRef, where('date', '>=', start), where('date', '<=', endDate));
+  const recordsQuery = getRecordsQuery(recordsRef, start, endDate, cap, lastDoc); 
   return await getDocs(recordsQuery);
+}
+
+const getRecordsQuery = (ref: any, start: Date, end: Date, cap?: number, lastDoc?: any) => {
+  if (cap != null && !!lastDoc) {
+    return query(ref, where('date', '>=', start), where('date', '<=', end), limit(cap), startAfter(lastDoc), orderBy('date', 'desc'));
+  } else if (cap == null && !lastDoc) {
+    return query(ref, where('date', '>=', start), where('date', '<=', end), orderBy('date', 'desc'));
+  } else if  (cap != null && !lastDoc) {
+    return query(ref, where('date', '>=', start), where('date', '<=', end), limit(cap), orderBy('date', 'desc'));
+  } else {
+    return query(ref, where('date', '>=', start), where('date', '<=', end), startAfter(lastDoc), orderBy('date', 'desc'));
+  }
 }
 /*
 export const getTodaysTotal = async (date: Dayjs, uid: string) => {

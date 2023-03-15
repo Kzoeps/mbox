@@ -4,7 +4,7 @@ import {
   DateRangeType,
   FormattedRecordsResponse,
   RecordData,
-  RecordsTableData
+  RecordsTableData,
 } from "../types/misc.types";
 import { UserContext } from "../components/user-context";
 import { getRecordsTrackInfo } from "../api/misc.api";
@@ -20,17 +20,19 @@ import useDateFilterFetch from "../hooks/useDateFilterFetch";
 
 export interface RecordListingProps {}
 
-
 export const RecordListing = (props: RecordListingProps) => {
   const [records, setRecords] = useState<RecordsTableData[]>([]);
   const isLargerThan800 = useMediaQuery("(min-width:800px)");
   const { isLoading, setIsLoading } = useLoaderHook();
   const { user } = useContext(UserContext);
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const {dateRange, setDateRange, getFilteredRecords} = useDateFilterFetch({uid: user?.uid});
+  const { dateRange, setDateRange, getFilteredRecords } = useDateFilterFetch({
+    uid: user?.uid,
+  });
   const toast = useToast();
   const visitedPages = React.useRef<Set<number>>(new Set([1]));
   const [totalCount, setTotalCount] = useState(0);
+  const [isFilterOn, setIsFilterOn] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   // setting last record since firebase actually needs the exact same document for querying
   const [lastRecord, setLastRecord] = useState<any>(undefined);
@@ -52,16 +54,13 @@ export const RecordListing = (props: RecordListingProps) => {
     if (user?.uid) {
       getTotalCount().then(() => {
         getAndSaveRecords()
-          .then(() => {
-          })
+          .then(() => {})
           .finally(() => {
             setIsLoading(false);
           });
       });
     }
   }, [user?.uid, setIsLoading]);
-
-  
 
   const formatRecords = (records: RecordData[]): RecordsTableData[] => {
     return records.map((record) => ({
@@ -83,10 +82,12 @@ export const RecordListing = (props: RecordListingProps) => {
     try {
       setIsLoading(true);
       if (user?.uid && !visitedPages.current.has(page)) {
-        const { data, lastVisibleRecord }: FormattedRecordsResponse =
-          await getFormattedRecords(user.uid, rowsPerPage, lastRecord);
-        setRecords((records) => [...records, ...formatRecords(data)]);
-        setLastRecord(lastVisibleRecord);
+        if (!isFilterOn) {
+          const { lastVisibleRecord, data }: FormattedRecordsResponse =
+            await getFormattedRecords(user.uid, 10, lastRecord);
+          setLastRecord(lastVisibleRecord);
+          setRecords((records) => [...records, ...formatRecords(data)]);
+        }
         visitedPages.current.add(page);
       }
     } catch (error) {
@@ -101,10 +102,26 @@ export const RecordListing = (props: RecordListingProps) => {
     }
   };
 
+  const queryFilteredRecords = async (
+    startDate: Date,
+    endDate: Date,
+  ) => {
+      const result = await getFilteredRecords(
+        startDate,
+        endDate,
+      );
+      if (result) {
+        setRecords(result.data);
+        setTotalCount(result.data.length);
+      }
+  };
+
   const onFiltration = async (dateRange: DateRangeType) => {
-    console.log(dateRange);
+    setDateRange(dateRange);
+    queryFilteredRecords(dateRange.startDate, dateRange.endDate);
+    visitedPages.current = new Set([1]);
     onClose();
-  }
+  };
 
   // const handleRowsChange = async (_: React.MouseEvent, rowsPerPage: number) => {
   //   setRowsPerPage(rowsPerPage);
@@ -119,7 +136,13 @@ export const RecordListing = (props: RecordListingProps) => {
   // };
   return (
     <>
-      <DateFilter onButtonClick={onOpen} displayValue={getDisplayDate(new Date(), new Date())} onConfirm={onFiltration} isOpen={isOpen} onClose={onClose}/>
+      <DateFilter
+        onButtonClick={onOpen}
+        displayValue={getDisplayDate(dateRange.startDate, dateRange.endDate)}
+        onConfirm={onFiltration}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
       {isLargerThan800 ? (
         <BigRecordsTable
           handlePageChange={handlePageChange}
