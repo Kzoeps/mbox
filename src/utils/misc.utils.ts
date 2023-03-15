@@ -4,6 +4,7 @@ import {
   Analytics,
   ExtractedOCRData,
   MboxRecord,
+  RecordsTableData,
   SegregatedDateTime,
   TrialProfile,
   VisionOCRData,
@@ -169,6 +170,21 @@ export const getStringiDate = (date: Dayjs | undefined): string => {
     ? date.format(DateFormats.CalendarDate)
     : dayjs().format(DateFormats.CalendarDate);
 };
+
+export const getAmount = (amount: string): string => {
+  return +amount ? `Nu. ${numberFi(amount).toLocaleString()}` : amount;
+}
+
+export const formatRecords = (records: WithId<MboxRecord>[]): RecordsTableData[] => {
+  return records.map((record) => {
+    return {
+      ...record,
+      amount: `Nu. ${numberFi(record.amount)}`,
+      date: dayjs(record.date).format(DateFormats.CalendarDate),
+    };
+  }) as RecordsTableData[];
+}
+
 export const compileRecordsData = (snapshot: any): WithId<MboxRecord>[] => {
   const records: WithId<MboxRecord>[] = []
   snapshot.forEach((doc: any) => {

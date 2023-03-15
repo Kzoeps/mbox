@@ -37,7 +37,7 @@ export default function GenericDialog(props: GenericDialogProps) {
             <Button mr={3} onClick={onConfirm}>
               {okText}
             </Button>
-            <Button variant="outline">{cancelText}</Button>
+            <Button onClick={onClose} variant="outline">{cancelText}</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

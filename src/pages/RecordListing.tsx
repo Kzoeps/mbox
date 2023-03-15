@@ -13,8 +13,9 @@ import { useMediaQuery } from "@mui/material";
 import RecordsTable, { BigRecordsTable } from "../components/records-table";
 import { DateFormats } from "../types/enums";
 import dayjs from "dayjs";
-import { useToast } from "@chakra-ui/react";
+import { useDisclosure, useToast } from "@chakra-ui/react";
 import DateFilter, { getDisplayDate } from "../components/date-filter";
+import useDateFilterFetch from "../hooks/useDateFilterFetch";
 
 export interface RecordListingProps {}
 
@@ -22,14 +23,16 @@ export interface RecordListingProps {}
 export const RecordListing = (props: RecordListingProps) => {
   const [records, setRecords] = useState<RecordsTableData[]>([]);
   const isLargerThan800 = useMediaQuery("(min-width:800px)");
+  const { isLoading, setIsLoading } = useLoaderHook();
+  const { user } = useContext(UserContext);
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const {dateRange, setDateRange, getFilteredRecords} = useDateFilterFetch({uid: user?.uid});
   const toast = useToast();
+  const visitedPages = React.useRef<Set<number>>(new Set([1]));
   const [totalCount, setTotalCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const visitedPages = React.useRef<Set<number>>(new Set([1]));
   // setting last record since firebase actually needs the exact same document for querying
-  const { isLoading, setIsLoading } = useLoaderHook();
   const [lastRecord, setLastRecord] = useState<any>(undefined);
-  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const getTotalCount = async (): Promise<number> => {
@@ -56,6 +59,8 @@ export const RecordListing = (props: RecordListingProps) => {
       });
     }
   }, [user?.uid, setIsLoading]);
+
+  
 
   const formatRecords = (records: RecordData[]): RecordsTableData[] => {
     return records.map((record) => ({
@@ -108,13 +113,9 @@ export const RecordListing = (props: RecordListingProps) => {
   // };
   return (
     <>
-      <DateFilter onButtonClick={function (_: React.MouseEvent<Element, MouseEvent>): void {
+      <DateFilter onButtonClick={onOpen} displayValue={getDisplayDate(new Date(), new Date())} onConfirm={function (): void {
         throw new Error("Function not implemented.");
-      } } displayValue={getDisplayDate(new Date(), new Date())} onConfirm={function (): void {
-        throw new Error("Function not implemented.");
-      } } isOpen={false} onClose={function (): void {
-        throw new Error("Function not implemented.");
-      } }/>
+      } } isOpen={isOpen} onClose={onClose}/>
       {isLargerThan800 ? (
         <BigRecordsTable
           handlePageChange={handlePageChange}
