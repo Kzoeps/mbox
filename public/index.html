@@ -34,10 +34,106 @@
 		Learn how to configure a non-root public URL by running `npm run build`.
 	  -->
     <title>MBOX</title>
+    <style>
+      .spinner {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        top: 50%;
+        left: 50%;
+      }
+      .spinner .blob {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border: 2px solid #f88010;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .spinner .blob.top {
+        top: 0;
+        animation: blob-top 1s infinite ease-in;
+      }
+      .spinner .blob.bottom {
+        top: 100%;
+        animation: blob-bottom 1s infinite ease-in;
+      }
+      .spinner .blob.left {
+        left: 0;
+        animation: blob-left 1s infinite ease-in;
+      }
+      .spinner .move_blob {
+        background: #f88010;
+        top: 0;
+        animation: blob-spinner-mover 1s infinite ease-in;
+      }
+      @keyframes blob-bottom {
+        25%,
+        50%,
+        75% {
+          top: 50%;
+          left: 100%;
+        }
+        100% {
+          top: 0;
+          left: 50%;
+        }
+      }
+      @keyframes blob-left {
+        25% {
+          top: 50%;
+          left: 0;
+        }
+        50%,
+        100% {
+          top: 100%;
+          left: 50%;
+        }
+      }
+      @keyframes blob-top {
+        50% {
+          top: 0;
+          left: 50%;
+        }
+        75%,
+        100% {
+          top: 50%;
+          left: 0;
+        }
+      }
+      @keyframes blob-spinner-mover {
+        0%,
+        100% {
+          top: 0;
+          left: 50%;
+        }
+        25% {
+          top: 50%;
+          left: 100%;
+        }
+        50% {
+          top: 100%;
+          left: 50%;
+        }
+        75% {
+          top: 50%;
+          left: 0;
+        }
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <div id="app-loader">
+      <div class="spinner">
+        <div class="blob top"></div>
+        <div class="blob bottom"></div>
+        <div class="blob left"></div>
+        <div class="blob move_blob"></div>
+      </div>
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

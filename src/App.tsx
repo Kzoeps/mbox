@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -30,6 +30,10 @@ function ChakraProvided(props: { children: ReactNode }) {
 }
 
 function App() {
+  useEffect(() => {
+    document.getElementById("app-loader")?.remove();
+  },[])
+
   return (
     <UserContextProvider>
       <BrowserRouter>
