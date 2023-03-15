@@ -208,6 +208,15 @@ export const extractAnalytics = (snapshot: any): Analytics => {
   return {highestTransaction, totalTransactions, totalAmount};
 }
 
+export const getDisplayDate = (start?: Date, end?: Date): string => {
+  const startString = start
+    ? dayjs(start).format(DateFormats.DisplayDate)
+    : dayjs().format(DateFormats.DisplayDate);
+  const endString = end
+    ? dayjs(end).format(DateFormats.DisplayDate)
+    : dayjs().format(DateFormats.DisplayDate);
+  return `${startString}  -  ${endString}`;
+}
 
 /*
 * FROM PREVIOUS TRIALS OF TRYING TO FIND INFO 

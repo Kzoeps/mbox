@@ -8,15 +8,15 @@ import {
 } from "../types/misc.types";
 import { UserContext } from "../components/user-context";
 import { getRecordsTrackInfo } from "../api/misc.api";
-import { getFormattedRecords } from "../utils/misc.utils";
+import { getDisplayDate, getFormattedRecords } from "../utils/misc.utils";
 import useLoaderHook from "../hooks/useLoaderHook";
 import { useMediaQuery } from "@mui/material";
 import RecordsTable, { BigRecordsTable } from "../components/records-table";
 import { DateFormats } from "../types/enums";
 import dayjs from "dayjs";
 import { Checkbox, useDisclosure, useToast } from "@chakra-ui/react";
-import DateFilter, { getDisplayDate } from "../components/date-filter";
 import useDateFilterFetch from "../hooks/useDateFilterFetch";
+import DateFilter from '../components/date-filter'
 
 export interface RecordListingProps {}
 

@@ -2,14 +2,13 @@ import { Box, Button } from "@chakra-ui/react";
 import React, { useState } from "react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css";
-import { DateRange } from "react-date-range";
 import { AiOutlineCalendar } from "react-icons/ai";
 import GenericDialog from "./generic-dialog";
-import dayjs from "dayjs";
-import { DateFormats } from "../types/enums";
 import { DateRangeType } from "../types/misc.types";
 import { INIT_DATE_RANGE } from "../constants/misc.constants";
+import { withSuspense } from "./suspense-wrapper";
 
+const DateRangeA = withSuspense(React.lazy(() => import("react-date-range").then((module) => ({ default: module.DateRange }))));
 
 
 interface DateFilterProps {
@@ -20,16 +19,6 @@ interface DateFilterProps {
   onClose: () => void;
   children?: React.ReactNode;
 }  
-export const getDisplayDate = (start?: Date, end?: Date): string => {
-  const startString = start
-    ? dayjs(start).format(DateFormats.DisplayDate)
-    : dayjs().format(DateFormats.DisplayDate);
-  const endString = end
-    ? dayjs(end).format(DateFormats.DisplayDate)
-    : dayjs().format(DateFormats.DisplayDate);
-  return `${startString}  -  ${endString}`;
-}
-
 export default function DateFilter(props: DateFilterProps) {
   const [dateRange, setDateRange] = useState([{...INIT_DATE_RANGE}]);
   const { onButtonClick, displayValue, isOpen, onClose, onConfirm } = props;
@@ -58,7 +47,7 @@ export default function DateFilter(props: DateFilterProps) {
           {displayValue}
         </Button>
         <GenericDialog onConfirm={appenOnConfirm} isOpen={isOpen} onClose={onClose}>
-          <DateRange
+          <DateRangeA
             maxDate={new Date()}
             showDateDisplay={false}
             editableDateInputs={true}
