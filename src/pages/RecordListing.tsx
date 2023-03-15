@@ -32,6 +32,7 @@ export const RecordListing = (props: RecordListingProps) => {
   const toast = useToast();
   const visitedPages = React.useRef<Set<number>>(new Set([1]));
   const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setPage] = useState(1);
   const [isFilterOn, setIsFilterOn] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   // setting last record since firebase actually needs the exact same document for querying
@@ -81,6 +82,7 @@ export const RecordListing = (props: RecordListingProps) => {
   ): Promise<void> => {
     try {
       setIsLoading(true);
+      setPage(page);
       if (user?.uid && !visitedPages.current.has(page)) {
         if (!isFilterOn) {
           const { lastVisibleRecord, data }: FormattedRecordsResponse =
@@ -118,6 +120,7 @@ export const RecordListing = (props: RecordListingProps) => {
 
   const onFiltration = async (dateRange: DateRangeType) => {
     setDateRange(dateRange);
+    setPage(1);
     queryFilteredRecords(dateRange.startDate, dateRange.endDate);
     visitedPages.current = new Set([1]);
     onClose();
@@ -148,11 +151,13 @@ export const RecordListing = (props: RecordListingProps) => {
           handlePageChange={handlePageChange}
           data={records}
           isLoading={isLoading}
+          currentPage={currentPage}
           count={totalCount}
         />
       ) : (
         <RecordsTable
           data={records}
+          currentPage={currentPage}
           isLoading={isLoading}
           count={totalCount}
           handlePageChange={handlePageChange}

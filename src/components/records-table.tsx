@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import styles from "./records-table.module.css";
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, Dispatch, SetStateAction } from "react";
 import Pagination from "./pagination";
 import { RecordsTableData } from "../types/misc.types";
 import MboxSpinner from "./spinner";
@@ -20,6 +20,7 @@ import MboxSpinner from "./spinner";
 interface RecordsTableProps {
   data: RecordsTableData[];
   count: number;
+  currentPage: number;
   isLoading: boolean;
   handlePageChange: (Event: React.MouseEvent, page: number) => void;
 }
@@ -34,15 +35,10 @@ const emptyRows = (data: RecordsTableData[], page: number) => {
 };
 
 export default function RecordsTable(props: RecordsTableProps) {
-  const { data, count, isLoading, handlePageChange } = props;
+  const { data, currentPage: page, count, isLoading, handlePageChange } = props;
   const [openRows, setOpenRows] = useState<Record<string, boolean>>({});
-  const [page, setPage] = useState(1);
   const giveBorder = (id: string | number) => {
     return openRows[id] ? styles.noBorder : "";
-  };
-  const setPageChange = (_: React.MouseEvent, page: number) => {
-    setPage(page);
-    handlePageChange(_, page);
   };
 
   return (
@@ -55,7 +51,7 @@ export default function RecordsTable(props: RecordsTableProps) {
               <Pagination
                 count={count}
                 rowsPerPage={10}
-                onChangePage={setPageChange}
+                onChangePage={handlePageChange}
                 currentPage={page}
               />
             </TableCaption>
@@ -110,12 +106,8 @@ export default function RecordsTable(props: RecordsTableProps) {
 }
 
 export const BigRecordsTable = (props: RecordsTableProps) => {
-  const { handlePageChange, data, count, isLoading } = props;
-  const [page, setPage] = useState(1);
-  const setPageChange = (_: React.MouseEvent, page: number) => {
-    setPage(page);
-    handlePageChange(_, page);
-  };
+  const { handlePageChange, currentPage: page, data, count, isLoading } = props;
+
   return (
     <>
       <Box borderRadius="lg" boxShadow="base" m="70px" mt="40px">
@@ -125,7 +117,7 @@ export const BigRecordsTable = (props: RecordsTableProps) => {
               <Pagination
                 count={count}
                 rowsPerPage={10}
-                onChangePage={setPageChange}
+                onChangePage={handlePageChange}
                 currentPage={page}
               />
             </TableCaption>
