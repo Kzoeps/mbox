@@ -42,8 +42,8 @@ export default function Analytics() {
     if (user?.uid) {
       const setMeta = async () => {
         const snapshot = await queryRecordsByDate(
-          finalDate.startDate,
-          finalDate.endDate,
+          dayjs(finalDate.startDate).startOf("D").toDate(),
+          dayjs(finalDate.endDate).endOf("D").toDate(),
           user?.uid
         );
         setAnalytics(extractAnalytics(snapshot));

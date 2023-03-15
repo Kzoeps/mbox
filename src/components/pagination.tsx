@@ -14,7 +14,7 @@ export default function Pagination(props: PaginationProps) {
     const getCurrentDisplay = () => {
         const start = (currentPage - 1) * rpp;
         const end = start + rpp;
-        return `${start + 1}-${end > count ? count : end} of ${count}`;
+        return `${count === 0 ? start : start + 1}-${end > count ? count : end} of ${count}`;
     }
     const pageCount = Math.ceil(count / rpp);
   return (
@@ -32,7 +32,7 @@ export default function Pagination(props: PaginationProps) {
           <IconButton
             onClick={(event) => onChangePage(event, currentPage - 1)}
             isRound
-            disabled={currentPage === 1}
+            disabled={currentPage <= 1}
             colorScheme="transparent"
             aria-label={"Go to previous page"}
             icon={<FaChevronLeft size="13px" color="rgba(0, 0, 0, 0.64)" />}
@@ -40,7 +40,7 @@ export default function Pagination(props: PaginationProps) {
           <IconButton
             onClick={(event) => onChangePage(event, currentPage + 1)}
             isRound
-            disabled={currentPage === pageCount}
+            disabled={currentPage >= pageCount}
             colorScheme="transparent"
             aria-label={"Go to next page"}
             icon={<FaChevronRight size="13px" color="rgba(0, 0, 0, 0.64)" />}

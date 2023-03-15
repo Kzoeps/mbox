@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import styles from "./records-table.module.css";
-import React, { useState, Fragment, Dispatch, SetStateAction } from "react";
+import React, { useState, Fragment } from "react";
 import Pagination from "./pagination";
 import { RecordsTableData } from "../types/misc.types";
 import MboxSpinner from "./spinner";

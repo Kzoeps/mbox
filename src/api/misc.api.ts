@@ -16,7 +16,6 @@ import { db } from "../firebase.config";
 import { toBase64 } from "../utils/misc.utils";
 import axios from "axios";
 import dayjs from "dayjs";
-import { Maybe } from "../utils/util.types";
 
 export const readScreenShot = async (image: File) => {
   const base64 = await toBase64(image);

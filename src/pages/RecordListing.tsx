@@ -109,8 +109,8 @@ export const RecordListing = (props: RecordListingProps) => {
     endDate: Date,
   ) => {
       const result = await getFilteredRecords(
-        startDate,
-        endDate,
+        dayjs(startDate).startOf("D").toDate(),
+        dayjs(endDate).endOf("D").toDate(),
       );
       if (result) {
         setRecords(result.data);
