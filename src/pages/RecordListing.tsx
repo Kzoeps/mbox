@@ -19,8 +19,8 @@ import { getRecordsTrackInfo } from "../api/misc.api";
 import { RECORDS_COLUMNS } from "../constants/misc.constants";
 import { getFormattedRecords } from "../utils/misc.utils";
 import useLoaderHook from "../hooks/useLoaderHook";
-import { Box, CircularProgress } from "@mui/material";
-import RecordsTable from "../components/records-table";
+import { Box, CircularProgress, useMediaQuery } from "@mui/material";
+import RecordsTable, { BigRecordsTable } from "../components/records-table";
 import { DateFormats } from "../types/enums";
 import dayjs from "dayjs";
 import { useToast } from "@chakra-ui/react";
@@ -40,7 +40,7 @@ export function StickyHeadTable(props: StickyHeadTableProps) {
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
-    handlePageChange(newPage);
+    handlePageChange(event as React.MouseEvent, newPage);
   };
 
   const handleChangeRowsPerPage = (
@@ -49,7 +49,7 @@ export function StickyHeadTable(props: StickyHeadTableProps) {
     const rowsAmount = +event.target.value;
     setRowsPerPage(rowsAmount);
     setPage(0);
-    handleRowsChange(rowsAmount);
+    handleRowsChange(event as unknown as React.MouseEvent, rowsAmount);
   };
 
   return (
@@ -87,9 +87,7 @@ export function StickyHeadTable(props: StickyHeadTableProps) {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format && value instanceof Date
-                            ? column.format(value as Date)
-                            : (value as string)}
+                          {value}{" "}
                         </TableCell>
                       );
                     })}
@@ -119,6 +117,7 @@ export function StickyHeadTable(props: StickyHeadTableProps) {
 
 export const RecordListing = (props: RecordListingProps) => {
   const [records, setRecords] = useState<RecordsTableData[]>([]);
+  const isLargerThan800 = useMediaQuery("(min-width:800px)");
   const toast = useToast();
   const [totalCount, setTotalCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -127,9 +126,6 @@ export const RecordListing = (props: RecordListingProps) => {
   const { isLoading, setIsLoading } = useLoaderHook();
   const [lastRecord, setLastRecord] = useState<any>(undefined);
   const { user } = useContext(UserContext);
-useEffect(() => {
-  console.log(isLoading)
-}, [isLoading])
 
   useEffect(() => {
     const getTotalCount = async (): Promise<number> => {
@@ -151,7 +147,9 @@ useEffect(() => {
           .then((data) => {
             console.log(data);
           })
-          .finally(() => {setIsLoading(false)});
+          .finally(() => {
+            setIsLoading(false);
+          });
       });
     }
   }, [user?.uid, setIsLoading]);
@@ -160,7 +158,11 @@ useEffect(() => {
     return records.map((record) => ({
       ...record,
       date: dayjs(record.date).format(DateFormats.ListingDisplay),
-      amount: `Nu. ${!Number.isNaN(+record.amount) ? (+record.amount).toLocaleString() : record.amount }`,
+      amount: `Nu. ${
+        !Number.isNaN(+record.amount)
+          ? (+record.amount).toLocaleString()
+          : record.amount
+      }`,
       phoneNumber: record.phoneNumber.toString(),
     }));
   };
@@ -186,7 +188,7 @@ useEffect(() => {
       });
       console.log(error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -203,12 +205,16 @@ useEffect(() => {
   };
   return (
     <>
-      <RecordsTable
-        data={records}
-        isLoading={isLoading}
-        count={totalCount}
-        handlePageChange={handlePageChange}
-      />
+      {isLargerThan800 ? (
+        <BigRecordsTable handlePageChange={handlePageChange} data={records} isLoading={isLoading} count={totalCount} />
+      ) : (
+        <RecordsTable
+          data={records}
+          isLoading={isLoading}
+          count={totalCount}
+          handlePageChange={handlePageChange}
+        />
+      )}
     </>
   );
 };

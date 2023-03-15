@@ -56,9 +56,9 @@ export interface NavItem {
 }
 
 export interface StickyHeadTableProps {
-  handleChangePage: (page: number) => void;
-  handleRowsChange: (rowsPerPage: number) => void;
-  records: RecordData[];
+  handleChangePage: (event: React.MouseEvent, page: number) => void;
+  handleRowsChange: (event: React.MouseEvent, rowsPerPage: number) => void;
+  records: RecordsTableData[];
   totalRecords: number;
   isLoadingData: boolean;
 }
