@@ -1,119 +1,23 @@
 import * as React from "react";
 import { useContext, useEffect, useState } from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
 import {
   FormattedRecordsResponse,
   RecordData,
-  RecordsTableData,
-  StickyHeadTableProps,
+  RecordsTableData
 } from "../types/misc.types";
 import { UserContext } from "../components/user-context";
 import { getRecordsTrackInfo } from "../api/misc.api";
-import { RECORDS_COLUMNS } from "../constants/misc.constants";
 import { getFormattedRecords } from "../utils/misc.utils";
 import useLoaderHook from "../hooks/useLoaderHook";
-import { Box, CircularProgress, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import RecordsTable, { BigRecordsTable } from "../components/records-table";
 import { DateFormats } from "../types/enums";
 import dayjs from "dayjs";
 import { useToast } from "@chakra-ui/react";
+import DateFilter, { getDisplayDate } from "../components/date-filter";
 
 export interface RecordListingProps {}
 
-export function StickyHeadTable(props: StickyHeadTableProps) {
-  const {
-    totalRecords,
-    records,
-    handleChangePage: handlePageChange,
-    handleRowsChange,
-    isLoadingData,
-  } = props;
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-    handlePageChange(event as React.MouseEvent, newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const rowsAmount = +event.target.value;
-    setRowsPerPage(rowsAmount);
-    setPage(0);
-    handleRowsChange(event as unknown as React.MouseEvent, rowsAmount);
-  };
-
-  return (
-    <Paper
-      sx={{
-        width: "100%",
-        overflow: "hidden",
-        marginTop: "150px",
-        borderRadius: "10px",
-        boxShadow: "7px 7px 14px #a6a6a6,-7px -7px 14px #ffffff",
-      }}
-    >
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {RECORDS_COLUMNS.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {records
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                    {RECORDS_COLUMNS.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {value}{" "}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {isLoadingData && (
-        <Box width={"100%"} sx={{ display: "flex" }}>
-          <CircularProgress />
-        </Box>
-      )}
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={totalRecords}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
-  );
-}
 
 export const RecordListing = (props: RecordListingProps) => {
   const [records, setRecords] = useState<RecordsTableData[]>([]);
@@ -204,6 +108,13 @@ export const RecordListing = (props: RecordListingProps) => {
   // };
   return (
     <>
+      <DateFilter onButtonClick={function (_: React.MouseEvent<Element, MouseEvent>): void {
+        throw new Error("Function not implemented.");
+      } } displayValue={getDisplayDate(new Date(), new Date())} onConfirm={function (): void {
+        throw new Error("Function not implemented.");
+      } } isOpen={false} onClose={function (): void {
+        throw new Error("Function not implemented.");
+      } }/>
       {isLargerThan800 ? (
         <BigRecordsTable
           handlePageChange={handlePageChange}

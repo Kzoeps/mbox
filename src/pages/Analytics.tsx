@@ -2,21 +2,19 @@ import { useContext, useEffect, useState } from "react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css";
 import AnalyticCard from "../components/analytic-card";
-import { Box, Button, useDisclosure } from "@chakra-ui/react";
+import { Box, useDisclosure } from "@chakra-ui/react";
 import { FcMoneyTransfer } from "react-icons/fc";
 import { RiExchangeBoxLine } from "react-icons/ri";
 import { IoPricetagsOutline } from "react-icons/io5";
-import { DateRange } from "react-date-range";
 import { UserContext } from "../components/user-context";
 import dayjs from "dayjs";
-import GenericDialog from "../components/generic-dialog";
 import { DateFormats } from "../types/enums";
-import { AiOutlineCalendar } from "react-icons/ai";
 import { queryRecordsByDate } from "../api/misc.api";
 import { extractAnalytics } from "../utils/misc.utils";
 import { Analytics as AnalyticsRecord } from "../types/misc.types";
 import MboxSpinner from "../components/spinner";
 import useLoaderHook from "../hooks/useLoaderHook";
+import DateFilter, { DateRangeType } from "../components/date-filter";
 
 const getDisplayDate = (start?: Date, end?: Date): string => {
   const startString = start
@@ -45,10 +43,9 @@ export default function Analytics() {
   const { wrapperBhai, isLoading } = useLoaderHook();
   const [analytics, setAnalytics] = useState<AnalyticsRecord>();
   const [finalDate, setFinalDate] = useState(initDateRange);
-  const [dateRange, setDateRange] = useState([initDateRange]);
 
-  const onDatesUpdate = async () => {
-    setFinalDate(dateRange[0]);
+  const onDatesUpdate = async (range: DateRangeType) => {
+    setFinalDate(range);
     onClose();
   };
   useEffect(() => {
@@ -69,41 +66,8 @@ export default function Analytics() {
   return (
     <>
       <Box m={"auto"}>
-        <Box
-          m="auto"
-          maxW={"315px"}
-          bg={"gray.100"}
-          mt="20px"
-          p="10px"
-          borderRadius={"md"}
-          display={"flex"}
-          justifyContent={"space-between"}
-        >
-          <Button
-            w={"full"}
-            rightIcon={<AiOutlineCalendar />}
-            onClick={onOpen}
-            variant="outline"
-          >
-            {getDisplayDate(finalDate.startDate, finalDate.endDate)}
-          </Button>
-          <GenericDialog
-            onConfirm={onDatesUpdate}
-            isOpen={isOpen}
-            onClose={onClose}
-          >
-            <DateRange
-              maxDate={new Date()}
-              showDateDisplay={false}
-              editableDateInputs={true}
-              /* @ts-ignore */
-              onChange={(item) => setDateRange([item.selection])}
-              moveRangeOnFirstSelection={false}
-              ranges={dateRange}
-            />
-          </GenericDialog>
-        </Box>
-        {isLoading ? (
+        <DateFilter displayValue={getDisplayDate(finalDate.startDate, finalDate.endDate)} onButtonClick={onOpen} onConfirm={onDatesUpdate} onClose={onClose} isOpen={isOpen}/>
+                {isLoading ? (
           <>
             <MboxSpinner />
           </>
