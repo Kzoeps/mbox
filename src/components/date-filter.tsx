@@ -7,18 +7,8 @@ import { AiOutlineCalendar } from "react-icons/ai";
 import GenericDialog from "./generic-dialog";
 import dayjs from "dayjs";
 import { DateFormats } from "../types/enums";
-
-export interface DateRangeType {
-  startDate: Date;
-  endDate: Date;
-  key: string;
-}
-
-const INIT_DATE_RANGE: Readonly<DateRangeType>= {
-    startDate: dayjs().startOf("D").toDate(),
-    endDate: new Date(),
-    key: "selection",
-};
+import { DateRangeType } from "../types/misc.types";
+import { INIT_DATE_RANGE } from "../constants/misc.constants";
 
 
 

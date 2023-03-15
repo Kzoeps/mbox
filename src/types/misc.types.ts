@@ -147,3 +147,9 @@ export interface RecordsTableData {
 export type WithId<T> = {id: string} & T;
 
 export type AnalyticsRecordAction = AnalyticsRecordTrack & BaseReducerAction;
+
+export interface DateRangeType {
+  startDate: Date;
+  endDate: Date;
+  key: string;
+}

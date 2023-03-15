@@ -11,20 +11,10 @@ import dayjs from "dayjs";
 import { DateFormats } from "../types/enums";
 import { queryRecordsByDate } from "../api/misc.api";
 import { extractAnalytics } from "../utils/misc.utils";
-import { Analytics as AnalyticsRecord } from "../types/misc.types";
+import { Analytics as AnalyticsRecord, DateRangeType } from "../types/misc.types";
 import MboxSpinner from "../components/spinner";
 import useLoaderHook from "../hooks/useLoaderHook";
-import DateFilter, { DateRangeType } from "../components/date-filter";
-
-const getDisplayDate = (start?: Date, end?: Date): string => {
-  const startString = start
-    ? dayjs(start).format(DateFormats.DisplayDate)
-    : dayjs().format(DateFormats.DisplayDate);
-  const endString = end
-    ? dayjs(end).format(DateFormats.DisplayDate)
-    : dayjs().format(DateFormats.DisplayDate);
-  return `${startString}  -  ${endString}`;
-};
+import DateFilter, { getDisplayDate } from "../components/date-filter";
 
 const getDateRange = (start: Date, end: Date): string => {
   return `${dayjs(start).format(DateFormats.BoxDateDisplay)} -- ${dayjs(

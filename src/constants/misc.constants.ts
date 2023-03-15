@@ -1,5 +1,6 @@
 import {
   AnalyticsRecordTrack,
+  DateRangeType,
   NavItem,
   PhoneSignUpForm,
   RecordsColumn
@@ -93,3 +94,11 @@ export const INITIAL_ANALYTICS_REDUCER_ACTION: AnalyticsRecordTrack = {
   monthlyTotal: 0,
   dailyTotal: 0,
 };
+
+
+export const INIT_DATE_RANGE: Readonly<DateRangeType>= {
+    startDate: dayjs().startOf("D").toDate(),
+    endDate: new Date(),
+    key: "selection",
+};
+
