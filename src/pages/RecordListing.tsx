@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useContext, useEffect, useState } from "react";
 import {
+  DateRangeType,
   FormattedRecordsResponse,
   RecordData,
   RecordsTableData
@@ -100,6 +101,11 @@ export const RecordListing = (props: RecordListingProps) => {
     }
   };
 
+  const onFiltration = async (dateRange: DateRangeType) => {
+    console.log(dateRange);
+    onClose();
+  }
+
   // const handleRowsChange = async (_: React.MouseEvent, rowsPerPage: number) => {
   //   setRowsPerPage(rowsPerPage);
   //   if (user?.uid) {
@@ -113,9 +119,7 @@ export const RecordListing = (props: RecordListingProps) => {
   // };
   return (
     <>
-      <DateFilter onButtonClick={onOpen} displayValue={getDisplayDate(new Date(), new Date())} onConfirm={function (): void {
-        throw new Error("Function not implemented.");
-      } } isOpen={isOpen} onClose={onClose}/>
+      <DateFilter onButtonClick={onOpen} displayValue={getDisplayDate(new Date(), new Date())} onConfirm={onFiltration} isOpen={isOpen} onClose={onClose}/>
       {isLargerThan800 ? (
         <BigRecordsTable
           handlePageChange={handlePageChange}
