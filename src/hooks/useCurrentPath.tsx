@@ -6,6 +6,7 @@ const TabRoutes = [
   { path: "/dashboard" },
   { path: "/add-record" },
   { path: "/records" },
+  { path: "/capture" },
 ];
 
 export const useCurrentPath = (): string | undefined => {
