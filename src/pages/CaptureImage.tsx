@@ -6,6 +6,7 @@ export default function CaptureImage() {
   const onCapture = async (image: string) => {
     console.log(image);
     const rawText = await extractText(image);
+    console.log(rawText);
     const extractedData = extractOCRData(rawText);
     console.log(extractedData);
   }
