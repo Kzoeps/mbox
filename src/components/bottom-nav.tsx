@@ -17,12 +17,10 @@ export const BottomNav = (props: BottomNavProps) => {
   const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState<number>(0);
   useEffect(() => {
-    console.log(location)
     if (location) {
       setTabIndex(LOCATION_INDEX_MAP[location]);
     }
   }, [location]);
-  console.log(location);
   if (!user || location === '/capture' ) {
     return <></>;
   }

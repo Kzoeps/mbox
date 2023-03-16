@@ -9,6 +9,7 @@ import { IoCameraReverseOutline } from "react-icons/io5";
 export interface CameraViewProps {
   onCancel: () => void;
   onCapture: (image: string) => void;
+  pending: boolean
 }
 
 export default function CameraView(props: CameraViewProps) {
@@ -18,7 +19,7 @@ export default function CameraView(props: CameraViewProps) {
   const [isShot, setIsShot] = useState(false);
   const [isPicTaken, setIsPicTaken] = useState(false);
   const [error, setError] = useState<MediaDevicesError | undefined>(undefined);
-  const { onCancel, onCapture } = props;
+  const { onCancel, onCapture, pending } = props;
 
   const stopStreaming = useCallback(() => {
     if (camera.current && camera.current.srcObject) {
@@ -143,6 +144,7 @@ export default function CameraView(props: CameraViewProps) {
         <IconButton
           variant={"outline"}
           onClick={handleClose}
+          disabled={pending}
           icon={<MdOutlineClose />}
           colorScheme="orange"
           size={"sm"}
@@ -153,6 +155,7 @@ export default function CameraView(props: CameraViewProps) {
         <IconButton
           margin={{ base: "0 auto" }}
           onClick={captureImage}
+          disabled={pending}
           colorScheme="orange"
           size={"lg"}
           icon={<TbCapture size={"25px"} />}
@@ -161,6 +164,7 @@ export default function CameraView(props: CameraViewProps) {
         />
         <IconButton
           variant={"outline"}
+          disabled={pending}
           onClick={() =>
             setFacingMode(facingMode === "environment" ? "user" : "environment")
           }
