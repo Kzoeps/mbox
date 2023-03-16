@@ -6,12 +6,6 @@ import styles from "./camera.module.css";
 import { MediaDevicesError, MediaDevicesErrorMessages } from "../types/enums";
 import { IoCameraReverseOutline } from "react-icons/io5";
 
-const initConstraints = {
-  video: {
-    facingMode: "environment",
-  },
-};
-
 export default function CameraView() {
   const camera = useRef<HTMLVideoElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -30,13 +24,16 @@ export default function CameraView() {
 
   useEffect(() => {
     const getCamera = async () => {
+      console.log("df");
       try {
-        stopStreaming();
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
             facingMode,
           },
         });
+        if (camera.current && camera.current.srcObject) {
+          stopStreaming();
+        }
         if (camera.current) {
           camera.current.srcObject = stream;
         }
@@ -44,7 +41,10 @@ export default function CameraView() {
         setError(e.name);
       }
     };
-    getCamera();
+    camera?.current && getCamera();
+    return () => {
+      stopStreaming();
+    };
   }, [facingMode, stopStreaming]);
 
   const flash = () => {
@@ -91,7 +91,7 @@ export default function CameraView() {
   };
   return (
     <>
-      {
+      { 
         <video
           autoPlay
           ref={camera}
