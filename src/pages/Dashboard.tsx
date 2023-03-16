@@ -1,16 +1,10 @@
-import { ChangeEvent, useRef } from "react";
-import { Box, SimpleGrid, Spinner, useToast } from "@chakra-ui/react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import { TbCameraPlus } from "react-icons/tb";
 import { AiOutlineFileAdd } from "react-icons/ai";
 import { MdOutlineViewList } from "react-icons/md";
 import { GrAnalytics } from "react-icons/gr";
 import StatsCard from "../components/stats-card";
 import { useNavigate } from "react-router-dom";
-import useLoaderHook from "../hooks/useLoaderHook";
-import imageCompression from "browser-image-compression";
-import { IMAGE_COMPRESSION_OPTIONS } from "../constants/misc.constants";
-import { extractOCRData } from "../utils/misc.utils";
-import { readScreenShot } from "../api/misc.api";
 
 export interface DashboardProps {}
 
