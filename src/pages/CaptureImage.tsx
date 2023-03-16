@@ -4,6 +4,7 @@ import { extractOCRData } from "../utils/misc.utils";
 
 export default function CaptureImage() {
   const onCapture = async (image: string) => {
+    console.log(image);
     const rawText = await extractText(image);
     const extractedData = extractOCRData(rawText);
     console.log(extractedData);

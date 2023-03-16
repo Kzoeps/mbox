@@ -1,5 +1,5 @@
 import { Text, Box, IconButton } from "@chakra-ui/react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import { TbCapture } from "react-icons/tb";
 import styles from "./camera.module.css";
@@ -30,11 +30,12 @@ export default function CameraView(props: CameraViewProps) {
 
   useEffect(() => {
     const getCamera = async () => {
-      console.log("df");
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
             facingMode,
+            width: { ideal: 1280},
+            height: { ideal: 720}
           },
         });
         if (camera.current && camera.current.srcObject) {
@@ -52,6 +53,12 @@ export default function CameraView(props: CameraViewProps) {
       stopStreaming();
     };
   }, [facingMode, stopStreaming]);
+
+  useLayoutEffect(() => {
+    return () => {
+      stopStreaming();
+    }
+  },[stopStreaming])
 
   const flash = () => {
     setIsShot(true);
@@ -90,7 +97,7 @@ export default function CameraView(props: CameraViewProps) {
       setIsPicTaken(true);
       disableStreaming();
       flash();
-      onCapture(canvas.current.toDataURL("image/jpeg", 0.8));
+      onCapture(canvas.current.toDataURL("image/png"));
     } else {
       startStreaming();
       setIsPicTaken(false);
