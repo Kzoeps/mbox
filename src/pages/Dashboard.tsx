@@ -15,45 +15,45 @@ import { readScreenShot } from "../api/misc.api";
 export interface DashboardProps {}
 
 export const Dashboard = (props: DashboardProps) => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
-  const { isLoading, setIsLoading } = useLoaderHook();
-  const handleAdditionClick = async () => {
-    inputRef.current?.click();
-  };
-  const toast = useToast();
+  // const inputRef = useRef<HTMLInputElement | null>(null);
+  // const { isLoading, setIsLoading } = useLoaderHook();
 
-  const handleFileSelection = async (event: ChangeEvent<HTMLInputElement>) => {
-    const uploadedFile = event?.target?.files?.[0];
-    if (uploadedFile) {
-      try {
-        let compressedFile = (await imageCompression(
-          uploadedFile,
-          IMAGE_COMPRESSION_OPTIONS
-        )) as unknown as Blob;
-        compressedFile = new File([compressedFile], uploadedFile.name, {
-          type: compressedFile.type,
-        });
-        setIsLoading(true);
-        const rawText = await readScreenShot(compressedFile as File);
-        const extractedData = extractOCRData(rawText);
-        navigate("/add-record", {
-          state: extractedData,
-        });
-      } catch (e: any) {
-        toast({ title: e?.message || e, status: "error", isClosable: true });
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };
+  // const toast = useToast();
+  // const handleAdditionClick = async () => {
+    // inputRef.current?.click();
+  // };
+  // const handleFileSelection = async (event: ChangeEvent<HTMLInputElement>) => {
+  //   const uploadedFile = event?.target?.files?.[0];
+  //   if (uploadedFile) {
+  //     try {
+  //       let compressedFile = (await imageCompression(
+  //         uploadedFile,
+  //         IMAGE_COMPRESSION_OPTIONS
+  //       )) as unknown as Blob;
+  //       compressedFile = new File([compressedFile], uploadedFile.name, {
+  //         type: compressedFile.type,
+  //       });
+  //       setIsLoading(true);
+  //       const rawText = await readScreenShot(compressedFile as File);
+  //       const extractedData = extractOCRData(rawText);
+  //       navigate("/add-record", {
+  //         state: extractedData,
+  //       });
+  //     } catch (e: any) {
+  //       toast({ title: e?.message || e, status: "error", isClosable: true });
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  // };
 
   return (
     <>
       <Box maxW="7xl" mx={"auto"} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 5, lg: 8 }}>
           <StatsCard
-            onClick={() => navigate('/capture')}
+            onClick={() => navigate("/capture")}
             stat={"Capture Payment"}
             icon={<TbCameraPlus size={"3em"} />}
           />
@@ -72,7 +72,7 @@ export const Dashboard = (props: DashboardProps) => {
             stat={"Analytics"}
             icon={<GrAnalytics size={"3em"} />}
           />
-          <input
+          {/* <input
             onChange={handleFileSelection}
             ref={inputRef}
             style={{ display: "none" }}
@@ -91,7 +91,7 @@ export const Dashboard = (props: DashboardProps) => {
                 size="xl"
               />
             </div>
-          )}
+          )} */}
         </SimpleGrid>
       </Box>
     </>
