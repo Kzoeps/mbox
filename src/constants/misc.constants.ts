@@ -53,6 +53,7 @@ export const AUTHENTICATED_NAV_ITEMS: NavItem[] = [
     href: "/add-record",
   },
   { label: "Subscribe", href: "/subscribe" },
+  { label: "Analytics", href: "/analytics" },
   ...UNAUTHENTICATED_NAV_ITEMS,
 ];
 
