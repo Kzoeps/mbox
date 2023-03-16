@@ -24,6 +24,7 @@ const Pricing = withSuspense(React.lazy(() => import("./pages/Pricing")));
 const Demo = withSuspense(React.lazy(() => import("./pages/Demo")));
 const PhoneSignUp = withSuspense(React.lazy(() => import("./pages/Phone-Sign-Up")));
 const PhoneLogin = withSuspense(React.lazy(() => import("./pages/Phone-Login")));
+const CaptureImage = withSuspense(React.lazy(() => import("./pages/CaptureImage")));
 
 function ChakraProvided(props: { children: ReactNode }) {
   return <ChakraProvider theme={theme}>{props.children}</ChakraProvider>;
@@ -49,6 +50,7 @@ function App() {
               <Route path={"/sign-up"} element={<PhoneSignUp />} />
             </Route>
             <Route path={"/demo"} element={<Demo />} />
+            <Route path={"/capture"} element={<CaptureImage/>} />
             <Route path={"/dashboard"} element={<Dashboard />} />
             <Route path={"/add-record"} element={<RecordAddition />} />
             <Route path={"/subscribe"} element={<Payment />} />

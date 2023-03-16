@@ -7,7 +7,9 @@ export default function CameraView() {
     const isAvailable = "mediaDevices" in navigator;
     if (isAvailable) {
       navigator.mediaDevices
-        .getUserMedia({ video: true })
+        .getUserMedia({ video: {
+            facingMode: "environment",
+        }})
         .then((stream) => {
           if (camera.current) {
             camera.current.srcObject = stream;
@@ -27,7 +29,7 @@ export default function CameraView() {
         style={{
           maxWidth: "450px",
           width: "100%",
-          maxHeight: "600px",
+          maxHeight: "700px",
           height: "100vh",
         }}
       /> : <p>Camera not supported</p>}

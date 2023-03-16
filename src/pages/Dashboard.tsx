@@ -73,7 +73,6 @@ export const Dashboard = (props: DashboardProps) => {
             stat={"Analytics"}
             icon={<GrAnalytics size={"3em"} />}
           />
-          <CameraView/>
           <input
             onChange={handleFileSelection}
             ref={inputRef}
