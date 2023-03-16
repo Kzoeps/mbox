@@ -10,11 +10,10 @@ import { UserContext } from "../components/user-context";
 import { getRecordsTrackInfo } from "../api/misc.api";
 import { getDisplayDate, getFormattedRecords } from "../utils/misc.utils";
 import useLoaderHook from "../hooks/useLoaderHook";
-import { useMediaQuery } from "@mui/material";
 import RecordsTable, { BigRecordsTable } from "../components/records-table";
 import { DateFormats } from "../types/enums";
 import dayjs from "dayjs";
-import { Checkbox, useDisclosure, useToast } from "@chakra-ui/react";
+import { Checkbox, useMediaQuery, useDisclosure, useToast } from "@chakra-ui/react";
 import useDateFilterFetch from "../hooks/useDateFilterFetch";
 import DateFilter from '../components/date-filter'
 
@@ -22,7 +21,7 @@ export interface RecordListingProps {}
 
 export const RecordListing = (props: RecordListingProps) => {
   const [records, setRecords] = useState<RecordData[]>([]);
-  const isLargerThan800 = useMediaQuery("(min-width:800px)");
+  const [isLargerThan800] = useMediaQuery("(min-width:800px)");
   const { isLoading, setIsLoading, wrapperBhai } = useLoaderHook();
   const { user } = useContext(UserContext);
   const { isOpen, onClose, onOpen } = useDisclosure();
