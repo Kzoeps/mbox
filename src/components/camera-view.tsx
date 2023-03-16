@@ -1,12 +1,12 @@
 import { Text, Box, IconButton } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import { TbCapture } from "react-icons/tb";
 import styles from "./camera.module.css";
 import { MediaDevicesError, MediaDevicesErrorMessages } from "../types/enums";
-import { IoCameraReverseOutline} from "react-icons/io5";
+import { IoCameraReverseOutline } from "react-icons/io5";
 
-const constraints = {
+const initConstraints = {
   video: {
     facingMode: "environment",
   },
@@ -15,13 +15,28 @@ const constraints = {
 export default function CameraView() {
   const camera = useRef<HTMLVideoElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
+  const [facingMode, setFacingMode] = useState("environment");
   const [isShot, setIsShot] = useState(false);
   const [isPicTaken, setIsPicTaken] = useState(false);
   const [error, setError] = useState<MediaDevicesError | undefined>(undefined);
+
+  const stopStreaming = useCallback(() => {
+    if (camera.current && camera.current.srcObject) {
+      const stream = camera.current.srcObject as MediaStream;
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => track.stop());
+    }
+  }, []);
+
   useEffect(() => {
     const getCamera = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        stopStreaming();
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode,
+          },
+        });
         if (camera.current) {
           camera.current.srcObject = stream;
         }
@@ -30,7 +45,7 @@ export default function CameraView() {
       }
     };
     getCamera();
-  }, []);
+  }, [facingMode, stopStreaming]);
 
   const flash = () => {
     setIsShot(true);
@@ -39,21 +54,21 @@ export default function CameraView() {
     }, 50);
   };
 
-  const stopStreaming = () => {
+  const disableStreaming = () => {
     if (camera.current && camera.current.srcObject) {
       const stream = camera.current.srcObject as MediaStream;
       const tracks = stream.getTracks();
-      tracks.forEach((track) => track.enabled = false);
+      tracks.forEach((track) => (track.enabled = false));
     }
-  }
+  };
 
   const startStreaming = () => {
     if (camera.current && camera.current.srcObject) {
       const stream = camera.current.srcObject as MediaStream;
       const tracks = stream.getTracks();
-      tracks.forEach((track) => track.enabled = true);
+      tracks.forEach((track) => (track.enabled = true));
     }
-  }
+  };
 
   // function to capture image
   const captureImage = () => {
@@ -67,7 +82,7 @@ export default function CameraView() {
         canvas.current.height
       );
       setIsPicTaken(true);
-      stopStreaming();
+      disableStreaming();
       flash();
     } else {
       startStreaming();
@@ -123,9 +138,12 @@ export default function CameraView() {
           isRound
           aria-label={"capture"}
         />
-<IconButton
+        <IconButton
           variant={"outline"}
-          icon={<IoCameraReverseOutline/>}
+          onClick={() =>
+            setFacingMode(facingMode === "environment" ? "user" : "environment")
+          }
+          icon={<IoCameraReverseOutline />}
           colorScheme="orange"
           size={"sm"}
           mr={5}
