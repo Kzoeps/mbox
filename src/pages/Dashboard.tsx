@@ -11,6 +11,7 @@ import imageCompression from "browser-image-compression";
 import { IMAGE_COMPRESSION_OPTIONS } from "../constants/misc.constants";
 import { extractOCRData } from "../utils/misc.utils";
 import { readScreenShot } from "../api/misc.api";
+import CameraView from "../components/camera-view";
 
 export interface DashboardProps {}
 
@@ -72,6 +73,7 @@ export const Dashboard = (props: DashboardProps) => {
             stat={"Analytics"}
             icon={<GrAnalytics size={"3em"} />}
           />
+          <CameraView/>
           <input
             onChange={handleFileSelection}
             ref={inputRef}
