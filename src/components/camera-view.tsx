@@ -119,7 +119,7 @@ export default function CameraView() {
         className={`${styles.flash}`}
         style={{ display: isShot ? "block" : "none" }}
       ></div>
-      <Box display={"flex"} alignItems={"center"}>
+      <Box display={"flex"} mt={10} alignItems={"center"}>
         <IconButton
           variant={"outline"}
           icon={<MdOutlineClose />}
