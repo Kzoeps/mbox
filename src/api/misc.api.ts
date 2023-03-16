@@ -19,9 +19,14 @@ import dayjs from "dayjs";
 
 export const readScreenShot = async (image: File) => {
   const base64 = await toBase64(image);
-  const text = await axios.post(`/api/ocr`, { image: base64 });
-  return text.data;
+  return await extractText(base64);
 };
+
+export const extractText = async (image: string) => {
+  const text = await axios.post(`/api/ocr`, { image: image.toString().replace( /^data:(.*,)?/, "") });
+  return text.data
+}
+
 export const addRecord = async (userEmail: string, record: MboxRecord) => {
   const response = await addDoc(collection(db, userEmail), record);
   return response;

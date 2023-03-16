@@ -6,13 +6,19 @@ import styles from "./camera.module.css";
 import { MediaDevicesError, MediaDevicesErrorMessages } from "../types/enums";
 import { IoCameraReverseOutline } from "react-icons/io5";
 
-export default function CameraView() {
+export interface CameraViewProps {
+  onCancel: () => void;
+  onCapture: (image: string) => void;
+}
+
+export default function CameraView(props: CameraViewProps) {
   const camera = useRef<HTMLVideoElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const [facingMode, setFacingMode] = useState("environment");
   const [isShot, setIsShot] = useState(false);
   const [isPicTaken, setIsPicTaken] = useState(false);
   const [error, setError] = useState<MediaDevicesError | undefined>(undefined);
+  const { onCancel, onCapture } = props;
 
   const stopStreaming = useCallback(() => {
     if (camera.current && camera.current.srcObject) {
@@ -84,11 +90,17 @@ export default function CameraView() {
       setIsPicTaken(true);
       disableStreaming();
       flash();
+      onCapture(canvas.current.toDataURL("image/jpeg", 0.8));
     } else {
       startStreaming();
       setIsPicTaken(false);
     }
   };
+
+  const handleClose = (event: React.MouseEvent) => {
+    setIsPicTaken(false);
+    onCancel();
+  }
   return (
     <>
       { 
@@ -122,6 +134,7 @@ export default function CameraView() {
       <Box display={"flex"} mt={10} alignItems={"center"}>
         <IconButton
           variant={"outline"}
+          onClick={handleClose}
           icon={<MdOutlineClose />}
           colorScheme="orange"
           size={"sm"}

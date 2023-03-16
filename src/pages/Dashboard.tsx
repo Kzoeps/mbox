@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef } from "react";
+import { ChangeEvent, useRef } from "react";
 import { Box, SimpleGrid, Spinner, useToast } from "@chakra-ui/react";
 import { TbCameraPlus } from "react-icons/tb";
 import { AiOutlineFileAdd } from "react-icons/ai";
@@ -11,7 +11,6 @@ import imageCompression from "browser-image-compression";
 import { IMAGE_COMPRESSION_OPTIONS } from "../constants/misc.constants";
 import { extractOCRData } from "../utils/misc.utils";
 import { readScreenShot } from "../api/misc.api";
-import CameraView from "../components/camera-view";
 
 export interface DashboardProps {}
 
