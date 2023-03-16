@@ -11,6 +11,7 @@ export default function CaptureImage() {
   const onCapture = async (image: string) => {
     const wrappedExtract = wrapperBhai(extractText);
     const rawText = await wrappedExtract(image);
+    if (!rawText) return;
     const extractedData = extractOCRData(rawText);
     navigate("/add-record", {
       state: extractedData,
