@@ -129,6 +129,7 @@ export default function CameraView(props: CameraViewProps) {
         <canvas
           ref={canvas}
           className={`${styles.cam_display}`}
+          height={720}
           style={{
             display: isPicTaken ? "block" : "none",
           }}
@@ -138,7 +139,7 @@ export default function CameraView(props: CameraViewProps) {
         className={`${styles.flash}`}
         style={{ display: isShot ? "block" : "none" }}
       ></div>
-      <Box display={"flex"} mt={10} alignItems={"center"}>
+      <Box display={"flex"} mt="10px" alignItems={"center"}>
         <IconButton
           variant={"outline"}
           onClick={handleClose}
