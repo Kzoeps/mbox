@@ -1,34 +1,35 @@
-import { Box, IconButton } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import { Text, Box, IconButton } from "@chakra-ui/react";
+import { useEffect, useRef, useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import { TbCapture } from "react-icons/tb";
 import styles from "./camera.module.css";
+import { MediaDevicesError, MediaDevicesErrorMessages } from "../types/enums";
+import { IoCameraReverseOutline} from "react-icons/io5";
+
+const constraints = {
+  video: {
+    facingMode: "environment",
+  },
+};
 
 export default function CameraView() {
   const camera = useRef<HTMLVideoElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
-  const [hasFunctionality, setHasFunctionality] = useState(true);
   const [isShot, setIsShot] = useState(false);
   const [isPicTaken, setIsPicTaken] = useState(false);
+  const [error, setError] = useState<MediaDevicesError | undefined>(undefined);
   useEffect(() => {
-    const isAvailable = "mediaDevices" in navigator;
-    if (isAvailable) {
-      navigator.mediaDevices
-        .getUserMedia({
-          video: {
-            facingMode: "environment",
-          },
-        })
-        .then((stream) => {
-          if (camera.current) {
-            camera.current.srcObject = stream;
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-    setHasFunctionality(isAvailable);
+    const getCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        if (camera.current) {
+          camera.current.srcObject = stream;
+        }
+      } catch (e: DOMException | TypeError | any) {
+        setError(e.name);
+      }
+    };
+    getCamera();
   }, []);
 
   const flash = () => {
@@ -37,6 +38,22 @@ export default function CameraView() {
       setIsShot(false);
     }, 50);
   };
+
+  const stopStreaming = () => {
+    if (camera.current && camera.current.srcObject) {
+      const stream = camera.current.srcObject as MediaStream;
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => track.enabled = false);
+    }
+  }
+
+  const startStreaming = () => {
+    if (camera.current && camera.current.srcObject) {
+      const stream = camera.current.srcObject as MediaStream;
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => track.enabled = true);
+    }
+  }
 
   // function to capture image
   const captureImage = () => {
@@ -50,8 +67,10 @@ export default function CameraView() {
         canvas.current.height
       );
       setIsPicTaken(true);
+      stopStreaming();
       flash();
     } else {
+      startStreaming();
       setIsPicTaken(false);
     }
   };
@@ -67,17 +86,11 @@ export default function CameraView() {
           }}
         />
       }
-      {/* {hasFunctionality ? <video
-        autoPlay
-        ref={camera}
-        style={{
-            display: isPicTaken ? 'none' : 'block',
-          maxWidth: "450px",
-          width: "100%",
-          maxHeight: "700px",
-          height: "100vh",
-        }}
-      /> : <p>Camera not supported</p>} */}
+      {error && (
+        <Box className={`${styles.error_display}`}>
+          <Text>{MediaDevicesErrorMessages[error]}</Text>
+        </Box>
+      )}
       {
         <canvas
           ref={canvas}
@@ -89,7 +102,7 @@ export default function CameraView() {
       }
       <div
         className={`${styles.flash}`}
-        style={{ opacity: isShot ? 1 : 0 }}
+        style={{ display: isShot ? "block" : "none" }}
       ></div>
       <Box display={"flex"} alignItems={"center"}>
         <IconButton
@@ -110,7 +123,15 @@ export default function CameraView() {
           isRound
           aria-label={"capture"}
         />
-        <Box minW={"40px"} maxW={"sm"} mr={5} />
+<IconButton
+          variant={"outline"}
+          icon={<IoCameraReverseOutline/>}
+          colorScheme="orange"
+          size={"sm"}
+          mr={5}
+          isRound
+          aria-label="cancel"
+        />
       </Box>
     </>
   );

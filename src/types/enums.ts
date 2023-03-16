@@ -14,3 +14,15 @@ export enum DateFormats {
   DateTime = "DD MMM YYYY HH:mm:ss",
   CalendarDateTime = "YYYY-MM-DDTHH:mm:ss",
 }
+
+export enum MediaDevicesError {
+  NotFound = "NotFoundError",
+  NotAllowed = "NotAllowedError",
+  Abort = "AbortError",
+}
+
+export enum MediaDevicesErrorMessages {
+  NotFoundError = "No camera found, Camera might not be supported",
+  NotAllowedError = "Camera access denied! Please allow camera access in your browser settings",
+  AbortError = "Camera access aborted! Please refresh and try again",
+}

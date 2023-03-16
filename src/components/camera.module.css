@@ -14,3 +14,11 @@
   top: 10%;
   position: absolute;
 }
+
+.error_display {
+  position: absolute;
+  top: 50%;
+  max-width: 450px;
+  width: 90%;
+  left : 5%;
+}
