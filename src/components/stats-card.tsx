@@ -21,6 +21,7 @@ export default function StatsCard(props: StatsCardProps) {
     <Stat
       onClick={onClick}
       px={{ base: 2, md: 4 }}
+      bg={useColorModeValue("white", "gray.700")}
       py={"5"}
       shadow={"xl"}
       border={"1px solid"}

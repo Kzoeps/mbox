@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import HomeIllustration from "../components/home-illustration";
 import { useNavigate } from "react-router-dom";
+import WhiteBox from "../components/white-box";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -54,6 +55,7 @@ export default function HomePage() {
             mt={{ base: 12, sm: 16 }}
           />
         </Flex>
+        <WhiteBox><p>hello wolrd</p></WhiteBox>
       </Stack>
     </Container>
   );

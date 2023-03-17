@@ -151,13 +151,12 @@ export const RecordAddition = (props: RecordAdditionProps) => {
                 minH={"100vh"}
                 align={"center"}
                 justify={"center"}
-                bg={colorMode === "light" ? "gray.50" : "gray.700"}
               >
                 <Stack
                   spacing={4}
                   w={"full"}
                   maxW={"md"}
-                  bg={colorMode === "light" ? "white" : "gray.500"}
+                  bg={colorMode === "light" ? "white" : "gray.700"}
                   rounded={"xl"}
                   boxShadow={"lg"}
                   p={6}

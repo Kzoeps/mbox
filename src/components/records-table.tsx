@@ -10,6 +10,7 @@ import {
   TableContainer,
   Image,
   Box,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import styles from "./records-table.module.css";
@@ -46,7 +47,7 @@ export default function RecordsTable(props: RecordsTableProps) {
   return (
     <>
       <Box height="10px" maxW={"800px"} bg="orange.300" m={"10px"} mt="45px" />
-      <Box borderRadius="lg" boxShadow={"base"} m="10px">
+      <Box bg={useColorModeValue('white', 'gray.700')} borderRadius="lg" boxShadow={"base"} m="10px">
         <TableContainer>
           <Table>
             <TableCaption>
@@ -118,7 +119,7 @@ export const BigRecordsTable = (props: RecordsTableProps) => {
 
   return (
     <>
-      <Box borderRadius="lg" boxShadow="base" m="70px" mt="40px">
+      <Box bg={useColorModeValue("white", "gray.700")} borderRadius="lg" boxShadow="base" m="70px" mt="40px">
         <TableContainer>
           <Table variant="simple">
             <TableCaption>

@@ -4,6 +4,7 @@ import {
   StatNumber,
   StatHelpText,
   Box,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 interface AnalyticsCardProps {
@@ -16,6 +17,8 @@ export default function AnalyticCard(props: AnalyticsCardProps) {
   const { title, amount, date, children } = props;
   return (
     <Box
+      bg={useColorModeValue("white", "gray.700")}
+      boxShadow={'sm'}
       borderRadius={"md"}
       borderWidth={"1px"}
       m={"auto"}

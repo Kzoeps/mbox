@@ -5,6 +5,7 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.6",
     "@chakra-ui/react": "^2.2.6",
+    "@chakra-ui/theme-tools": "^2.0.16",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@firebase/firestore-types": "^2.5.0",
@@ -59,13 +60,13 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^13.5.0",
     "@types/react-datepicker": "^4.4.2",
     "@vercel/node": "^2.9.3",
     "eslint-config-prettier": "^8.6.0",
-    "prettier": "^2.8.4",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0"
+    "prettier": "^2.8.4"
   },
   "type": "module"
 }

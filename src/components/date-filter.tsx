@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, useColorModeValue } from "@chakra-ui/react";
 import React, { useState } from "react";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css";
@@ -30,7 +30,7 @@ export default function DateFilter(props: DateFilterProps) {
       <Box
         m="auto"
         maxW={"315px"}
-        bg={"gray.100"}
+        bg={useColorModeValue("white", "gray.700")}
         mt="20px"
         p="10px"
         borderRadius={"md"}

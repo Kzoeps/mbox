@@ -1,8 +1,10 @@
 import {
   ComponentStyleConfig,
   extendTheme,
+  StyleFunctionProps,
   ThemeConfig,
 } from "@chakra-ui/react";
+import {mode} from "@chakra-ui/theme-tools";
 
 // 2. Add your color mode config
 const config: ThemeConfig = {
@@ -15,10 +17,18 @@ const components: Record<string, ComponentStyleConfig> = {
     defaultProps: {
       colorScheme: "orange",
     },
-  },
+  }
 };
 
+const styles = {
+  global: (props: StyleFunctionProps) => ({
+    body: {
+      bg: mode("gray.50", "gray.900")(props), 
+    }
+  })
+}
+
 // 3. extend the theme
-const theme = extendTheme({ config, components });
+const theme = extendTheme({ config, components, styles });
 
 export default theme;

@@ -1,4 +1,4 @@
-import { Box, IconButton, Text } from "@chakra-ui/react";
+import { Box, IconButton, Text, useColorModeValue } from "@chakra-ui/react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export interface PaginationProps {
@@ -35,7 +35,7 @@ export default function Pagination(props: PaginationProps) {
             disabled={currentPage <= 1}
             colorScheme="transparent"
             aria-label={"Go to previous page"}
-            icon={<FaChevronLeft size="13px" color="rgba(0, 0, 0, 0.64)" />}
+            icon={<FaChevronLeft size="13px" color={useColorModeValue('rgba(0, 0, 0, 0.64)', 'white')}/>}
           />
           <IconButton
             onClick={(event) => onChangePage(event, currentPage + 1)}
@@ -43,7 +43,7 @@ export default function Pagination(props: PaginationProps) {
             disabled={currentPage >= pageCount}
             colorScheme="transparent"
             aria-label={"Go to next page"}
-            icon={<FaChevronRight size="13px" color="rgba(0, 0, 0, 0.64)" />}
+            icon={<FaChevronRight size="13px" color={useColorModeValue('rgba(0, 0, 0, 0.64)', 'white')} />}
           />
         </Box>
       </Box>
