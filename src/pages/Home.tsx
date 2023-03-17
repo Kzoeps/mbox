@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import HomeIllustration from "../components/home-illustration";
 import { useNavigate } from "react-router-dom";
+import styles from './home.module.css';
 import WhiteBox from "../components/white-box";
 
 export default function HomePage() {
@@ -22,12 +23,14 @@ export default function HomePage() {
       >
         <Heading
           fontWeight={600}
+          fontFamily={"League Spartan"}
           fontSize={{ base: "3xl", sm: "4xl", md: "6xl" }}
+          className={styles.spartan}
           lineHeight={"110%"}
         >
           M-BOX{" "}
           <Text as={"span"} color={"orange.400"}>
-            accounting made easy
+            Accounting Made Easy
           </Text>
         </Heading>
         <Text color={"gray.500"} maxW={"3xl"}>
@@ -40,6 +43,7 @@ export default function HomePage() {
             px={6}
             onClick={() => navigate(`/sign-up`)}
             colorScheme={"orange"}
+            fontFamily={"League Spartan"}
             bg={"orange.400"}
             _hover={{ bg: "orange.500" }}
           >
