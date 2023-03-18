@@ -19,15 +19,15 @@ import Spring from "../assets/images/spring.png";
 import Bobs from "../assets/images/bobs.png";
 import Doodle from "../assets/images/doodle.png";
 import Money from "../assets/images/money.png";
-// import ViewRecords from "../assets/images/view-records.png";
-// import Calendar from "../assets/images/calendar.png";
-// import Status from "../assets/images/status.png";
-// import Rocket from "../assets/images/rocket.png";
-// import TaskBar from "../assets/images/tasks-bar.png";
-// import AnalyticPage from "../assets/images/Analytics.png";
-// import AnalyticsClay from "../assets/images/analytics-clay.png";
-// import AnalyticsBoard from "../assets/images/analytics-board.png";
-// import RocketRiding from "../assets/images/rocket-riding.png";
+import ViewRecords from "../assets/images/view-records.png";
+import Calendar from "../assets/images/calendar.png";
+import Status from "../assets/images/status.png";
+import Rocket from "../assets/images/rocket.png";
+import TaskBar from "../assets/images/tasks-bar.png";
+import AnalyticPage from "../assets/images/Analytics.png";
+import AnalyticsClay from "../assets/images/analytics-clay.png";
+import AnalyticsBoard from "../assets/images/analytics-board.png";
+import RocketRiding from "../assets/images/rocket-riding.png";
 import MainIllustration from "../assets/images/main-illustration.png";
 
 export default function HomePage() {
@@ -157,7 +157,7 @@ export default function HomePage() {
             </Text>
           </Container>
         </Box>
-        {/* <WhiteBox
+        <WhiteBox
           position={"relative"}
           display={"flex"}
           flexDirection={"column"}
@@ -233,8 +233,8 @@ export default function HomePage() {
               filter them according to their date!
             </Text>
           </Container>
-        </Box> */}
-        {/* <WhiteBox
+        </Box>
+        <WhiteBox
           position={"relative"}
           display={"flex"}
           flexDirection={"column"}
@@ -298,7 +298,7 @@ export default function HomePage() {
             right={"-23px"}
             bottom={"-81px"}
           />
-        </WhiteBox>  */}
+        </WhiteBox> 
         <Box pt={"50px"} textAlign={"center"}>
           <Heading fontFamily={"League Spartan"} mb={"15px"} color="orange.500">
             Key Insights At Your Fingertips!
