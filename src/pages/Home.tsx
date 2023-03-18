@@ -13,21 +13,21 @@ import { useNavigate } from "react-router-dom";
 import styles from "./home.module.css";
 import WhiteBox from "../components/white-box";
 import AddRecordImage from "../assets/images/record-add.png";
-import Hand from "../assets/images/hand.svg";
-import CheckBoard from "../assets/images/checkboard.svg";
-import Spring from "../assets/images/spring.svg";
+import Hand from "../assets/images/hand.png";
+import CheckBoard from "../assets/images/checkboard.png";
+import Spring from "../assets/images/spring.png";
 import Bobs from "../assets/images/bobs.png";
 import Doodle from "../assets/images/doodle.png";
 import Money from "../assets/images/money.png";
-import ViewRecords from "../assets/images/view-records.png";
-import Calendar from "../assets/images/calendar.png";
-import Status from "../assets/images/status.png";
-import Rocket from "../assets/images/rocket.png";
-import TaskBar from "../assets/images/tasks-bar.png";
-import AnalyticPage from "../assets/images/Analytics.png";
-import AnalyticsClay from "../assets/images/analytics-clay.png";
-import AnalyticsBoard from "../assets/images/analytics-board.png";
-import RocketRiding from "../assets/images/rocket-riding.png";
+// import ViewRecords from "../assets/images/view-records.png";
+// import Calendar from "../assets/images/calendar.png";
+// import Status from "../assets/images/status.png";
+// import Rocket from "../assets/images/rocket.png";
+// import TaskBar from "../assets/images/tasks-bar.png";
+// import AnalyticPage from "../assets/images/Analytics.png";
+// import AnalyticsClay from "../assets/images/analytics-clay.png";
+// import AnalyticsBoard from "../assets/images/analytics-board.png";
+// import RocketRiding from "../assets/images/rocket-riding.png";
 import MainIllustration from "../assets/images/main-illustration.png";
 
 export default function HomePage() {
@@ -88,30 +88,40 @@ export default function HomePage() {
           bg={"#FF8787"}
         >
           <Image
+            decoding="async"
+            loading="lazy"
             src={Doodle}
             position={"absolute"}
             top={"-32px"}
             left={"-34px"}
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={Hand}
             position={"absolute"}
             bottom={"120px"}
             left="-40px"
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={Money}
             position={"absolute"}
             bottom={"-24px"}
             left={"-40px"}
           />
           <Image
+            decoding="async"
+            loading="lazy"
             mt={6}
             mb="-13px"
             src={AddRecordImage}
             alt="record addition example"
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={Spring}
             position={"absolute"}
             alt="spring"
@@ -119,12 +129,16 @@ export default function HomePage() {
             bottom={"53px"}
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={CheckBoard}
             position={"absolute"}
             right={"-36px"}
             bottom={"258px"}
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={Bobs}
             position={"absolute"}
             right={"-36px"}
@@ -143,7 +157,7 @@ export default function HomePage() {
             </Text>
           </Container>
         </Box>
-        <WhiteBox
+        {/* <WhiteBox
           position={"relative"}
           display={"flex"}
           flexDirection={"column"}
@@ -151,30 +165,40 @@ export default function HomePage() {
           bg={"#6BA7EE"}
         >
           <Image
+            decoding="async"
+            loading="lazy"
             src={Bobs}
             position={"absolute"}
             top={"-55px"}
             left={"-45px"}
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={Rocket}
             position={"absolute"}
             bottom={"140px"}
             left="-40px"
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={TaskBar}
             position={"absolute"}
             bottom={"-24px"}
             left={"-40px"}
           />
           <Image
+            decoding="async"
+            loading="lazy"
             mt={6}
             mb="-10px"
             src={ViewRecords}
             alt="record addition example"
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={Status}
             position={"absolute"}
             alt="spring"
@@ -182,12 +206,16 @@ export default function HomePage() {
             bottom={"92px"}
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={Calendar}
             position={"absolute"}
             right={"-33px"}
             bottom={"243px"}
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={Spring}
             position={"absolute"}
             right={"-21px"}
@@ -205,8 +233,8 @@ export default function HomePage() {
               filter them according to their date!
             </Text>
           </Container>
-        </Box>
-        <WhiteBox
+        </Box> */}
+        {/* <WhiteBox
           position={"relative"}
           display={"flex"}
           flexDirection={"column"}
@@ -214,30 +242,40 @@ export default function HomePage() {
           bg={"#7478C4"}
         >
           <Image
+            decoding="async"
+            loading="lazy"
             src={RocketRiding}
             position={"absolute"}
             top={"-55px"}
             left={"-70px"}
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={Spring}
             position={"absolute"}
             bottom={"332px"}
             left="278px"
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={AnalyticsClay}
             position={"absolute"}
             bottom={"-66px"}
             left={"-60px"}
           />
           <Image
+            decoding="async"
+            loading="lazy"
             mt={6}
             mb="-5px"
             src={AnalyticPage}
             alt="record addition example"
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={Status}
             position={"absolute"}
             alt="spring"
@@ -245,18 +283,22 @@ export default function HomePage() {
             bottom={"92px"}
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={AnalyticsBoard}
             position={"absolute"}
             right={"-25px"}
             bottom={"150px"}
           />
           <Image
+            decoding="async"
+            loading="lazy"
             src={Bobs}
             position={"absolute"}
             right={"-23px"}
             bottom={"-81px"}
           />
-        </WhiteBox>
+        </WhiteBox>  */}
         <Box pt={"50px"} textAlign={"center"}>
           <Heading fontFamily={"League Spartan"} mb={"15px"} color="orange.500">
             Key Insights At Your Fingertips!
