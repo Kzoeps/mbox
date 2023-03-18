@@ -1,13 +1,15 @@
 import { Box } from '@chakra-ui/react'
-import React from 'react'
+import React, { forwardRef } from 'react'
+import { Maybe } from '../utils/util.types'
 
 interface WhiteBoxProps {
     children: React.ReactNode
 }
 
-export default function WhiteBox({ children, ...props }: WhiteBoxProps & React.ComponentProps<typeof Box>) {
+const WhiteBox = forwardRef<Maybe<HTMLDivElement>, WhiteBoxProps & React.ComponentProps<typeof Box>>(function ({ children, ...props }, ref) {
   return (
     <Box
+    ref={ref}
       {...props}
         boxShadow={'xl'}
         rounded={'lg'}
@@ -18,4 +20,6 @@ export default function WhiteBox({ children, ...props }: WhiteBoxProps & React.C
         {children}
     </Box>
   )
-}
+})
+
+export default WhiteBox
