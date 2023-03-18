@@ -32,6 +32,7 @@ import { forwardRef, useEffect, useRef } from "react";
 import { Maybe } from "../utils/util.types";
 import SellingPointText from "../components/selling-point-text";
 import { HomeTranslations } from "../constants/text.constants";
+import Footer from "../components/footer";
 
 export default function HomePage() {
   const componentRefs = useRef<Maybe<HTMLDivElement>[]>([
@@ -65,77 +66,80 @@ export default function HomePage() {
     };
   }, []);
   return (
-    <Container maxW={"100%"} bg={useColorModeValue("white", "gray.900")}>
-      <Stack
-        textAlign={"center"}
-        align={"center"}
-        spacing={{ base: 8, md: 10 }}
-        py={{ base: 20, md: 28 }}
-      >
-        <Heading
-          fontWeight={600}
-          fontFamily={"League Spartan"}
-          fontSize={{ base: "3xl", sm: "4xl", md: "6xl" }}
-          className={styles.spartan}
-          lineHeight={"110%"}
+    <>
+      <Container maxW={"100%"} bg={useColorModeValue("white", "gray.900")}>
+        <Stack
+          textAlign={"center"}
+          align={"center"}
+          spacing={{ base: 8, md: 10 }}
+          py={{ base: 20, md: 28 }}
         >
-          M-BOX{" "}
-          <Text as={"span"} color={"orange.400"}>
-            Accounting Made Easy
-          </Text>
-        </Heading>
-        <Text color={"gray.500"} maxW={"3xl"}>
-          Quickly record a transaction with your camera and AI. Search for a
-          transaction with ease. Make record keeping easy!!!
-        </Text>
-        <Stack spacing={6} direction={"row"}>
-          <Button
-            rounded={"full"}
-            px={6}
-            onClick={() => navigate(`/sign-up`)}
-            colorScheme={"orange"}
+          <Heading
+            fontWeight={600}
             fontFamily={"League Spartan"}
-            bg={"orange.400"}
-            _hover={{ bg: "orange.500" }}
+            fontSize={{ base: "3xl", sm: "4xl", md: "6xl" }}
+            className={styles.spartan}
+            lineHeight={"110%"}
           >
-            Get started
-          </Button>
+            M-BOX{" "}
+            <Text as={"span"} color={"orange.400"}>
+              Accounting Made Easy
+            </Text>
+          </Heading>
+          <Text color={"gray.500"} maxW={"3xl"}>
+            Quickly record a transaction with your camera and AI. Search for a
+            transaction with ease. Make record keeping easy!!!
+          </Text>
+          <Stack spacing={6} direction={"row"}>
+            <Button
+              rounded={"full"}
+              px={6}
+              onClick={() => navigate(`/sign-up`)}
+              colorScheme={"orange"}
+              fontFamily={"League Spartan"}
+              bg={"orange.400"}
+              _hover={{ bg: "orange.500" }}
+            >
+              Get started
+            </Button>
+          </Stack>
+          <Flex w={"full"}>
+            <Image src={MainIllustration} m="auto" mb={"90px"} mt="20px" />
+          </Flex>
+          <CaptureComponent
+            ref={(element) => (componentRefs.current[0] = element)}
+          >
+            <SellingPointText
+              opacity={0}
+              ref={(element) => (componentRefs.current[3] = element)}
+              title={HomeTranslations.EASY_TO_USE}
+              description={HomeTranslations.EASY_TO_USE_DESCRIPTION}
+            />
+          </CaptureComponent>
+          <ViewRecordsComponent
+            ref={(element) => (componentRefs.current[1] = element)}
+          >
+            <SellingPointText
+              opacity={0}
+              ref={(element) => (componentRefs.current[4] = element)}
+              title={HomeTranslations.QUICK_VIEW}
+              description={HomeTranslations.QUICK_VIEW_DESCRIPTION}
+            />
+          </ViewRecordsComponent>
+          <InsightsComponent
+            ref={(element) => (componentRefs.current[2] = element)}
+          >
+            <SellingPointText
+              opacity={0}
+              ref={(element) => (componentRefs.current[5] = element)}
+              title={HomeTranslations.ANALYTICS}
+              description={HomeTranslations.ANALYTICS_DESCRIPTION}
+            />
+          </InsightsComponent>
         </Stack>
-        <Flex w={"full"}>
-          <Image src={MainIllustration} m="auto" mb={"90px"} mt="20px" />
-        </Flex>
-        <CaptureComponent
-          ref={(element) => (componentRefs.current[0] = element)}
-        >
-          <SellingPointText
-            opacity={0}
-            ref={(element) => (componentRefs.current[3] = element)}
-            title={HomeTranslations.EASY_TO_USE}
-            description={HomeTranslations.EASY_TO_USE_DESCRIPTION}
-          />
-        </CaptureComponent>
-        <ViewRecordsComponent
-          ref={(element) => (componentRefs.current[1] = element)}
-        >
-          <SellingPointText
-            opacity={0}
-            ref={(element) => (componentRefs.current[4] = element)}
-            title={HomeTranslations.QUICK_VIEW}
-            description={HomeTranslations.QUICK_VIEW_DESCRIPTION}
-          />
-        </ViewRecordsComponent>
-        <InsightsComponent
-          ref={(element) => (componentRefs.current[2] = element)}
-        >
-          <SellingPointText
-            opacity={0}
-            ref={(element) => (componentRefs.current[5] = element)}
-            title={HomeTranslations.ANALYTICS}
-            description={HomeTranslations.ANALYTICS_DESCRIPTION}
-          />
-        </InsightsComponent>
-      </Stack>
-    </Container>
+      </Container>
+      <Footer />
+    </>
   );
 }
 
