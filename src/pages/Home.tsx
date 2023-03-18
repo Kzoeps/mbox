@@ -5,7 +5,8 @@ import {
   Heading,
   Stack,
   Image,
-  Text, useColorModeValue
+  Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import styles from "./home.module.css";
@@ -33,7 +34,14 @@ import SellingPointText from "../components/selling-point-text";
 import { HomeTranslations } from "../constants/text.constants";
 
 export default function HomePage() {
-  const componentRefs = useRef<Maybe<HTMLDivElement>[]>([null, null, null]);
+  const componentRefs = useRef<Maybe<HTMLDivElement>[]>([
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+  ]);
   const navigate = useNavigate();
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -41,6 +49,7 @@ export default function HomePage() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add(styles.fadeIn);
+            entry.target.classList.add(styles.fadeInLeft)
           }
         });
       },
@@ -100,6 +109,8 @@ export default function HomePage() {
           ref={(element) => (componentRefs.current[0] = element)}
         >
           <SellingPointText
+            opacity={0}
+            ref={(element) => (componentRefs.current[3] = element)}
             title={HomeTranslations.EASY_TO_USE}
             description={HomeTranslations.EASY_TO_USE_DESCRIPTION}
           />
@@ -108,6 +119,8 @@ export default function HomePage() {
           ref={(element) => (componentRefs.current[1] = element)}
         >
           <SellingPointText
+            opacity={0}
+            ref={(element) => (componentRefs.current[4] = element)}
             title={HomeTranslations.QUICK_VIEW}
             description={HomeTranslations.QUICK_VIEW_DESCRIPTION}
           />
@@ -116,6 +129,8 @@ export default function HomePage() {
           ref={(element) => (componentRefs.current[2] = element)}
         >
           <SellingPointText
+            opacity={0}
+            ref={(element) => (componentRefs.current[5] = element)}
             title={HomeTranslations.ANALYTICS}
             description={HomeTranslations.ANALYTICS_DESCRIPTION}
           />

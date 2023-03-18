@@ -7,9 +7,9 @@ interface SellingPointTextProps {
     description: string;
 }
 
-const SellingPointText = forwardRef<Maybe<HTMLDivElement>, SellingPointTextProps>(function ({title, description}, ref) {
+const SellingPointText = forwardRef<Maybe<HTMLDivElement>, SellingPointTextProps & React.ComponentProps<typeof Box>>(function ({title, description, ...props}, ref) {
   return (
-    <Box ref={ref} pt={"50px"} maxW={"sm"} textAlign={"center"}>
+    <Box {...props} ref={ref} pt={"50px"} maxW={"sm"} textAlign={"center"}>
         <Heading
           fontFamily={"League Spartan"}
           mt={"30px"}
