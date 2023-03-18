@@ -49,7 +49,6 @@ export default function HomePage() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add(styles.fadeIn);
-            entry.target.classList.add(styles.fadeInLeft)
           }
         });
       },
