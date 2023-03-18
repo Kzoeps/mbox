@@ -80,6 +80,7 @@ export default function HomePage() {
             mb={20}
           /> */}
         </Flex>
+        <Container display={'flex'} flexDirection={{base: 'column', lg: 'row'}} justifyContent={'space-evenly'} maxW={'5xl'}>
         <WhiteBox
           position={"relative"}
           display={"flex"}
@@ -145,8 +146,8 @@ export default function HomePage() {
             bottom={"-81px"}
           />
         </WhiteBox>
-        <Box pt={"50px"} textAlign={"center"}>
-          <Heading fontFamily={"League Spartan"} mb={"15px"} color="orange.500">
+        <Box pt={"50px"} maxW={'sm'} textAlign={"center"}>
+          <Heading fontFamily={"League Spartan"} mt={"30px"} mb={"15px"} color="orange.500">
             Easily Record Transactions!
           </Heading>
           <Container maxW={"sm"}>
@@ -157,6 +158,8 @@ export default function HomePage() {
             </Text>
           </Container>
         </Box>
+        </Container>
+        <Container display={'flex'} flexDirection={{base: 'column', lg: 'row'}} pt={{base: '10px', lg: '140px'}} justifyContent={'space-evenly'} maxW={'5xl'}>
         <WhiteBox
           position={"relative"}
           display={"flex"}
@@ -222,8 +225,8 @@ export default function HomePage() {
             bottom={"-81px"}
           />
         </WhiteBox>
-        <Box pt={"50px"} textAlign={"center"}>
-          <Heading fontFamily={"League Spartan"} mb={"15px"} color="orange.500">
+        <Box pt={"50px"} maxW={'sm'} textAlign={"center"}>
+          <Heading fontFamily={"League Spartan"} mt={"30px"} mb={"15px"} color="orange.500">
             Quickly View Transactions!
           </Heading>
           <Container maxW={"sm"}>
@@ -234,6 +237,8 @@ export default function HomePage() {
             </Text>
           </Container>
         </Box>
+        </Container>
+        <Container display={'flex'} flexDirection={{base: 'column', lg: 'row'}} pt={{base: '10px', lg: '140px'}} justifyContent={'space-evenly'} maxW={'5xl'}>
         <WhiteBox
           position={"relative"}
           display={"flex"}
@@ -299,8 +304,8 @@ export default function HomePage() {
             bottom={"-81px"}
           />
         </WhiteBox> 
-        <Box pt={"50px"} textAlign={"center"}>
-          <Heading fontFamily={"League Spartan"} mb={"15px"} color="orange.500">
+        <Box pt={"50px"} maxW={'sm'} textAlign={"center"}>
+          <Heading fontFamily={"League Spartan"} mt={'30px'} mb={"15px"} color="orange.500">
             Key Insights At Your Fingertips!
           </Heading>
           <Container>
@@ -311,6 +316,7 @@ export default function HomePage() {
             </Text>
           </Container>
         </Box>
+        </Container>
       </Stack>
     </Container>
   );
