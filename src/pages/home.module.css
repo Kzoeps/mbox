@@ -3,6 +3,7 @@
     src: local('League Spartan'), url(../fonts/LeagueSpartan-Black.woff2) format('woff2');
 }
 
+
 .spartan {
     font-family: 'League Spartan', sans-serif;
 }

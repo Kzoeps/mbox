@@ -2,10 +2,8 @@ import React, { ReactNode, useEffect } from "react";
 import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import HomePage from "./pages/Home";
 import Navigation from "./components/navigation";
 import "./firebase.config";
-import Dashboard from "./pages/Dashboard";
 import RecordAddition from "./pages/RecordAddition";
 import UserContextProvider from "./components/user-context";
 import UnauthenticatedRoutes from "./components/unauthenticated-routes";
@@ -25,6 +23,8 @@ const Demo = withSuspense(React.lazy(() => import("./pages/Demo")));
 const PhoneSignUp = withSuspense(React.lazy(() => import("./pages/Phone-Sign-Up")));
 const PhoneLogin = withSuspense(React.lazy(() => import("./pages/Phone-Login")));
 const CaptureImage = withSuspense(React.lazy(() => import("./pages/CaptureImage")));
+const HomePage = withSuspense(React.lazy(() => import("./pages/Home")));
+const Dashboard = withSuspense(React.lazy(() => import("./pages/Dashboard")));
 
 function ChakraProvided(props: { children: ReactNode }) {
   return <ChakraProvider theme={theme}>{props.children}</ChakraProvider>;

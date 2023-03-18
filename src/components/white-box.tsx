@@ -1,20 +1,21 @@
-import { Container, useColorModeValue } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import React from 'react'
 
 interface WhiteBoxProps {
     children: React.ReactNode
 }
 
-export default function WhiteBox({ children }: WhiteBoxProps) {
+export default function WhiteBox({ children, ...props }: WhiteBoxProps & React.ComponentProps<typeof Box>) {
   return (
-    <Container
-        maxW={'lg'}
-        bg={useColorModeValue('white', 'gray.800')}
+    <Box
+      {...props}
         boxShadow={'xl'}
         rounded={'lg'}
-        p={6}
+        p={10}
+        pt={'20px'}
+        pb={0}
     >
         {children}
-    </Container>
+    </Box>
   )
 }
