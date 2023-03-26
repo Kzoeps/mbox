@@ -49,7 +49,7 @@ export default function Pricing() {
                 Nu.
               </Text>
               <Text fontSize="5xl" fontWeight="900">
-                1000
+                500 
               </Text>
               <Text fontSize="3xl" color="gray.500">
                 /month
@@ -119,7 +119,7 @@ export default function Pricing() {
                     textDecoration={"line-through"}
                     fontWeight="900"
                   >
-                    2000
+                    1500 
                   </Text>
                   <Text fontSize="3xl" color="gray.500">
                     /month
@@ -130,7 +130,7 @@ export default function Pricing() {
                     Opening discount of
                   </Text>
                   <Text fontSize="xl" fontWeight="800">
-                    25%
+                    34%
                   </Text>
                 </HStack>
                 <HStack justifyContent="center">
@@ -138,7 +138,7 @@ export default function Pricing() {
                     Nu.
                   </Text>
                   <Text fontSize="5xl" fontWeight="900">
-                    1500
+                    1000
                   </Text>
                   <Text fontSize="3xl" color="gray.500">
                     /month
