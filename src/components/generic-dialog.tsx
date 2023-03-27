@@ -46,7 +46,7 @@ export default function GenericDialog(props: GenericDialogProps) {
 }
 
 GenericDialog.defaultProps = {
-  title: "Delete",
+  title: "Pick Date Range",
   okText: "Confirm",
   cancelText: "Cancel",
 };
