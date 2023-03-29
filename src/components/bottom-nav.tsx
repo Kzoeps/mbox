@@ -31,7 +31,7 @@ export const BottomNav = (props: BottomNavProps) => {
       <div style={{ marginBottom: "80px" }} />
       <div className={styles.bottomNav}>
         <Tabs
-          size={"md"}
+          size={"lg"}
           onChange={(index) => navigate(INDEX_LOCATION[index])}
           index={tabIndex}
           style={{ position: "fixed", bottom: 0, width: "100%" }}
