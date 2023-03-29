@@ -22,7 +22,7 @@ export default function CaptureImage() {
     <>
       <CameraView pending={isLoading} onCancel={() => navigate('/dashboard')} onCapture={onCapture} />
       {isLoading && <MboxSpinner top="50%"/>}
-      <Spinner/> 
+      <Spinner opacity={0}/> 
     </>
   );
 }
