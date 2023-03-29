@@ -71,7 +71,7 @@ export const LOCATION_INDEX_MAP: Record<string, number> = {
 
 export const INDEX_LOCATION: Record<number, string> = {
   0: "/dashboard",
-  1: "/add-record",
+  1: "/capture",
   2: "/records",
 };
 
