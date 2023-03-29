@@ -1,17 +1,13 @@
 import {
-    Box,
-    Image,
-    chakra,
-    Container,
-    Heading,
-    Stack,
-    Text,
-    useColorModeValue,
-    Link,
-    VisuallyHidden,
+  Box,
+  Image, Container,
+  Heading,
+  Stack,
+  Text,
+  useColorModeValue,
+  Link
 } from '@chakra-ui/react';
 import CartonBox from '../assets/images/empty-min.png';
-import { ReactNode } from 'react';
 import dayjs from 'dayjs';
 
 // const Logo = (props: any) => {

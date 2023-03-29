@@ -4,6 +4,7 @@ import CameraView from "../components/camera-view";
 import { extractOCRData } from "../utils/misc.utils";
 import useLoaderHook from "../hooks/useLoaderHook";
 import MboxSpinner from "../components/spinner";
+import { Spinner } from "@chakra-ui/react";
 
 export default function CaptureImage() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ export default function CaptureImage() {
     <>
       <CameraView pending={isLoading} onCancel={() => navigate('/dashboard')} onCapture={onCapture} />
       {isLoading && <MboxSpinner top="50%"/>}
+      <Spinner opacity={0} width={'1px'} height={'1px'}/>
     </>
   );
 }
