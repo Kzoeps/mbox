@@ -12,7 +12,7 @@ export const Demo = (props: DemoProps) => {
           <iframe
             width={isMobileish ? "380" : "560"}
             height={isMobileish ? "214" : "315"}
-            src="https://www.youtube.com/embed/ZKuPPIvcocs"
+            src="https://www.youtube.com/embed/nOuiSvc7roI?start=1"
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
