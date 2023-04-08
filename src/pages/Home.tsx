@@ -90,6 +90,7 @@ export default function HomePage() {
             Quickly record a transaction with your camera and AI. Search for a
             transaction with ease. Make record keeping easy!!!
           </Text>
+
           <Stack spacing={6} direction={"row"}>
             <Button
               rounded={"full"}
@@ -102,6 +103,15 @@ export default function HomePage() {
             >
               Get started
             </Button>
+          </Stack>
+          <Stack maxH={'20px'} spacing={3} direction={"row"}>
+            <a target="_blank" rel="noreferrer" href="https://play.google.com/store/apps/details?id=com.kzoeps.mboxapp&hl=en_US&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1">
+              <Image
+                alt="Get it on Google Play"
+                maxW={"130px"}
+                src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+              />
+            </a>
           </Stack>
           <Flex w={"full"}>
             <Image src={MainIllustration} m="auto" mb={"90px"} mt="20px" />
