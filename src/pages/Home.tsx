@@ -33,6 +33,7 @@ import { Maybe } from "../utils/util.types";
 import SellingPointText from "../components/selling-point-text";
 import { HomeTranslations } from "../constants/text.constants";
 import Footer from "../components/footer";
+import AppStore from "../assets/images/download_app_store.svg";
 
 export default function HomePage() {
   const componentRefs = useRef<Maybe<HTMLDivElement>[]>([
@@ -104,12 +105,28 @@ export default function HomePage() {
               Get started
             </Button>
           </Stack>
-          <Stack maxH={'20px'} spacing={3} direction={"row"}>
-            <a target="_blank" rel="noreferrer" href="https://play.google.com/store/apps/details?id=com.kzoeps.mboxapp&hl=en_US&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1">
+          <Stack maxH={"20px"} spacing={3} direction={"row"}>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://play.google.com/store/apps/details?id=com.kzoeps.mboxapp&hl=en_US&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
+            >
               <Image
                 alt="Get it on Google Play"
                 maxW={"130px"}
                 src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+              />
+            </a>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://play.google.com/store/apps/details?id=com.kzoeps.mboxapp&hl=en_US&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
+            >
+              <Image
+                style={{ padding: "6%", width: "100%"}}
+                alt="Get it on Apple Store"
+                maxW={"130px"}
+                src={AppStore}
               />
             </a>
           </Stack>
