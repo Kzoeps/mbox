@@ -120,7 +120,7 @@ export default function HomePage() {
             <a
               target="_blank"
               rel="noreferrer"
-              href="https://play.google.com/store/apps/details?id=com.kzoeps.mboxapp&hl=en_US&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
+              href="https://apps.apple.com/bt/app/stellar-minds/id6449605388?platform=iphone"
             >
               <Image
                 style={{ padding: "6%", width: "100%"}}
