@@ -113,6 +113,7 @@ export default function CameraView(props: CameraViewProps) {
     <>
       { 
         <video
+          playsInline
           autoPlay
           ref={camera}
           className={`${styles.cam_display}`}
