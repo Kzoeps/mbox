@@ -1,3 +1,4 @@
+import { BankIdentifier } from "../types/enums";
 import {
   AnalyticsRecordTrack,
   DateRangeType,
@@ -103,3 +104,4 @@ export const INIT_DATE_RANGE: Readonly<DateRangeType>= {
     key: "selection",
 };
 
+export const BANK_IDENTIFIERS = [BankIdentifier.BNB, BankIdentifier.BOB, BankIdentifier.PNB]

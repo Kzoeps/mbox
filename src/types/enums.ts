@@ -1,8 +1,14 @@
 export enum PrimaryInfo {
   Journal = "Jrnl. No",
-  Amount = "Nu.",
+  Amount = "nu.",
   Remark = "Purpose/Bill QR",
   Date = "Date",
+}
+
+export enum BNBPrimaryInfo {
+  Journal = "reference no",
+  Remark = "remarks"
+
 }
 
 export enum DateFormats {
@@ -25,4 +31,10 @@ export enum MediaDevicesErrorMessages {
   NotFoundError = "No camera found, Camera might not be supported",
   NotAllowedError = "Camera access denied! Please allow camera access in your browser settings",
   AbortError = "Camera access aborted! Please refresh and try again",
+}
+
+export enum BankIdentifier {
+  BNB = "mpay",
+  BOB = "mbob",
+  PNB = "drukpay"
 }

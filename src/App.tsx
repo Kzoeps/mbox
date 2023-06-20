@@ -11,6 +11,7 @@ import BottomNav from "./components/bottom-nav";
 import PaymentBanner from "./components/payment-banner";
 import theme from "./constants/theme";
 import { withSuspense } from "./components/suspense-wrapper";
+import Playground from "./pages/Playground";
 
 const Analytics = withSuspense(React.lazy(() => import("./pages/Analytics")));
 const RecordListing = withSuspense(
@@ -58,6 +59,7 @@ function App() {
             <Route path={"/success"} element={<Success />} />
             <Route path={"/records"} element={<RecordListing />} />
             <Route path={"/pricing"} element={<Pricing />} />
+            <Route path={"/playground"} element={<Playground/>} />
           </Routes>
           <BottomNav />
         </ChakraProvided>

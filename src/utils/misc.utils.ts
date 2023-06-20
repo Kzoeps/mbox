@@ -12,7 +12,13 @@ import {
 } from "../types/misc.types";
 import dayjs, { Dayjs } from "dayjs";
 import { findBestMatch } from "string-similarity";
-import { DateFormats, PrimaryInfo } from "../types/enums";
+import {
+  BNBPrimaryInfo,
+  BankIdentifier,
+  DateFormats,
+  PrimaryInfo,
+} from "../types/enums";
+import { BANK_IDENTIFIERS } from "../constants/misc.constants";
 
 const datifyRecords = (records: any[]) => {
   return records.map((record) => ({
@@ -24,7 +30,7 @@ const datifyRecords = (records: any[]) => {
 export const numberFi = (num: number | string) => {
   if (isNaN(+num)) return 0;
   return +num;
-}
+};
 
 export const toBase64 = (file: File): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -80,6 +86,44 @@ export const formatPhoneNumber = (number: string): string => {
   } else {
     return `+975${number.trim()}`;
   }
+};
+
+export const cleanOCRData = (data: string[]): string[] => {
+  return data.map((item) => item.toLowerCase().trim());
+};
+
+export const detectBank = (data: string[]): BankIdentifier => {
+  const matchRatings = BANK_IDENTIFIERS.map((bank) => {
+    const { bestMatch } = findBestMatch(bank, data);
+    return bestMatch.rating;
+  });
+  const maxRating = Math.max(...matchRatings);
+  return BANK_IDENTIFIERS[matchRatings.indexOf(maxRating)];
+};
+
+// so we delete the reference and no text and then try and find the alphanumeric id
+export const extractBNBTxnId = (data: string[]): string => {
+  const { bestMatch } = findBestMatch(BNBPrimaryInfo.Journal, data);
+  let divvied = bestMatch.target.split(" ");
+  const { bestMatch: reference, bestMatchIndex: referenceIndex } =
+    findBestMatch("reference", divvied);
+  if (reference.rating > 0.5) {
+    divvied.splice(referenceIndex, 1);
+  }
+  // try and find no and delete that as well
+  const { bestMatch: no, bestMatchIndex: noIndex } = findBestMatch(
+    "no",
+    divvied
+  );
+  if (no.rating > 0.5 && no.target.length <= 4) {
+    divvied.splice(noIndex, 1);
+  }
+  const containsAlphNumber = /^(?=.*[a-zA-Z])(?=.*[0-9])[\w\d]{6,}/;
+  const txnId = divvied.find((item) => containsAlphNumber.test(item));
+  if (txnId) {
+    return txnId.toUpperCase();
+  }
+  return "";
 };
 
 export const extractOCRData = (data: VisionOCRData): ExtractedOCRData => {
@@ -173,9 +217,11 @@ export const getStringiDate = (date: Dayjs | undefined): string => {
 
 export const getAmount = (amount: string): string => {
   return +amount ? `Nu. ${numberFi(amount).toLocaleString()}` : amount;
-}
+};
 
-export const formatRecords = (records: WithId<MboxRecord>[]): RecordsTableData[] => {
+export const formatRecords = (
+  records: WithId<MboxRecord>[]
+): RecordsTableData[] => {
   return records.map((record) => {
     return {
       ...record,
@@ -183,30 +229,34 @@ export const formatRecords = (records: WithId<MboxRecord>[]): RecordsTableData[]
       date: dayjs(record.date).format(DateFormats.CalendarDate),
     };
   }) as RecordsTableData[];
-}
+};
 
 export const compileRecordsData = (snapshot: any): WithId<MboxRecord>[] => {
-  const records: WithId<MboxRecord>[] = []
+  const records: WithId<MboxRecord>[] = [];
   snapshot.forEach((doc: any) => {
     let record = {
       id: doc.id,
-      ...doc.data()
+      ...doc.data(),
     };
     record.date = record.date.toDate();
     records.push(record);
   });
-  return records
-}
+  return records;
+};
 
 export const extractAnalytics = (snapshot: any): Analytics => {
   const records = compileRecordsData(snapshot);
-  const totalAmount = records.reduce((accumulator, record) => numberFi(record.amount) + accumulator, 0)
+  const totalAmount = records.reduce(
+    (accumulator, record) => numberFi(record.amount) + accumulator,
+    0
+  );
   const totalTransactions = records.length;
-  const amounts = records.map(({amount}) => numberFi(amount));
+  const amounts = records.map(({ amount }) => numberFi(amount));
   // get the records of highest transaction by first getting the max and then index of max and finally the record itself
-  const highestTransaction = records[amounts.indexOf(Math.max.apply(null, amounts))];
-  return {highestTransaction, totalTransactions, totalAmount};
-}
+  const highestTransaction =
+    records[amounts.indexOf(Math.max.apply(null, amounts))];
+  return { highestTransaction, totalTransactions, totalAmount };
+};
 
 export const getDisplayDate = (start?: Date, end?: Date): string => {
   const startString = start
@@ -216,7 +266,7 @@ export const getDisplayDate = (start?: Date, end?: Date): string => {
     ? dayjs(end).format(DateFormats.DisplayDate)
     : dayjs().format(DateFormats.DisplayDate);
   return `${startString}  -  ${endString}`;
-}
+};
 
 /*
 * FROM PREVIOUS TRIALS OF TRYING TO FIND INFO 
