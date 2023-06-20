@@ -52,11 +52,24 @@ export default function Playground() {
       return ""
     }
 
+    const extractPNBTxnId = (data: string[]): string => {
+      const {bestMatch} = findBestMatch("ref. no.", data)
+      const digits = /\d{5,}/
+      const matches = bestMatch.target.match(digits)
+      if (matches?.length) {
+        return matches[0]
+      } 
+      return ""
+    }
+
+    const extractPNBRemarks = (data: string[]): string => {
+      return extractBNBRemarks(data)
+    }
+
     const extract = (data: string[], bank: BankIdentifier) => {
       switch (bank) {
         case BankIdentifier.BNB:
           // use same function for amount
-          extractBNBRemarks(data)
           break;
         case BankIdentifier.BOB:
           break;

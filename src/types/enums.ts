@@ -10,6 +10,11 @@ export enum BNBPrimaryInfo {
   Remark = "remarks"
 }
 
+export enum PNBPrimaryInfo {
+  Journal = "ref. no.",
+  Remark = "remarks"
+}
+
 export enum DateFormats {
   Date = "DD MMM YYYY",
   DisplayDate = "DD/MMM/YYYY",
