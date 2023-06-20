@@ -43,11 +43,20 @@ export default function Playground() {
       return ""
     }
 
+    const extractBNBRemarks = (data: string[]): string => {
+      const {bestMatch} = findBestMatch("remarks", data)
+      const divvied = bestMatch.target.split(" ")
+      const {bestMatchIndex: remarksIndex}= findBestMatch("remarks", divvied) 
+      divvied.splice(remarksIndex, 1)
+      console.log(divvied.join(" ").replace(":", "").trim())
+      return ""
+    }
+
     const extract = (data: string[], bank: BankIdentifier) => {
       switch (bank) {
         case BankIdentifier.BNB:
           // use same function for amount
-          console.log(extractBNBTxnId(data))
+          extractBNBRemarks(data)
           break;
         case BankIdentifier.BOB:
           break;

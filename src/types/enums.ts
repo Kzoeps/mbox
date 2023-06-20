@@ -8,7 +8,6 @@ export enum PrimaryInfo {
 export enum BNBPrimaryInfo {
   Journal = "reference no",
   Remark = "remarks"
-
 }
 
 export enum DateFormats {

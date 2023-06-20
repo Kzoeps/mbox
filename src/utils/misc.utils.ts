@@ -126,6 +126,18 @@ export const extractBNBTxnId = (data: string[]): string => {
   return "";
 };
 
+export const extractBNBRemarks = (data: string[]): string => {
+  const {bestMatch: {target}} = findBestMatch(BNBPrimaryInfo.Remark, data);
+  const divvied = target.split(" ");
+  const {bestMatchIndex: remarksIndex, bestMatch: {rating}} = findBestMatch("remarks", divvied);
+  let remarks = ""
+  if (rating > 0.5) {
+    divvied.splice(remarksIndex, 1);
+    remarks = divvied.join(" ").replace(":", "").trim();
+  }
+  return remarks;
+}
+
 export const extractOCRData = (data: VisionOCRData): ExtractedOCRData => {
   const textSummary = data?.detection?.[0]?.description?.split("\n") || [];
   if (textSummary?.length) {
