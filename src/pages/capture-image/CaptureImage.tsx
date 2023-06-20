@@ -1,10 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { extractText } from "../../api/misc.api";
 import CameraView from "../../components/camera-view";
-import { extractOCRData } from "../../utils/misc.utils";
 import useLoaderHook from "../../hooks/useLoaderHook";
 import MboxSpinner from "../../components/spinner";
 import { Spinner } from "@chakra-ui/react";
+import { cleanOCRData, detectBank, formatOCR } from "./utils/extraction.utils";
+import { BankIdentifier } from "../../types/enums";
+import { extractBNBInfo } from "./utils/bnb-extraction";
+import { extractBOBData } from "./utils/mbob-extraction";
+import { extractPNBData } from "./utils/pnb-extraction";
+import { ExtractedOCRData } from "../../types/misc.types";
 
 export default function CaptureImage() {
   const navigate = useNavigate();
@@ -13,11 +18,27 @@ export default function CaptureImage() {
     const wrappedExtract = wrapperBhai(extractText);
     const rawText = await wrappedExtract(image);
     if (!rawText) return;
-    const extractedData = extractOCRData(rawText);
+    const formattedText = cleanOCRData(formatOCR(rawText));
+    const extractedData = extractInfo(formattedText);
     navigate("/add-record", {
       state: extractedData,
     });
   };
+
+  const extractInfo = (data: string[]): ExtractedOCRData => {
+    const bank = detectBank(data);
+    switch (bank) {
+      case BankIdentifier.BNB:
+        return extractBNBInfo(data);
+      case BankIdentifier.BOB:
+        return extractBOBData(data);
+      case BankIdentifier.PNB:
+        return extractPNBData(data);
+      default:
+        return extractBOBData(data);
+    }
+  }
+  
 
   return (
     <>

@@ -1,7 +1,7 @@
 import { findBestMatch } from "string-similarity";
 import { BANK_IDENTIFIERS } from "../../../constants/misc.constants";
 import { PrimaryInfo, BankIdentifier } from "../../../types/enums";
-import { SegregatedDateTime } from "../../../types/misc.types";
+import { SegregatedDateTime, VisionOCRData } from "../../../types/misc.types";
 
 export const findAmount = (data: string[]): string | undefined => {
   let {
@@ -47,4 +47,9 @@ export const detectBank = (data: string[]): BankIdentifier => {
 
 export const cleanOCRData = (data: string[]): string[] => {
   return data.map((item) => item.toLowerCase().trim());
+}
+
+export const formatOCR = (data: VisionOCRData): string[] => {
+  const textSummary = data?.detection?.[0]?.description?.split("\n") || [];
+  return textSummary;
 }
