@@ -1,24 +1,17 @@
 import { QuerySnapshot } from "@firebase/firestore-types";
+import dayjs, { Dayjs } from "dayjs";
 import { getRecords } from "../api/misc.api";
 import {
+  DateFormats
+} from "../types/enums";
+import {
   Analytics,
-  ExtractedOCRData,
   MboxRecord,
   RecordsTableData,
   SegregatedDateTime,
   TrialProfile,
-  VisionOCRData,
-  WithId,
+  WithId
 } from "../types/misc.types";
-import dayjs, { Dayjs } from "dayjs";
-import { findBestMatch } from "string-similarity";
-import {
-  BNBPrimaryInfo,
-  BankIdentifier,
-  DateFormats,
-  PrimaryInfo,
-} from "../types/enums";
-import { BANK_IDENTIFIERS } from "../constants/misc.constants";
 
 const datifyRecords = (records: any[]) => {
   return records.map((record) => ({

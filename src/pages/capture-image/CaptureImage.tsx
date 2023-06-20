@@ -18,6 +18,7 @@ export default function CaptureImage() {
       state: extractedData,
     });
   };
+
   return (
     <>
       <CameraView pending={isLoading} onCancel={() => navigate('/dashboard')} onCapture={onCapture} />
