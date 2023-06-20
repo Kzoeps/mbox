@@ -1,7 +1,7 @@
 import { findBestMatch } from "string-similarity";
-import { BankIdentifier, PrimaryInfo } from "../types/enums";
-import { SegregatedDateTime } from "../types/misc.types";
-import { BANK_IDENTIFIERS } from "../constants/misc.constants";
+import { BANK_IDENTIFIERS } from "../../../constants/misc.constants";
+import { PrimaryInfo, BankIdentifier } from "../../../types/enums";
+import { SegregatedDateTime } from "../../../types/misc.types";
 
 export const findAmount = (data: string[]): string | undefined => {
   let {

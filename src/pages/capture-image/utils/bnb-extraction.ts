@@ -1,8 +1,8 @@
 import { findBestMatch } from "string-similarity";
-import { BNBPrimaryInfo } from "../types/enums";
-import { ExtractedOCRData } from "../types/misc.types";
+import { BNBPrimaryInfo } from "../../../types/enums";
+import { ExtractedOCRData } from "../../../types/misc.types";
 import { findAmount, findDate } from "./extraction.utils";
-import { dateConversion, getStringiDate } from "./misc.utils";
+import { dateConversion, getStringiDate } from "../../../utils/misc.utils";
 
 // so we delete the reference and no text and then try and find the alphanumeric id
 export const extractBNBTxnId = (data: string[]): string => {

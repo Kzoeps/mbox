@@ -1,8 +1,8 @@
 import { findBestMatch } from "string-similarity";
-import { PrimaryInfo } from "../types/enums";
-import { ExtractedOCRData } from "../types/misc.types";
 import { findAmount, findDate } from "./extraction.utils";
-import { getStringiDate, dateConversion } from "./misc.utils";
+import { PrimaryInfo } from "../../../types/enums";
+import { ExtractedOCRData } from "../../../types/misc.types";
+import { getStringiDate, dateConversion } from "../../../utils/misc.utils";
 
 const findRemark = (data: string[]): string | undefined => {
   const { bestMatchIndex } = findBestMatch(PrimaryInfo.Remark, data);

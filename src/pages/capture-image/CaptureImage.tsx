@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { extractText } from "../api/misc.api";
-import CameraView from "../components/camera-view";
-import { extractOCRData } from "../utils/misc.utils";
-import useLoaderHook from "../hooks/useLoaderHook";
-import MboxSpinner from "../components/spinner";
+import { extractText } from "../../api/misc.api";
+import CameraView from "../../components/camera-view";
+import { extractOCRData } from "../../utils/misc.utils";
+import useLoaderHook from "../../hooks/useLoaderHook";
+import MboxSpinner from "../../components/spinner";
 import { Spinner } from "@chakra-ui/react";
 
 export default function CaptureImage() {

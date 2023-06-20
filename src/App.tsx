@@ -23,7 +23,7 @@ const Pricing = withSuspense(React.lazy(() => import("./pages/Pricing")));
 const Demo = withSuspense(React.lazy(() => import("./pages/Demo")));
 const PhoneSignUp = withSuspense(React.lazy(() => import("./pages/Phone-Sign-Up")));
 const PhoneLogin = withSuspense(React.lazy(() => import("./pages/Phone-Login")));
-const CaptureImage = withSuspense(React.lazy(() => import("./pages/CaptureImage")));
+const CaptureImage = withSuspense(React.lazy(() => import("./pages/capture-image/CaptureImage")));
 const HomePage = withSuspense(React.lazy(() => import("./pages/Home")));
 const Dashboard = withSuspense(React.lazy(() => import("./pages/Dashboard")));
 
