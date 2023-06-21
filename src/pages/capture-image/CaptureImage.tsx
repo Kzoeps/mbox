@@ -11,6 +11,20 @@ import { extractBOBData } from "./utils/mbob-extraction";
 import { extractPNBData } from "./utils/pnb-extraction";
 import { ExtractedOCRData } from "../../types/misc.types";
 
+const extractInfo = (data: string[]): ExtractedOCRData => {
+    const bank = detectBank(data);
+    switch (bank) {
+      case BankIdentifier.BNB:
+        return extractBNBInfo(data);
+      case BankIdentifier.BOB:
+        return extractBOBData(data);
+      case BankIdentifier.PNB:
+        return extractPNBData(data);
+      default:
+        return extractBOBData(data);
+    }
+  }
+
 export default function CaptureImage() {
   const navigate = useNavigate();
   const { isLoading, wrapperBhai } = useLoaderHook();
@@ -24,21 +38,6 @@ export default function CaptureImage() {
       state: extractedData,
     });
   };
-
-  const extractInfo = (data: string[]): ExtractedOCRData => {
-    const bank = detectBank(data);
-    switch (bank) {
-      case BankIdentifier.BNB:
-        return extractBNBInfo(data);
-      case BankIdentifier.BOB:
-        return extractBOBData(data);
-      case BankIdentifier.PNB:
-        return extractPNBData(data);
-      default:
-        return extractBOBData(data);
-    }
-  }
-  
 
   return (
     <>

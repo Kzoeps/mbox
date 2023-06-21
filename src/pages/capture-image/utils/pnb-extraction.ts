@@ -1,12 +1,12 @@
 import { findBestMatch } from "string-similarity";
+import { PNBPrimaryInfo } from "../../../types/enums";
+import { ExtractedOCRData } from "../../../types/misc.types";
+import { dateConversion, getStringiDate } from "../../../utils/misc.utils";
 import { extractBNBRemarks } from "./bnb-extraction";
 import { findAmount, findDate } from "./extraction.utils";
-import { PrimaryInfo } from "../../../types/enums";
-import { ExtractedOCRData } from "../../../types/misc.types";
-import { getStringiDate, dateConversion } from "../../../utils/misc.utils";
 
 const extractPNBTxnId = (data: string[]): string => {
-  const { bestMatch } = findBestMatch(PrimaryInfo.Journal, data);
+  const { bestMatch } = findBestMatch(PNBPrimaryInfo.Journal, data);
   const matches = bestMatch.target.match(/\d{5,}/);
   if (matches?.length) {
     return matches[0];

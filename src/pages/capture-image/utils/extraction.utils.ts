@@ -1,6 +1,6 @@
 import { findBestMatch } from "string-similarity";
 import { BANK_IDENTIFIERS } from "../../../constants/misc.constants";
-import { PrimaryInfo, BankIdentifier } from "../../../types/enums";
+import { BankIdentifier, PrimaryInfo } from "../../../types/enums";
 import { SegregatedDateTime, VisionOCRData } from "../../../types/misc.types";
 
 export const findAmount = (data: string[]): string | undefined => {
@@ -37,19 +37,23 @@ export const findDate = (data: string[]): SegregatedDateTime => {
 };
 
 export const detectBank = (data: string[]): BankIdentifier => {
-  const matchRatings = BANK_IDENTIFIERS.map((bank) => {
-    const { bestMatch } = findBestMatch(bank, data);
-    return bestMatch.rating;
-  });
-  const maxRating = Math.max(...matchRatings);
-  return BANK_IDENTIFIERS[matchRatings.indexOf(maxRating)];
-}
+  if (data.length) {
+    const matchRatings = BANK_IDENTIFIERS.map((bank) => {
+      const { bestMatch } = findBestMatch(bank, data);
+      return bestMatch.rating;
+    });
+    const maxRating = Math.max(...matchRatings);
+    return BANK_IDENTIFIERS[matchRatings.indexOf(maxRating)];
+  } else {
+    return BankIdentifier.BOB;
+  }
+};
 
 export const cleanOCRData = (data: string[]): string[] => {
   return data.map((item) => item.toLowerCase().trim());
-}
+};
 
 export const formatOCR = (data: VisionOCRData): string[] => {
   const textSummary = data?.detection?.[0]?.description?.split("\n") || [];
   return textSummary;
-}
+};
