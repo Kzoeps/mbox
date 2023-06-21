@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { extractText } from "../../api/misc.api";
+import { extractText, uploadCrash } from "../../api/misc.api";
 import CameraView from "../../components/camera-view";
 import useLoaderHook from "../../hooks/useLoaderHook";
 import MboxSpinner from "../../components/spinner";
@@ -25,6 +25,17 @@ const extractInfo = (data: string[]): ExtractedOCRData => {
     }
   }
 
+const checkIfMissing = (data: ExtractedOCRData) => {
+  const { amount, journalNumber, remarks } = data;
+  return !amount || !journalNumber || !remarks;
+}
+
+const handleCrash = (data: ExtractedOCRData, image: string) => {
+  if (checkIfMissing(data)) {
+    void uploadCrash(image);
+  }
+}
+
 export default function CaptureImage() {
   const navigate = useNavigate();
   const { isLoading, wrapperBhai } = useLoaderHook();
@@ -34,6 +45,7 @@ export default function CaptureImage() {
     if (!rawText) return;
     const formattedText = cleanOCRData(formatOCR(rawText));
     const extractedData = extractInfo(formattedText);
+    handleCrash(extractedData, image);
     navigate("/add-record", {
       state: extractedData,
     });

@@ -1,4 +1,5 @@
 import { MboxRecord, TrialProfile } from "../types/misc.types";
+import {getStorage, ref, uploadString} from "firebase/storage"
 import {
   addDoc,
   collection,
@@ -16,6 +17,12 @@ import { db } from "../firebase.config";
 import { toBase64 } from "../utils/misc.utils";
 import axios from "axios";
 import dayjs from "dayjs";
+
+export const uploadCrash = async (image: string) => {
+  const storage = getStorage();
+  const storageRef = ref(storage,`crash/${crypto.randomUUID()}`);
+  uploadString(storageRef, image.toString().replace( /^data:(.*,)?/, ""),'base64')
+}
 
 export const readScreenShot = async (image: File) => {
   const base64 = await toBase64(image);
