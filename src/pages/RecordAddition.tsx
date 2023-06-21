@@ -11,11 +11,13 @@ import {
   FormLabel,
   Heading,
   Input,
+  Text,
   InputGroup,
   InputLeftElement,
   Stack,
   useColorMode,
   useToast,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Form, Formik, FormikProps } from "formik";
@@ -38,6 +40,7 @@ import { FaMoneyBillAlt } from "react-icons/fa";
 import { BiCommentAdd } from "react-icons/bi";
 import { formatPhoneNumber, getStringiDate } from "../utils/misc.utils";
 import { DateFormats } from "../types/enums";
+import GenericDialog from "../components/generic-dialog";
 
 export interface RecordAdditionProps {}
 
@@ -88,6 +91,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
   const location = useLocation();
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
+  const {isOpen, onOpen, onClose} = useDisclosure()
   const [totalCount, setTotalCount] = useState(0);
   const { isLoading, setIsLoading } = useLoaderHook();
   const initialValues: MboxRecord = {
@@ -124,6 +128,15 @@ export const RecordAddition = (props: RecordAdditionProps) => {
       navigate(`/dashboard`);
     }
   };
+  
+  useEffect(() => {
+    if (!location?.state?.journalNumber || !location?.state?.amount) {
+      onOpen()
+    }
+    return () => {
+      onClose()
+    }
+  }, [location?.state?.journalNumber, location?.state?.amount, onOpen, onClose])
 
   useEffect(() => {
     const getRecordsInfo = async () => {
@@ -138,6 +151,11 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 
   return (
     <>
+    <GenericDialog hideCancel={true} title="Hey! Caution" isOpen={isOpen} onConfirm={onClose} onClose={function (): void {
+        throw new Error("Function not implemented.");
+      } }>
+        <Text>We weren't able to get all the information</Text>
+        </GenericDialog>
       <Formik
         innerRef={formRef}
         initialValues={initialValues}

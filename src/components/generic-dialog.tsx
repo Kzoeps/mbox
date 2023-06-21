@@ -16,12 +16,13 @@ interface GenericDialogProps {
   cancelText: string;
   isOpen: boolean;
   children?: React.ReactElement;
+  hideCancel?: boolean;
   onConfirm: () => void;
   onClose: () => void;
 }
 
 export default function GenericDialog(props: GenericDialogProps) {
-  const { okText, onConfirm, cancelText, title, isOpen, onClose, children } = props;
+  const { okText, hideCancel, onConfirm, cancelText, title, isOpen, onClose, children } = props;
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -37,7 +38,7 @@ export default function GenericDialog(props: GenericDialogProps) {
             <Button mr={3} onClick={onConfirm}>
               {okText}
             </Button>
-            <Button onClick={onClose} variant="outline">{cancelText}</Button>
+            {!hideCancel && <Button onClick={onClose} variant="outline">{cancelText}</Button>}
           </ModalFooter>
         </ModalContent>
       </Modal>
