@@ -32,7 +32,11 @@ const checkIfMissing = (data: ExtractedOCRData) => {
 
 const handleCrash = (data: ExtractedOCRData, image: string) => {
   if (checkIfMissing(data)) {
-    void uploadCrash(image);
+    try  {
+      void uploadCrash(image);
+    } catch (e) {
+      console.error(e);
+    }
   }
 }
 
