@@ -151,9 +151,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
 
   return (
     <>
-    <GenericDialog hideCancel={true} title="Hey! Caution" isOpen={isOpen} onConfirm={onClose} onClose={function (): void {
-        throw new Error("Function not implemented.");
-      } }>
+    <GenericDialog hideCancel={true} title="Hey! Caution" isOpen={isOpen} onConfirm={onClose} onClose={onClose}>
         <Text>We weren't able to get all the information</Text>
         </GenericDialog>
       <Formik
