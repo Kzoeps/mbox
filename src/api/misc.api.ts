@@ -4,6 +4,7 @@ import {
   addDoc,
   collection,
   doc,
+  getCountFromServer,
   getDoc,
   getDocs,
   limit,
@@ -17,6 +18,12 @@ import { db } from "../firebase.config";
 import { toBase64 } from "../utils/misc.utils";
 import axios from "axios";
 import dayjs from "dayjs";
+
+export const getTotalRecords = async (uid: string): Promise<number> => {
+  const collectionRef = collection(db, uid);
+  const snapshot = await getCountFromServer(collectionRef);
+  return snapshot.data().count || 0
+}
 
 export const uploadCrash = async (image: string) => {
   const storage = getStorage();

@@ -1,21 +1,21 @@
+import { Checkbox, useDisclosure, useMediaQuery, useToast } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import * as React from "react";
 import { useContext, useEffect, useState } from "react";
+import { getTotalRecords } from "../api/misc.api";
+import DateFilter from '../components/date-filter';
+import RecordsTable, { BigRecordsTable } from "../components/records-table";
+import { UserContext } from "../components/user-context";
+import useDateFilterFetch from "../hooks/useDateFilterFetch";
+import useLoaderHook from "../hooks/useLoaderHook";
+import { DateFormats } from "../types/enums";
 import {
   DateRangeType,
   FormattedRecordsResponse,
   RecordData,
   RecordsTableData,
 } from "../types/misc.types";
-import { UserContext } from "../components/user-context";
-import { getRecordsTrackInfo } from "../api/misc.api";
 import { getDisplayDate, getFormattedRecords } from "../utils/misc.utils";
-import useLoaderHook from "../hooks/useLoaderHook";
-import RecordsTable, { BigRecordsTable } from "../components/records-table";
-import { DateFormats } from "../types/enums";
-import dayjs from "dayjs";
-import { Checkbox, useMediaQuery, useDisclosure, useToast } from "@chakra-ui/react";
-import useDateFilterFetch from "../hooks/useDateFilterFetch";
-import DateFilter from '../components/date-filter'
 
 export interface RecordListingProps {}
 
@@ -46,11 +46,18 @@ export const RecordListing = (props: RecordListingProps) => {
 
   useEffect(() => {
     const getTotalCount = async (): Promise<number> => {
-      const recordsSnap = await getRecordsTrackInfo(user?.uid);
-      const recordsCount = recordsSnap.data()?.recordsCount ?? 0;
-      setTotalUnfilteredCount(recordsSnap.data()?.recordsCount ?? 0);
-      setTotalCount(recordsSnap.data()?.recordsCount ?? 0);
-      return recordsCount;
+      let totalRecordCount = 0;
+      if (user?.uid) {
+        totalRecordCount = await getTotalRecords(user.uid);
+        setTotalUnfilteredCount(totalRecordCount);
+        setTotalCount(totalRecordCount);
+      }
+      return totalRecordCount
+      // const recordsSnap = await getRecordsTrackInfo(user?.uid);
+      // const recordsCount = recordsSnap.data()?.recordsCount ?? 0;
+      // setTotalUnfilteredCount(recordsSnap.data()?.recordsCount ?? 0);
+      // setTotalCount(recordsSnap.data()?.recordsCount ?? 0);
+      // return recordsCount;
     };
     setIsLoading(true);
     if (user?.uid) {
