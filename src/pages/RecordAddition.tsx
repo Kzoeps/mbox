@@ -1,8 +1,4 @@
-import {
-  useContext,
-  useEffect, useRef,
-  useState
-} from "react";
+import { PhoneIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
@@ -11,80 +7,39 @@ import {
   FormLabel,
   Heading,
   Input,
-  Text,
   InputGroup,
   InputLeftElement,
   Stack,
+  Text,
   useColorMode,
-  useToast,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 import { Form, Formik, FormikProps } from "formik";
+import {
+  useContext,
+  useEffect, useRef
+} from "react";
+import { BiCommentAdd } from "react-icons/bi";
+import { FaMoneyBillAlt } from "react-icons/fa";
+import { ImListNumbered } from "react-icons/im";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  addRecord
+} from "../api/misc.api";
+import GenericDialog from "../components/generic-dialog";
+import { UserContext } from "../components/user-context";
+import useLoaderHook from "../hooks/useLoaderHook";
+import { DateFormats } from "../types/enums";
 import {
   BaseRecordInfo,
   MboxRecord
 } from "../types/misc.types";
-import {
-  addRecord,
-  getRecordsTrackInfo,
-  increaseRecordNumber,
-} from "../api/misc.api";
-import { UserContext } from "../components/user-context";
-import dayjs from "dayjs";
-import useLoaderHook from "../hooks/useLoaderHook";
-import { RecordEntrySchema } from "../utils/validation-schemas";
-import { PhoneIcon } from "@chakra-ui/icons";
-import { ImListNumbered } from "react-icons/im";
-import { FaMoneyBillAlt } from "react-icons/fa";
-import { BiCommentAdd } from "react-icons/bi";
 import { formatPhoneNumber, getStringiDate } from "../utils/misc.utils";
-import { DateFormats } from "../types/enums";
-import GenericDialog from "../components/generic-dialog";
+import { RecordEntrySchema } from "../utils/validation-schemas";
 
 export interface RecordAdditionProps {}
-
-/* 
-const RecordsReducer = (
-  analyticsRecord: AnalyticsRecordTrack,
-  action: AnalyticsRecordAction
-) => {
-  switch (action.type) {
-    case "set_monthly_total": {
-      return {
-        ...analyticsRecord,
-        monthlyTotal: action.monthlyTotal,
-      };
-    }
-    case "set_daily_total": {
-      return {
-        ...analyticsRecord,
-        dailyTotal: action.dailyTotal,
-      };
-    }
-    case "set_highest_daily": {
-      return {
-        ...analyticsRecord,
-        highestDailyTxn:
-          action.highestDailyTxn > analyticsRecord.highestDailyTxn
-            ? action.highestDailyTxn
-            : analyticsRecord.highestDailyTxn,
-      };
-    }
-    case "set_highest_monthly": {
-      return {
-        ...analyticsRecord,
-        highestMonthlyTxn:
-          action.highestMonthlyTxn > analyticsRecord.highestMonthlyTxn
-            ? action.highestMonthlyTxn
-            : analyticsRecord.highestMonthlyTxn,
-      };
-    }
-    default:
-      return analyticsRecord;
-  }
-};
-*/
 
 export const RecordAddition = (props: RecordAdditionProps) => {
   const { colorMode } = useColorMode();
@@ -92,7 +47,6 @@ export const RecordAddition = (props: RecordAdditionProps) => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const [totalCount, setTotalCount] = useState(0);
   const { isLoading, setIsLoading } = useLoaderHook();
   const initialValues: MboxRecord = {
     journalNumber: (location?.state as BaseRecordInfo)?.journalNumber ?? "",
@@ -115,10 +69,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
         phoneNumber,
         date: dayjs(values.date, DateFormats.CalendarDate).toDate(),
       });
-      await increaseRecordNumber(user.uid, totalCount + 1);
-      setTotalCount(totalCount + 1);
       setIsLoading(false);
-
       toast({
         title: "Record added",
         description: `Record with jrnl no: ${values.journalNumber} has been successfully added`,
@@ -137,17 +88,6 @@ export const RecordAddition = (props: RecordAdditionProps) => {
       onClose()
     }
   }, [location?.state?.journalNumber, location?.state?.amount, onOpen, onClose])
-
-  useEffect(() => {
-    const getRecordsInfo = async () => {
-      if (user?.uid) {
-        const recordsInfoSnap = await getRecordsTrackInfo(user.uid);
-        const recordsSnap = recordsInfoSnap.data();
-        setTotalCount(recordsSnap?.recordsCount ?? 0);
-      }
-    };
-    void getRecordsInfo();
-  }, [user?.uid]);
 
   return (
     <>
