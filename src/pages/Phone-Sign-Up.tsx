@@ -46,7 +46,7 @@ export const PhoneSignUp = (props: PhoneSignUpProps) => {
       setIsLoading(true);
       isCreating.current = true;
       const userCredentials = await verifyCode(+vals.verificationCode);
-      if (userCredentials) {
+      if (userCredentials?._tokenResponse.isNewUser) {
         await handleProfileGeneration(vals, userCredentials.user);
         toast({
           title: "Account successfully created",
