@@ -17,6 +17,8 @@ import { BASE_PHONE_LOGIN } from "../constants/misc.constants";
 import { LoginSchemaFinal, LoginSchemaInit } from "../utils/validation-schemas";
 import { PhoneSignUpForm } from "../types/misc.types";
 import useLoaderHook from "../hooks/useLoaderHook";
+import { getTrialDates } from "../utils/misc.utils";
+import { updateUserProfile } from "../api/misc.api";
 
 export interface PhoneLoginProps {}
 
@@ -34,7 +36,13 @@ export const PhoneLogin = (props: PhoneLoginProps) => {
 
   const handleConfirmation = async (values: PhoneLoginForm) => {
     const wrappedVerify = wrapperBhai(verifyCode);
-    await wrappedVerify(+values.verificationCode);
+    const result = await wrappedVerify(+values.verificationCode);
+    if (result?._tokenResponse.isNewUser) {
+      await updateUserProfile(result.user.uid, {
+        ...getTrialDates(),
+        phone_number: result.user.phoneNumber,
+      });
+    }
   };
   return (
     <>
