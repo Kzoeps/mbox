@@ -31,13 +31,13 @@ export const uploadCrash = async (image: string) => {
   uploadString(storageRef, image.toString().replace( /^data:(.*,)?/, ""),'base64')
 }
 
-export const readScreenShot = async (image: File) => {
+export const readScreenShot = async (image: File, token: string) => {
   const base64 = await toBase64(image);
-  return await extractText(base64);
+  return await extractText(base64, token);
 };
 
-export const extractText = async (image: string) => {
-  const text = await axios.post(`/api/ocr`, { image: image.toString().replace( /^data:(.*,)?/, "") });
+export const extractText = async (image: string, token: string) => {
+  const text = await axios.post(`/api/ocr`, { token, image: image.toString().replace( /^data:(.*,)?/, "") });
   return text.data
 }
 

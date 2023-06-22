@@ -10,6 +10,8 @@ import { extractBNBInfo } from "./utils/bnb-extraction";
 import { extractBOBData } from "./utils/mbob-extraction";
 import { extractPNBData } from "./utils/pnb-extraction";
 import { ExtractedOCRData } from "../../types/misc.types";
+import { useContext } from "react";
+import { UserContext } from "../../components/user-context";
 
 const extractInfo = (data: string[]): ExtractedOCRData => {
     const bank = detectBank(data);
@@ -43,9 +45,11 @@ const handleCrash = (data: ExtractedOCRData, image: string) => {
 export default function CaptureImage() {
   const navigate = useNavigate();
   const { isLoading, wrapperBhai } = useLoaderHook();
+  const { user } = useContext(UserContext);
   const onCapture = async (image: string) => {
+    const token = await user?.getIdToken();
     const wrappedExtract = wrapperBhai(extractText);
-    const rawText = await wrappedExtract(image);
+    const rawText = await wrappedExtract(image, token);
     if (!rawText) return;
     const formattedText = cleanOCRData(formatOCR(rawText));
     const extractedData = extractInfo(formattedText);
