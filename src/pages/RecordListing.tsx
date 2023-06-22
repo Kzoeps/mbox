@@ -69,6 +69,9 @@ export const RecordListing = (props: RecordListingProps) => {
           });
       });
     }
+    return (() => {
+      setIsLoading(false);
+    })
   }, [user?.uid, getAndSaveRecords, setIsLoading]);
 
   const formatRecords = (records: RecordData[]): RecordsTableData[] => {
