@@ -3,7 +3,23 @@ import { BANK_IDENTIFIERS } from "../../../constants/misc.constants";
 import { BankIdentifier, PrimaryInfo } from "../../../types/enums";
 import { SegregatedDateTime, VisionOCRData } from "../../../types/misc.types";
 
+const findAmountThroughRegex = (data: string[]): string | undefined => {
+  const joined = data.join(" ");
+  const ngultrumRegex = /\bnu(\.?)\s*[\d,]+\b/;
+  const matches = joined.match(ngultrumRegex);
+  if (matches?.length) {
+    const amountRegex = /\d+/g;
+    const firstMatch = matches[0].replace(/(\d)(,)(\d)/, "$1$3");
+    const amounts = firstMatch.match(amountRegex);
+    if (amounts?.length) {
+      return amounts[0];
+    }
+  }
+  return undefined
+}
+
 export const findAmount = (data: string[]): string | undefined => {
+  if (findAmountThroughRegex(data)) return findAmountThroughRegex(data);
   let {
     bestMatch: { target: bestMatch },
   } = findBestMatch(PrimaryInfo.Amount, data);

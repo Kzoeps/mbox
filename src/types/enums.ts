@@ -1,8 +1,8 @@
 export enum PrimaryInfo {
   Journal = "jrnl. no",
   Amount = "nu.",
-  Remark = "Purpose/Bill QR",
-  Date = "Date",
+  Remark = "purpose/bill qr",
+  Date = "date",
 }
 
 export enum BNBPrimaryInfo {

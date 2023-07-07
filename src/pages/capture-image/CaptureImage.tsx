@@ -14,7 +14,6 @@ import { useContext } from "react";
 import { UserContext } from "../../components/user-context";
 
 const extractInfo = (data: string[]): ExtractedOCRData => {
-  debugger;
   const bank = detectBank(data);
   switch (bank) {
     case BankIdentifier.BNB:
@@ -43,7 +42,7 @@ const handleCrash = (data: ExtractedOCRData, image: string) => {
   }
 }
 
-const dummyText: VisionOCRData = { detection: [{ description: "3:36\nTransaction Successful\nFrom A/\n100000094\nmBOB\nMOBILE BANKING\nNu. 110.00\nPurpose/Bill GR:\n$\nJeni. No\n1110908\nOK\nLTE\nTo:\nZNTHAR TSHONGK...\nDate\n26 Jun 2023 15:35.37\nShare" }] }
+const dummyText: VisionOCRData = { detection: [{ description: "coul\nFrom c\n2000000\nPurpos\nABOB\nERASE\nTransaction Successful\nNu. 170\nSINO\nNu\nVG:\nKINLEY GYEM BOBL\nDate\n25 in 2023 1555\nShare" }] }
 
 export default function CaptureImage() {
   const navigate = useNavigate();
