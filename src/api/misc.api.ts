@@ -46,6 +46,11 @@ export const addRecord = async (userEmail: string, record: MboxRecord) => {
   return response;
 };
 
+export const addCrashRecord = async (id: string, info: Partial<MboxRecord> & {extractedText: string}) => {
+  const response = await setDoc(doc(db, "crashes", id), info);
+  return response;
+}
+
 export const addPayment = async (
   userId: string,
   record: MboxRecord & { name: string }

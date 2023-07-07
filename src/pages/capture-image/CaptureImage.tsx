@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { extractText, uploadCrash } from "../../api/misc.api";
+import { addCrashRecord, extractText, uploadCrash } from "../../api/misc.api";
 import CameraView from "../../components/camera-view";
 import useLoaderHook from "../../hooks/useLoaderHook";
 import MboxSpinner from "../../components/spinner";
@@ -33,12 +33,11 @@ const checkIfMissing = (data: ExtractedOCRData) => {
   return !amount || !journalNumber || !remarks;
 }
 
-const handleCrash = (data: string, image: string) => {
-  // if (checkIfMissing(data)) {
-  if (true) {
+const handleCrash = (data: ExtractedOCRData, extractedText: string, image: string) => {
+  if (checkIfMissing(data)) {
     try {
-      debugger;
       const id = hri.hri.random();
+      void addCrashRecord(id, {...data, extractedText})
       void uploadCrash(image, id);
     } catch (e) {
       console.error(e);
@@ -56,14 +55,13 @@ export default function CaptureImage() {
     const token = await user?.getIdToken();
     const wrappedExtract = wrapperBhai(extractText);
     const rawText = await wrappedExtract(image, token);
-    // if (!rawText)  return;
-    // const formattedText = cleanOCRData(formatOCR(rawText));
-    // const extractedData = extractInfo(formattedText);
-    // handleCrash(extractedData, image);
-    handleCrash('', image);
-    // navigate("/add-record", {
-    //   state: extractedData,
-    // });
+    if (!rawText) return;
+    const formattedText = cleanOCRData(formatOCR(rawText));
+    const extractedData = extractInfo(formattedText);
+    handleCrash(extractedData, rawText, image);
+    navigate("/add-record", {
+      state: extractedData,
+    });
   };
 
   return (
