@@ -1,18 +1,18 @@
+import { Spinner } from "@chakra-ui/react";
+import * as hri from 'human-readable-ids';
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { addCrashRecord, extractText, uploadCrash } from "../../api/misc.api";
 import CameraView from "../../components/camera-view";
-import useLoaderHook from "../../hooks/useLoaderHook";
 import MboxSpinner from "../../components/spinner";
-import { Spinner } from "@chakra-ui/react";
-import { cleanOCRData, detectBank, formatOCR } from "./utils/extraction.utils";
+import { UserContext } from "../../components/user-context";
+import useLoaderHook from "../../hooks/useLoaderHook";
 import { BankIdentifier } from "../../types/enums";
+import { ExtractedOCRData } from "../../types/misc.types";
 import { extractBNBInfo } from "./utils/bnb-extraction";
+import { cleanOCRData, detectBank, formatOCR } from "./utils/extraction.utils";
 import { extractBOBData } from "./utils/mbob-extraction";
 import { extractPNBData } from "./utils/pnb-extraction";
-import { ExtractedOCRData, VisionOCRData } from "../../types/misc.types";
-import { useContext } from "react";
-import { UserContext } from "../../components/user-context";
-import * as hri from 'human-readable-ids';
 
 const extractInfo = (data: string[]): ExtractedOCRData => {
   const bank = detectBank(data);
@@ -37,7 +37,7 @@ const handleCrash = (data: ExtractedOCRData, extractedText: string, image: strin
   if (checkIfMissing(data)) {
     try {
       const id = hri.hri.random();
-      void addCrashRecord(id, {...data, extractedText})
+      void addCrashRecord(id, { ...data, extractedText })
       void uploadCrash(image, id);
     } catch (e) {
       console.error(e);
