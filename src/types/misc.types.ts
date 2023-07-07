@@ -92,13 +92,13 @@ export interface VisionOCRData {
 export interface DetectionEntity {
   locations?: null[] | null;
   properties?: null[] | null;
-  mid: string;
-  locale: string;
+  mid?: string;
+  locale?: string;
   description: string;
-  score: number;
-  confidence: number;
-  topicality: number;
-  boundingPoly: BoundingPoly;
+  score?: number;
+  confidence?: number;
+  topicality?: number;
+  boundingPoly?: BoundingPoly;
 }
 export interface BoundingPoly {
   vertices?: VerticesEntity[] | null;

@@ -1,5 +1,5 @@
 export enum PrimaryInfo {
-  Journal = "Jrnl. No",
+  Journal = "jrnl. no",
   Amount = "nu.",
   Remark = "Purpose/Bill QR",
   Date = "Date",
