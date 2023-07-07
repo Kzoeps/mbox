@@ -25,10 +25,10 @@ export const getTotalRecords = async (uid: string): Promise<number> => {
   return snapshot.data().count || 0
 }
 
-export const uploadCrash = async (image: string) => {
+export const uploadCrash = async (image: string, id: string) => {
   const storage = getStorage();
-  const storageRef = ref(storage,`crash/${crypto.randomUUID()}`);
-  uploadString(storageRef, image.toString().replace( /^data:(.*,)?/, ""),'base64')
+  const storageRef = ref(storage,`crash/${id}`);
+  uploadString(storageRef, image.toString(),'data_url')
 }
 
 export const readScreenShot = async (image: File, token: string) => {

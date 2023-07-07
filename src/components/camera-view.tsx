@@ -98,7 +98,7 @@ export default function CameraView(props: CameraViewProps) {
       setIsPicTaken(true);
       disableStreaming();
       flash();
-      onCapture(canvas.current.toDataURL("image/jpeg", 0.75));
+      onCapture(canvas.current.toDataURL("image/jpeg", 0.85));
     } else {
       startStreaming();
       setIsPicTaken(false);

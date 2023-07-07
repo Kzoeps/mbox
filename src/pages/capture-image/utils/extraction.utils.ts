@@ -4,12 +4,11 @@ import { BankIdentifier, PrimaryInfo } from "../../../types/enums";
 import { SegregatedDateTime, VisionOCRData } from "../../../types/misc.types";
 
 const findAmountThroughRegex = (data: string[]): string | undefined => {
-  const joined = data.join(" ");
-  const ngultrumRegex = /\bnu(\.?)\s*[\d,]+\b/;
-  const matches = joined.match(ngultrumRegex);
-  if (matches?.length) {
+  const ngultrumRegex = /^\bnu(\.?)\s*[\d,]+\b$/;
+  const match = data.find((item) => ngultrumRegex.test(item));
+  if (match) {
     const amountRegex = /\d+/g;
-    const firstMatch = matches[0].replace(/(\d)(,)(\d)/, "$1$3");
+    const firstMatch = match.replace(/(\d)(,)(\d)/, "$1$3");
     const amounts = firstMatch.match(amountRegex);
     if (amounts?.length) {
       return amounts[0];

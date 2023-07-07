@@ -30,6 +30,7 @@ specifiers:
   framer-motion: ^7.6.7
   fuse.js: ^6.6.2
   google-auth-library: ^8.7.0
+  human-readable-ids: ^1.0.4
   prettier: ^2.8.4
   react: ^18.2.0
   react-date-range: ^1.4.0
@@ -66,6 +67,7 @@ dependencies:
   framer-motion: 7.6.7_biqbaboplfbrettd7655fr4n2y
   fuse.js: 6.6.2
   google-auth-library: 8.7.0
+  human-readable-ids: 1.0.4
   react: 18.2.0
   react-date-range: 1.4.0_react@18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -9612,6 +9614,12 @@ packages:
       - supports-color
     dev: false
 
+  /human-readable-ids/1.0.4:
+    resolution: {integrity: sha512-h1zwThTims8A/SpqFGWyTx+jG1+WRMJaEeZgbtPGrIpj2AZjsOgy8Y+iNzJ0yAyN669Q6F02EK66WMWcst+2FA==}
+    dependencies:
+      knuth-shuffle: 1.0.8
+    dev: false
+
   /human-signals/2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
@@ -10955,6 +10963,10 @@ packages:
   /klona/2.0.5:
     resolution: {integrity: sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==}
     engines: {node: '>= 8'}
+    dev: false
+
+  /knuth-shuffle/1.0.8:
+    resolution: {integrity: sha512-IdC4Hpp+mx53zTt6VAGsAtbGM0g4BV9fP8tTcviCosSwocHcRDw9uG5Rnv6wLWckF4r72qeXFoK9NkvV1gUJCQ==}
     dev: false
 
   /language-subtag-registry/0.3.22:

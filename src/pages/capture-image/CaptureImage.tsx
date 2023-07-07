@@ -12,6 +12,7 @@ import { extractPNBData } from "./utils/pnb-extraction";
 import { ExtractedOCRData, VisionOCRData } from "../../types/misc.types";
 import { useContext } from "react";
 import { UserContext } from "../../components/user-context";
+import * as hri from 'human-readable-ids';
 
 const extractInfo = (data: string[]): ExtractedOCRData => {
   const bank = detectBank(data);
@@ -32,17 +33,20 @@ const checkIfMissing = (data: ExtractedOCRData) => {
   return !amount || !journalNumber || !remarks;
 }
 
-const handleCrash = (data: ExtractedOCRData, image: string) => {
-  if (checkIfMissing(data)) {
+const handleCrash = (data: string, image: string) => {
+  // if (checkIfMissing(data)) {
+  if (true) {
     try {
-      void uploadCrash(image);
+      debugger;
+      const id = hri.hri.random();
+      void uploadCrash(image, id);
     } catch (e) {
       console.error(e);
     }
   }
 }
 
-const dummyText: VisionOCRData = { detection: [{ description: "coul\nFrom c\n2000000\nPurpos\nABOB\nERASE\nTransaction Successful\nNu. 170\nSINO\nNu\nVG:\nKINLEY GYEM BOBL\nDate\n25 in 2023 1555\nShare" }] }
+// const dummyText: VisionOCRData = { detection: [{ description: "3:36\nTransaction Successful\nFrom A/\n100000094\nmBOB\nMOBILE BANKING\nNu. 110.00\nPurpose/Bill GR:\n$\nJeni. No\n1110908\nOK\nLTE\nTo:\nZNTHAR TSHONGK...\nDate\n26 Jun 2023 15:35.37\nShare" }] }
 
 export default function CaptureImage() {
   const navigate = useNavigate();
@@ -51,15 +55,15 @@ export default function CaptureImage() {
   const onCapture = async (image: string) => {
     const token = await user?.getIdToken();
     const wrappedExtract = wrapperBhai(extractText);
-    // const rawText = await wrappedExtract(image, token);
-    // if (rawText) { 
-    const formattedText = cleanOCRData(formatOCR(dummyText));
-    const extractedData = extractInfo(formattedText);
-    navigate("/add-record", {
-      state: extractedData,
-    });
-    // }
+    const rawText = await wrappedExtract(image, token);
+    // if (!rawText)  return;
+    // const formattedText = cleanOCRData(formatOCR(rawText));
+    // const extractedData = extractInfo(formattedText);
     // handleCrash(extractedData, image);
+    handleCrash('', image);
+    // navigate("/add-record", {
+    //   state: extractedData,
+    // });
   };
 
   return (
