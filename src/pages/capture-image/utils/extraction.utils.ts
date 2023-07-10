@@ -68,7 +68,13 @@ export const cleanOCRData = (data: string[]): string[] => {
   return data.map((item) => item.toLowerCase().trim());
 };
 
+export const getDescription = (data: VisionOCRData): string => {
+  return data?.detection?.[0]?.description || "";
+}
+
+
 export const formatOCR = (data: VisionOCRData): string[] => {
-  const textSummary = data?.detection?.[0]?.description?.split("\n") || [];
+  if (getDescription(data) === "") return [];
+  const textSummary = getDescription(data).split("\n") || [];
   return textSummary;
 };

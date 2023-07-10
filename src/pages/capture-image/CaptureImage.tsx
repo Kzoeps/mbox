@@ -10,7 +10,7 @@ import useLoaderHook from "../../hooks/useLoaderHook";
 import { BankIdentifier } from "../../types/enums";
 import { ExtractedOCRData } from "../../types/misc.types";
 import { extractBNBInfo } from "./utils/bnb-extraction";
-import { cleanOCRData, detectBank, formatOCR } from "./utils/extraction.utils";
+import { cleanOCRData, detectBank, formatOCR, getDescription } from "./utils/extraction.utils";
 import { extractBOBData } from "./utils/mbob-extraction";
 import { extractPNBData } from "./utils/pnb-extraction";
 
@@ -54,11 +54,11 @@ export default function CaptureImage() {
   const onCapture = async (image: string) => {
     const token = await user?.getIdToken();
     const wrappedExtract = wrapperBhai(extractText);
-    const rawText = await wrappedExtract(image, token);
-    if (!rawText) return;
-    const formattedText = cleanOCRData(formatOCR(rawText));
+    const rawResponse = await wrappedExtract(image, token);
+    if (!rawResponse) return;
+    const formattedText = cleanOCRData(formatOCR(rawResponse));
     const extractedData = extractInfo(formattedText);
-    handleCrash(extractedData, rawText, image);
+    handleCrash(extractedData, getDescription(rawResponse), image);
     navigate("/add-record", {
       state: extractedData,
     });
