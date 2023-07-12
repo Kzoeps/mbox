@@ -21,10 +21,12 @@ export const extractBNBTxnId = (data: string[]): string => {
   if (no.rating > 0.5 && no.target.length <= 4) {
     divvied.splice(noIndex, 1);
   }
-  const containsAlphNumber = /^(?=.*[a-zA-Z])(?=.*[0-9])[\w\d]{6,}/;
+  const containsAlphNumber = /(?=.*[a-zA-Z])(?=.*[0-9])[\w\d]{6,}/;
   const txnId = divvied.find((item) => containsAlphNumber.test(item));
   if (txnId) {
-    return txnId.toUpperCase();
+    const match = txnId.match(containsAlphNumber)
+    if (match?.length) return match[0].toUpperCase()
+    return ""
   }
   return "";
 };

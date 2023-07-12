@@ -160,6 +160,9 @@ export const RecordAddition = (props: RecordAdditionProps) => {
                         <FaMoneyBillAlt />
                       </InputLeftElement>
                       <Input
+                        type="number"
+                        max={10000}
+                        min={1}
                         autoComplete={"off"}
                         name={"amount"}
                         value={formik.values.amount ?? ""}

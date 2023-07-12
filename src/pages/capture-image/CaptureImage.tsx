@@ -8,7 +8,7 @@ import MboxSpinner from "../../components/spinner";
 import { UserContext } from "../../components/user-context";
 import useLoaderHook from "../../hooks/useLoaderHook";
 import { BankIdentifier } from "../../types/enums";
-import { ExtractedOCRData } from "../../types/misc.types";
+import { ExtractedOCRData, VisionOCRData } from "../../types/misc.types";
 import { extractBNBInfo } from "./utils/bnb-extraction";
 import { cleanOCRData, detectBank, formatOCR, getDescription } from "./utils/extraction.utils";
 import { extractBOBData } from "./utils/mbob-extraction";
@@ -45,7 +45,7 @@ const handleCrash = (data: ExtractedOCRData, extractedText: string, image: strin
   }
 }
 
-// const dummyText: VisionOCRData = { detection: [{ description: "3:36\nTransaction Successful\nFrom A/\n100000094\nmBOB\nMOBILE BANKING\nNu. 110.00\nPurpose/Bill GR:\n$\nJeni. No\n1110908\nOK\nLTE\nTo:\nZNTHAR TSHONGK...\nDate\n26 Jun 2023 15:35.37\nShare" }] }
+// const dummyText: VisionOCRData = { detection: [{ description: "9:36 0\nPayment Successful\nPay From\nPay To\nTransfer\nAmount\n********\n40%\n*****1501\n120\nTransfer Shopping\nPurpose\n*6594\nTransaction 2023.07.08\nTime\n21:36:15\nOK\nMAKE ANOTHER\nTRANSACTION\nDigital Receipt 318921301971\nNo\nRR Number 318921301971\nSHARE" }] }
 
 export default function CaptureImage() {
   const navigate = useNavigate();

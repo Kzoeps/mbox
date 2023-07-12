@@ -27,7 +27,7 @@ export const findAmount = (data: string[]): string | undefined => {
     // to remove commas from large numbers such as Nu. 18,230
     bestMatch = bestMatch.replace(/(\d)(,)(\d)/, "$1$3");
     const amounts = bestMatch.match(amountRegex);
-    if (amounts?.length) {
+    if (amounts?.length && +amounts[0] > 0 && +amounts[0] < 100000) {
       return amounts[0];
     }
   }
