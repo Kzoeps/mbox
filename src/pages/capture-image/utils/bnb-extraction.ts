@@ -8,6 +8,7 @@ import { dateConversion, getStringiDate } from "../../../utils/misc.utils";
 export const extractBNBTxnId = (data: string[]): string => {
   const { bestMatch } = findBestMatch(BNBPrimaryInfo.Journal, data);
   let divvied = bestMatch.target.split(" ");
+  // delete the "referenece" text 
   const { bestMatch: reference, bestMatchIndex: referenceIndex } =
     findBestMatch("reference", divvied);
   if (reference.rating > 0.5) {
@@ -22,8 +23,10 @@ export const extractBNBTxnId = (data: string[]): string => {
     divvied.splice(noIndex, 1);
   }
   const containsAlphNumber = /(?=.*[a-zA-Z])(?=.*[0-9])[\w\d]{6,}/;
+  // from the remaining values try and see if theres an alphanumeric id with character of 6 or more
   const txnId = divvied.find((item) => containsAlphNumber.test(item));
   if (txnId) {
+    // if there is return the alphanumeric id since we dont want the ":" etc
     const match = txnId.match(containsAlphNumber)
     if (match?.length) return match[0].toUpperCase()
     return ""
