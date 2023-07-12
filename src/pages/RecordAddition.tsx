@@ -161,7 +161,7 @@ export const RecordAddition = (props: RecordAdditionProps) => {
                       </InputLeftElement>
                       <Input
                         type="number"
-                        max={10000}
+                        max={100000}
                         min={1}
                         autoComplete={"off"}
                         name={"amount"}
