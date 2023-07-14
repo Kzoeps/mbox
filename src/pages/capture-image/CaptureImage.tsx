@@ -37,7 +37,11 @@ const handleCrash = (data: ExtractedOCRData, extractedText: string, image: strin
   if (checkIfMissing(data)) {
     try {
       const id = hri.hri.random();
-      void addCrashRecord(id, { ...data, extractedText })
+      const crashRecord = {...data, extractedText }
+      Object.keys(crashRecord).forEach((key: string) => {
+        crashRecord[key as keyof ExtractedOCRData] ??= '';
+      })
+      void addCrashRecord(id, crashRecord)
       void uploadCrash(image, id);
     } catch (e) {
       console.error(e);
