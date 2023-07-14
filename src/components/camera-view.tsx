@@ -1,10 +1,8 @@
-import { Text, Box, IconButton } from "@chakra-ui/react";
+import { Box, IconButton, Text } from "@chakra-ui/react";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { MdOutlineClose } from "react-icons/md";
-import { TbCapture } from "react-icons/tb";
-import styles from "./camera.module.css";
+import { IoCameraOutline, IoCameraReverseOutline, IoCloseOutline, IoRepeat } from "react-icons/io5";
 import { MediaDevicesError, MediaDevicesErrorMessages } from "../types/enums";
-import { IoCameraReverseOutline } from "react-icons/io5";
+import styles from "./camera.module.css";
 
 export interface CameraViewProps {
   onCancel: () => void;
@@ -146,7 +144,7 @@ export default function CameraView(props: CameraViewProps) {
           variant={"outline"}
           onClick={handleClose}
           disabled={pending}
-          icon={<MdOutlineClose />}
+          icon={<IoCloseOutline/>}
           colorScheme="orange"
           size={"sm"}
           ml={5}
@@ -159,7 +157,7 @@ export default function CameraView(props: CameraViewProps) {
           disabled={pending}
           colorScheme="orange"
           size={"lg"}
-          icon={<TbCapture size={"25px"} />}
+          icon={isPicTaken ? <IoRepeat/>: <IoCameraOutline size={"25px"} />}
           isRound
           aria-label={"capture"}
         />
@@ -169,7 +167,7 @@ export default function CameraView(props: CameraViewProps) {
           onClick={() =>
             setFacingMode(facingMode === "environment" ? "user" : "environment")
           }
-          icon={<IoCameraReverseOutline />}
+          icon={ <IoCameraReverseOutline />}
           colorScheme="orange"
           size={"sm"}
           mr={5}

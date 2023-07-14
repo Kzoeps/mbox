@@ -1,4 +1,4 @@
-import { Spinner } from "@chakra-ui/react";
+import { Spinner, useToast } from "@chakra-ui/react";
 import * as hri from 'human-readable-ids';
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ import MboxSpinner from "../../components/spinner";
 import { UserContext } from "../../components/user-context";
 import useLoaderHook from "../../hooks/useLoaderHook";
 import { BankIdentifier } from "../../types/enums";
-import { ExtractedOCRData, VisionOCRData } from "../../types/misc.types";
+import type { ExtractedOCRData, VisionOCRData } from "../../types/misc.types";
 import { extractBNBInfo } from "./utils/bnb-extraction";
 import { cleanOCRData, detectBank, formatOCR, getDescription } from "./utils/extraction.utils";
 import { extractBOBData } from "./utils/mbob-extraction";
@@ -54,6 +54,7 @@ const handleCrash = (data: ExtractedOCRData, extractedText: string, image: strin
 export default function CaptureImage() {
   const navigate = useNavigate();
   const { isLoading, wrapperBhai } = useLoaderHook();
+  const toast = useToast();
   const { user } = useContext(UserContext);
   const onCapture = async (image: string) => {
     const token = await user?.getIdToken();
@@ -61,12 +62,17 @@ export default function CaptureImage() {
     const rawResponse = await wrappedExtract(image, token);
     if (!rawResponse) return;
     const formattedText = cleanOCRData(formatOCR(rawResponse));
+    if (!formattedText.length) return handleBadImage(); 
     const extractedData = extractInfo(formattedText);
     handleCrash(extractedData, getDescription(rawResponse), image);
     navigate("/add-record", {
       state: extractedData,
     });
   };
+
+  const handleBadImage = () => {
+    toast({ title: 'Unable to extract text from image', description: 'Please try again with a better angle',status: 'error'}) 
+  }
 
   return (
     <>
