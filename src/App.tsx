@@ -54,11 +54,9 @@ function App() {
             <Route path={"/capture"} element={<CaptureImage/>} />
             <Route path={"/dashboard"} element={<Dashboard />} />
             <Route path={"/add-record"} element={<RecordAddition />} />
-            <Route path={"/subscribe"} element={<Payment />} />
             <Route path={"/analytics"} element={<Analytics />} />
             <Route path={"/success"} element={<Success />} />
             <Route path={"/records"} element={<RecordListing />} />
-            <Route path={"/pricing"} element={<Pricing />} />
             <Route path={"/playground"} element={<Playground/>} />
           </Routes>
           <BottomNav />

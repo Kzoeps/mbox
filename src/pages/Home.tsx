@@ -84,7 +84,7 @@ export default function HomePage() {
           >
             M-BOX{" "}
             <Text as={"span"} color={"orange.400"}>
-              Accounting Made Easy
+              Accounting Made Easy (Product Sunset Just for Display)
             </Text>
           </Heading>
           <Text color={"gray.500"} maxW={"3xl"}>
